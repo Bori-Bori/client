@@ -12,30 +12,40 @@ const colors = {
   warning: '#DE5C5C',
   notice1: '#F98A67',
   notice2: '#94CD8A',
-};
+} as const;
 
-const fonts = {
-  h1Bold: 'font-size: 1.25rem; font-weight:700; line-height: 1.6rem',
-  h1Regular: 'font-size: 1.25rem; font-weight:400; line-height: 1.6rem',
-  h1Light: 'font-size: 1.25rem; font-weight:300; line-height: 1.6rem',
-  h2Bold: 'font-size: 1.125rem; font-weight:700; line-height: 1.5rem',
-  h2Regular: 'font-size: 1.125rem; font-weight:400; line-height: 1.5rem',
-  h2Light: 'font-size: 1.125rem; font-weight:300; line-height: 1.5rem',
-  body1Bold: 'font-size: 1rem; font-weight:700; line-height: 1.4rem',
-  body1Regular: 'font-size: 1rem; font-weight:400; line-height: 1.4rem',
-  body1Light: 'font-size: 1rem; font-weight:300; line-height: 1.4rem',
-  body2Bold: 'font-size: 0.875rem; font-weight:700; line-height: 1.25rem',
-  body2Regular: 'font-size: 0.875rem; font-weight:400; line-height: 1.25rem',
-  body2Light: 'font-size: 0.875rem; font-weight:300; line-height: 1.25rem',
-  badge1Bold: 'font-size: 0.8rem; font-weight:700; line-height: 1.4rem',
-  badge1Regular: 'font-size: 0.8rem; font-weight:400; line-height: 1.4rem',
-  badge2Bold: 'font-size: 0.75rem; font-weight:700; line-height: 1.25rem',
-  badge2Regular: 'font-size: 0.75rem; font-weight:400; line-height: 1.25rem',
-};
+const fontSize = {
+  header01: '1.25rem',
+  header02: '1.125rem',
+  body01: '1rem',
+  body02: '0.875rem',
+  badge01: '0.8rem',
+  badge02: '0.75rem',
+} as const;
+
+const fontWeight = {
+  bold: 700,
+  regular: 400,
+  light: 300,
+} as const;
+
+const lineHeight = {
+  lh26: '1.6rem',
+  lh24: '1.5rem',
+  lh22: '1.4rem',
+  lh20: '1.25rem',
+} as const;
+
+export type ColorTypes = typeof colors;
+export type FontSizeTypes = typeof fontSize;
+export type FontWeightTypes = typeof fontWeight;
+export type LineHeightTypes = typeof lineHeight;
 
 const DefaultTheme = {
   colors,
-  fonts,
+  fontSize,
+  fontWeight,
+  lineHeight,
 };
 
 export default DefaultTheme;
