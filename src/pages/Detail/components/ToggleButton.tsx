@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
 import styled from 'styled-components';
+
 type ToggleType = {
   latestSort: boolean;
 };
@@ -15,7 +15,7 @@ const ToggleButton = () => {
   return (
     <BtnWrapper>
       <CheckBox type="checkbox" id="toggleBtn" onChange={toggleHandler} />
-      <ButtonLabel htmlFor="toggleBtn" latestSort={latestSort}></ButtonLabel>
+      <ButtonLabel htmlFor="toggleBtn" latestSort={latestSort} />
     </BtnWrapper>
   );
 };
@@ -35,7 +35,6 @@ const ButtonLabel = styled.label<ToggleType>`
   z-index: 10;
   width: 12rem;
   height: 3rem;
-  background: var(--second);
   border-radius: 2em;
   background-color: ${(props) => props.theme.colors.grey5};
 

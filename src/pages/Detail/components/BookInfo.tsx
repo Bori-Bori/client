@@ -151,6 +151,7 @@ const ToggleIntroButton = styled.button`
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.body02};
   font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.lineHeight.lh20};
   background-color: ${(props) => props.theme.colors.white};
   border: 1px solid ${(props) => props.theme.colors.grey3};
   padding: 12px 16px;
