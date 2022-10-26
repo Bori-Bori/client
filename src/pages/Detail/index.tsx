@@ -1,24 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import comment from '../../assets/icons/comment-wh-24.png';
-import user from '../../assets/icons/user-wh-24.png';
-import bookmark from '../../assets/icons/bookmark-default-24.png';
+
 import BookInfo from './components/BookInfo';
+import ToggleButton from './components/ToggleButton';
 
 const Detail = () => {
-  const [moreIntro, setMoreIntro] = useState(false);
-
-  const toggleIntro = () => {
-    moreIntro ? setMoreIntro(false) : setMoreIntro(true);
-  };
-
   return (
     <MainWrapper>
-      {/* <ContentHeader></ContentHeader> */}
       <ContentContainer>
-        {/* <BookDetailContainer> */}
         <BookInfo />
-        {/* </BookDetailContainer> */}
+        <ToggleButton />
       </ContentContainer>
     </MainWrapper>
   );
@@ -53,5 +44,3 @@ const ContentContainer = styled.div`
   margin: 0 auto;
   padding: 24px;
 `;
-
-const BookDetailContainer = styled.section``;

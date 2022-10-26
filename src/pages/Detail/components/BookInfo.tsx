@@ -137,10 +137,10 @@ const BookIntro = styled.p<MoreIntro>`
       ? null
       : `
       height: 120px;
-    word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
     
   `}
 `;
