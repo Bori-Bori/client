@@ -31,5 +31,5 @@ type book = {
   PUBLISHER_URL?: string;
   INPUT_DATE?: string;
   UPDATE_DATE?: string;
-}
-export type BookList = book[]
+};
+export type BookList = book[];
