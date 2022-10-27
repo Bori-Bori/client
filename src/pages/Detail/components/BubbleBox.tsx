@@ -4,11 +4,12 @@ import styled from 'styled-components';
 type BubbleProps = {
   text: string;
 };
-const Bubble = () => {
+
+const BubbleBox = ({ text }: BubbleProps) => {
   return <BubbleContainer>1p</BubbleContainer>;
 };
 
-export default Bubble;
+export default BubbleBox;
 
 const BubbleContainer = styled.div`
   display: inline-block;
