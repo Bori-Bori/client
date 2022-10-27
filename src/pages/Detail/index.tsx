@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 import BookInfo from './components/BookInfo';
 import ToggleButton from './components/ToggleButton';
-
+import Bubble from './components/bubble';
 const Detail = () => {
   return (
     <MainWrapper>
       <ContentContainer>
         <BookInfo />
         <ToggleButton />
+        <Bubble />
       </ContentContainer>
     </MainWrapper>
   );
