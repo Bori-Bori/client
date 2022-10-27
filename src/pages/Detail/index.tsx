@@ -20,10 +20,11 @@ export default Detail;
 
 const MainWrapper = styled.div`
   width: 100%;
+  min-height: 100vh;
   position: relative;
   &::before {
     content: '';
-    position: fixed;
+    position: absolute;
     height: 445px;
     top: -10px;
     left: -10px;
@@ -41,7 +42,7 @@ const MainWrapper = styled.div`
   }
   &::after {
     content: '';
-    position: fixed;
+    position: absolute;
     top: 430px;
     left: 0;
     right: 0;
