@@ -57,7 +57,7 @@ const BookInfo = () => {
         여정을 응원하며 세상을 구하는 놀라운 이야기의 힘에 매료될 것이다.
       </BookIntro>
       <ToggleIntroButton className="moreIntroButton" onClick={toggleIntro}>
-        {moreIntro ? '책 소개 숨기기' : '책 소개 더보기'}{' '}
+        {moreIntro ? '숨기기' : '더보기'}{' '}
       </ToggleIntroButton>
     </BookInfoWrapper>
   );
@@ -139,7 +139,7 @@ const BookIntro = styled.p<MoreIntro>`
     props.moreIntro
       ? null
       : `
-      height: 120px;
+      height: 135px;
       word-wrap: break-word;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -151,7 +151,9 @@ const ToggleIntroButton = styled(Button)`
   display: block;
   box-sizing: border-box;
   width: 112px;
+  height: 44px;
   margin: 12px auto 0;
+  padding: 12px 16px;
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.body02};
   font-weight: ${(props) => props.theme.fontWeight.regular};
@@ -159,7 +161,6 @@ const ToggleIntroButton = styled(Button)`
   background-color: ${(props) => props.theme.colors.white};
   border: 1px solid ${(props) => props.theme.colors.grey3};
   font-family: inherit;
-  padding: 12px 16px;
   border-radius: 24px;
   outline: none;
 `;

@@ -8,7 +8,7 @@ const Comment = () => {
   return (
     <CommentContainer>
       <BubbleWrapper>
-        <BubbleBox text={'12'} />
+        <BubbleBox text="12" />
       </BubbleWrapper>
       <CommentItmeWrapper>
         <CommentItem />

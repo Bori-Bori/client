@@ -19,7 +19,7 @@ const BubbleContainer = styled.div`
   border-radius: 8px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   font-size: ${(props) => props.theme.fontSize.badge01};
-  line-height: ${(props) => props.theme.lineHeight.lh22};
+  line-height: ${(props) => props.theme.lineHeight.lh20};
   background-color: ${(props) => props.theme.colors.secondary2};
   &::after {
     content: '';
