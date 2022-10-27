@@ -2,15 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 import BookInfo from './components/BookInfo';
-import ToggleButton from './components/ToggleButton';
-import Bubble from './components/bubble';
+import SlideButton from './components/SlideButton';
+import Comment from './components/Comment';
+
 const Detail = () => {
   return (
     <MainWrapper>
       <ContentContainer>
         <BookInfo />
-        <ToggleButton />
-        <Bubble />
+        <SlideButton />
+        <Comment />
       </ContentContainer>
     </MainWrapper>
   );

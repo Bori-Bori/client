@@ -1,92 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-type ToggleType = {
-  latestSort: boolean;
+import down from '../../../assets/icons/down-bk-24.png';
+import up from '../../../assets/icons/up-bk-24.png';
+
+type ToggleProps = {
+  onClick: () => void;
+  isOpened: boolean;
 };
-
-const ToggleButton = () => {
-  const [latestSort, setLatestSort] = useState(true);
-
-  const toggleHandler = () => {
-    setLatestSort((prev) => !prev);
-  };
-
+const ToggleButton = ({ onClick, isOpened }: ToggleProps) => {
   return (
-    <BtnWrapper>
-      <CheckBox type="checkbox" id="toggleBtn" onChange={toggleHandler} />
-      <ButtonLabel htmlFor="toggleBtn" latestSort={latestSort} />
-    </BtnWrapper>
+    <ToggleBtnWrapper onClick={onClick}>
+      +12
+      <img src={isOpened ? up : down} />
+    </ToggleBtnWrapper>
   );
 };
 
 export default ToggleButton;
 
-const BtnWrapper = styled.div`
+const ToggleBtnWrapper = styled.button`
   display: flex;
-  z-index: 0;
-`;
-
-const CheckBox = styled.input`
-  display: none;
-`;
-
-const ButtonLabel = styled.label<ToggleType>`
-  position: relative;
-  z-index: 10;
-  width: 12rem;
-  height: 3rem;
-  border-radius: 2em;
-  background-color: ${(props) => props.theme.colors.grey5};
-
-  /* 선택X 텍스트 */
-  ::before {
-    display: flex;
-    position: absolute;
-    content: '최신 댓글 순';
-    padding-left: 1em;
-    justify-content: flex-start;
-    align-items: center;
-    width: 10rem;
-    height: 3rem;
-    color: ${(props) => props.theme.colors.grey1};
-    font-size: ${(props) => props.theme.fontSize.body02};
-    font-weight: ${(props) => props.theme.fontWeight.regular};
-    line-height: ${(props) => props.theme.lineHeight.lh20};
-    transition: all 0.2s ease-in-out;
+  padding: 6px 12px;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  align-items: center;
+  font-size: ${(props) => props.theme.fontSize.body02};
+  > img {
+    height: 12px;
+    margin-left: 6px;
   }
-  /* 선택X 원 */
-  ::after {
-    display: flex;
-    position: relative;
-    content: '페이지 순';
-    width: 6rem;
-    height: 3rem;
-    justify-content: center;
-    align-items: center;
-    left: 6rem;
-    font-weight: ${(props) => props.theme.fontWeight.bold};
-    font-size: ${(props) => props.theme.fontSize.body02};
-    line-height: ${(props) => props.theme.lineHeight.lh20};
-    border-radius: 2rem;
-    background: ${(props) => props.theme.colors.white};
-    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.16);
-    transition: all 0.2s ease-in-out;
-  }
-  /* 선택O 텍스트, 원 */
-  ${(props) =>
-    props.latestSort &&
-    `
-    &::before {
-      padding-right: 1rem;
-      content: '페이지 순';
-      justify-content: flex-end;
-    };
-    &::after {
-      content: '최신 댓글 순';
-      width: 6rem;
-      height: 3rem;
-      left: 0rem;
-    }
-  `}
 `;

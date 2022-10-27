@@ -5,7 +5,7 @@ type BubbleProps = {
   text: string;
 };
 const Bubble = () => {
-  return <BubbleContainer>sdfsd</BubbleContainer>;
+  return <BubbleContainer>1p</BubbleContainer>;
 };
 
 export default Bubble;
