@@ -23,7 +23,7 @@ const CommentItem = () => {
         보장된다. 정부는 예산에 변경을 가할 필요가 있을 때에는 추가경정예산안을 편성하여 국회에 제출할 수 있다. 대통령의
         국법상 행위는 문서로써 하며, 이 문서에는 국무총리와 관계 국무위원이 부서한다. 군사에 관한 것도 또한 같다.
       </CommentText>
-      <ToggleButton onClick={commentOpenHandler} isOpened={commentIsOpened} />
+      <ToggleButton className="toggleButton" onClick={commentOpenHandler} isOpened={commentIsOpened} />
     </CommentItemWrapper>
   );
 };

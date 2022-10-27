@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import CommentItem from './CommentItem';
-import Bubble from './bubble';
+import BubbleBox from './BubbleBox';
 
 const Comment = () => {
   return (
     <CommentContainer>
       <BubbleWrapper>
-        <Bubble />
+        <BubbleBox text={'12'} />
       </BubbleWrapper>
       <CommentItmeWrapper>
         <CommentItem />

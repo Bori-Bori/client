@@ -20,7 +20,8 @@ const Detail = () => {
 export default Detail;
 
 const MainWrapper = styled.div`
-  width: 100%;
+  /* width: 100%; */
+  overflow: hidden;
   min-height: 100vh;
   position: relative;
   &::before {

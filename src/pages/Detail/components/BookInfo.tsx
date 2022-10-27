@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/bookmark-default-24.png';
+import Button from '../../../components/Button';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -55,7 +56,9 @@ const BookInfo = () => {
         인간이길 포기하지 않는다. 독자들은 낯선 행성에서 자신의 이야기를 이어 나가는 ‘마지막 이야기 전달자’ 페트라의
         여정을 응원하며 세상을 구하는 놀라운 이야기의 힘에 매료될 것이다.
       </BookIntro>
-      <ToggleIntroButton onClick={toggleIntro}>{moreIntro ? '책 소개 숨기기' : '책 소개 더보기'}</ToggleIntroButton>
+      <ToggleIntroButton className="moreIntroButton" onClick={toggleIntro}>
+        {moreIntro ? '책 소개 숨기기' : '책 소개 더보기'}{' '}
+      </ToggleIntroButton>
     </BookInfoWrapper>
   );
 };
@@ -132,7 +135,6 @@ const BookIntro = styled.p<MoreIntro>`
   font-size: ${(props) => props.theme.fontSize.body02};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.lh20};
-  /* box-shadow: inset 0px 0px 35px 35px ${(props) => props.theme.colors.white}; */
   ${(props) =>
     props.moreIntro
       ? null
@@ -145,9 +147,10 @@ const BookIntro = styled.p<MoreIntro>`
     
   `}
 `;
-const ToggleIntroButton = styled.button`
+const ToggleIntroButton = styled(Button)`
   display: block;
-  width: 120px;
+  box-sizing: border-box;
+  width: 112px;
   margin: 12px auto 0;
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.body02};
@@ -155,6 +158,7 @@ const ToggleIntroButton = styled.button`
   line-height: ${(props) => props.theme.lineHeight.lh20};
   background-color: ${(props) => props.theme.colors.white};
   border: 1px solid ${(props) => props.theme.colors.grey3};
+  font-family: inherit;
   padding: 12px 16px;
   border-radius: 24px;
   outline: none;
