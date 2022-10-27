@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 type ButtonChidren = {
   className: string;
-  onClick: () => void;
+  onClick?: () => void;
   children?: ReactNode;
 };
 
@@ -22,7 +22,6 @@ export default Button;
 const ButtonWrapper = styled.button`
   display: flex;
   outline: none;
-  border: none;
   align-items: center;
   border-radius: 20px;
 `;
