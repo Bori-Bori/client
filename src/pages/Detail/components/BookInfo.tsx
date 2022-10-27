@@ -122,6 +122,7 @@ const BookInfoRow3 = styled.div`
     height: 16px;
     margin-right: 3px;
     vertical-align: -4px;
+    cursor: pointer;
   }
 `;
 

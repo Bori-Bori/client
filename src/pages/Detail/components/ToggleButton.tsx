@@ -32,6 +32,7 @@ const CheckBox = styled.input`
 `;
 
 const ButtonLabel = styled.label<ToggleType>`
+  position: relative;
   z-index: 10;
   width: 12rem;
   height: 3rem;

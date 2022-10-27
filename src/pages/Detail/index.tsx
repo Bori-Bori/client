@@ -21,21 +21,32 @@ const MainWrapper = styled.div`
   width: 100%;
   position: relative;
   &::before {
+    content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    height: 445px;
+    top: -10px;
+    left: -10px;
+    right: -10px;
     bottom: 0;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(http://image.yes24.com/goods/113737324/XL);
     background-position: center;
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
-    z-index: -1;
+    background-size: 100% 300%;
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+    z-index: -10;
+  }
+  &::after {
     content: '';
-    height: 435px;
+    position: fixed;
+    top: 430px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${(props) => props.theme.colors.white};
+    z-index: -1;
   }
 `;
 
