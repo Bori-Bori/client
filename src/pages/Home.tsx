@@ -127,7 +127,7 @@ const Home = () => {
           </BookListWrap>
         </BookWrap>
       </HotBookRank>
-      <section></section>
+      <section />
     </Container>
   );
 };

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/bookmark-default-24.png';
+import CommonButton from '../../../components/CommonButton';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -55,7 +56,9 @@ const BookInfo = () => {
         인간이길 포기하지 않는다. 독자들은 낯선 행성에서 자신의 이야기를 이어 나가는 ‘마지막 이야기 전달자’ 페트라의
         여정을 응원하며 세상을 구하는 놀라운 이야기의 힘에 매료될 것이다.
       </BookIntro>
-      <ToggleIntroButton onClick={toggleIntro}>{moreIntro ? '책 소개 숨기기' : '책 소개 더보기'}</ToggleIntroButton>
+      <ToggleIntroButton className="moreIntroButton" onClick={toggleIntro}>
+        {moreIntro ? '숨기기' : '더보기'}{' '}
+      </ToggleIntroButton>
     </BookInfoWrapper>
   );
 };
@@ -122,6 +125,7 @@ const BookInfoRow3 = styled.div`
     height: 16px;
     margin-right: 3px;
     vertical-align: -4px;
+    cursor: pointer;
   }
 `;
 
@@ -131,29 +135,32 @@ const BookIntro = styled.p<MoreIntro>`
   font-size: ${(props) => props.theme.fontSize.body02};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.lh20};
-  /* box-shadow: inset 0px 0px 35px 35px ${(props) => props.theme.colors.white}; */
   ${(props) =>
     props.moreIntro
       ? null
       : `
-      height: 120px;
-    word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
+      height: 135px;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
     
   `}
 `;
-const ToggleIntroButton = styled.button`
+const ToggleIntroButton = styled(CommonButton)`
   display: block;
-  width: 120px;
+  box-sizing: border-box;
+  width: 112px;
+  height: 44px;
   margin: 12px auto 0;
+  padding: 12px 16px;
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.body02};
   font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.lineHeight.lh20};
   background-color: ${(props) => props.theme.colors.white};
   border: 1px solid ${(props) => props.theme.colors.grey3};
-  padding: 12px 16px;
+  font-family: inherit;
   border-radius: 24px;
   outline: none;
 `;

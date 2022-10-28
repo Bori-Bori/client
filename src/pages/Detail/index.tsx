@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import comment from '../../assets/icons/comment-wh-24.png';
-import user from '../../assets/icons/user-wh-24.png';
-import bookmark from '../../assets/icons/bookmark-default-24.png';
+
 import BookInfo from './components/BookInfo';
+import SlideButton from './components/SlideButton';
+import Comment from './components/Comment';
+import InputComment from './components/InputComment';
+import InputCommentWithPage from './components/InputCommentWithPage';
 
 const Detail = () => {
-  const [moreIntro, setMoreIntro] = useState(false);
-
-  const toggleIntro = () => {
-    moreIntro ? setMoreIntro(false) : setMoreIntro(true);
+  const onClick = () => {
+    console.log('test');
   };
-
   return (
     <MainWrapper>
-      {/* <ContentHeader></ContentHeader> */}
       <ContentContainer>
-        {/* <BookDetailContainer> */}
         <BookInfo />
-        {/* </BookDetailContainer> */}
+        <SlideButton />
+        <Comment />
+        <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
+        <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
       </ContentContainer>
     </MainWrapper>
   );
@@ -27,24 +27,37 @@ const Detail = () => {
 export default Detail;
 
 const MainWrapper = styled.div`
-  width: 100%;
+  /* width: 100%; */
+  overflow: hidden;
+  min-height: 100vh;
   position: relative;
   &::before {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    content: '';
+    position: absolute;
+    height: 445px;
+    top: -10px;
+    left: -10px;
+    right: -10px;
     bottom: 0;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(http://image.yes24.com/goods/113737324/XL);
     background-position: center;
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
-    z-index: -1;
+    background-size: 100% 300%;
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+    z-index: -10;
+  }
+  &::after {
     content: '';
-    height: 435px;
+    position: absolute;
+    top: 430px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${(props) => props.theme.colors.white};
+    z-index: -1;
   }
 `;
 
@@ -53,5 +66,3 @@ const ContentContainer = styled.div`
   margin: 0 auto;
   padding: 24px;
 `;
-
-const BookDetailContainer = styled.section``;

@@ -4,9 +4,9 @@ type book = {
   TITLE?: string;
   VOL?: string;
   SERIES_TITLE?: string;
-  SERIES_NO?: string;	
-  AUTHOR?: string;	
-  EA_ISBN?: string;	
+  SERIES_NO?: string;
+  AUTHOR?: string;
+  EA_ISBN?: string;
   EA_ADD_CODE?: string;
   SET_ISBN?: string;
   SET_ADD_CODE?: string;
