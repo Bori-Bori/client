@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import Button from '../../../components/Button';
+import CommonButton from '../../../components/CommonButton';
 
 type InputProps = {
   className: string;
@@ -52,7 +52,7 @@ const InputButtonWrapper = styled.div`
   width: 100px;
 `;
 
-const InputButton = styled(Button)`
+const InputButton = styled(CommonButton)`
   position: absolute;
   right: 20px;
   bottom: 20px;

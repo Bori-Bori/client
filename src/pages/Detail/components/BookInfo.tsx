@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/bookmark-default-24.png';
-import Button from '../../../components/Button';
+import CommonButton from '../../../components/CommonButton';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -147,7 +147,7 @@ const BookIntro = styled.p<MoreIntro>`
     
   `}
 `;
-const ToggleIntroButton = styled(Button)`
+const ToggleIntroButton = styled(CommonButton)`
   display: block;
   box-sizing: border-box;
   width: 112px;

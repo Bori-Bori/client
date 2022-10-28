@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import down from '../../../assets/icons/down-bk-24.png';
 import up from '../../../assets/icons/up-bk-24.png';
-import Button from '../../../components/Button';
+import CommonButton from '../../../components/CommonButton';
 
 type ToggleProps = {
   className: string;
@@ -21,7 +21,7 @@ const ToggleButton = ({ className, onClick, isOpened }: ToggleProps) => {
 
 export default ToggleButton;
 
-const ToggleBtnWrapper = styled(Button)`
+const ToggleBtnWrapper = styled(CommonButton)`
   padding: 6px 12px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   font-size: ${(props) => props.theme.fontSize.body02};

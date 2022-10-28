@@ -3,13 +3,13 @@ import React from 'react';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-type ButtonChidren = {
+type ButtonProps = {
   className: string;
   onClick?: () => void;
   children?: ReactNode;
 };
 
-const Button = ({ className, onClick, children }: ButtonChidren) => {
+const CommonButton = ({ className, onClick, children }: ButtonProps) => {
   return (
     <ButtonWrapper className={className} onClick={onClick}>
       {children}
@@ -17,7 +17,7 @@ const Button = ({ className, onClick, children }: ButtonChidren) => {
   );
 };
 
-export default Button;
+export default CommonButton;
 
 const ButtonWrapper = styled.button`
   display: flex;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import InputComment from './InputComment';
-import Button from '../../../components/Button';
+import CommonButton from '../../../components/CommonButton';
 
 type InputCommentProps = {
   className: string;
@@ -42,7 +42,7 @@ const InputPageWrapper = styled.div`
     font-weight: ${(props) => props.theme.fontWeight.bold};
   }
 `;
-const InputPage = styled(Button)`
+const InputPage = styled(CommonButton)`
   padding: 12px 16px;
   border: 1px solid ${(props) => props.theme.colors.grey4};
   background-color: ${(props) => props.theme.colors.white};
