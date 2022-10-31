@@ -53,12 +53,20 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   html {
+<<<<<<< HEAD
+=======
     font-size: 16px;
+>>>>>>> 5950e44e98f8c70652d76754ff1b791c8b05ef9a
     font-family: 'Pretendard', sans-serif;
   }
   a {
     text-decoration: none;
     color: inherit;
+  }
+  button{
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
   }
   .sr-only {
     position: absolute;
