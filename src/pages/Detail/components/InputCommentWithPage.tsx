@@ -10,7 +10,6 @@ type InputCommentProps = {
   placeholder: string;
 };
 const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentProps) => {
-  onClick;
   return (
     <InputCommentWrapper className={className} placeholder={placeholder} onClick={onClick}>
       <InputPageWrapper>

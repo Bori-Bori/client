@@ -6,7 +6,7 @@ type PassedValue = {
 };
 const SlideRange = () => {
   const minPage = '1';
-  const maxPage = '324'; //server에서 받아올 값
+  const maxPage = '524'; //server에서 받아올 값
   const [value, setValue] = useState('1');
   const [passedValue, setPassedValue] = useState(0);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,6 +25,7 @@ const SlideRange = () => {
         value={value}
         passedValue={passedValue}
       />
+      <input value={value} onChange={onChange}></input>
       <span>{value}</span>
     </RangeWrapper>
   );
@@ -37,7 +38,7 @@ const RangeWrapper = styled.div`
 `;
 
 const RangeBar = styled.input<PassedValue>`
-  width: 80%;
+  width: 60%;
   -webkit-appearance: none;
   background: transparent;
   outline: none;

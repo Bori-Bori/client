@@ -5,16 +5,16 @@ import CommonButton from '../../../components/CommonButton';
 
 type InputProps = {
   className: string;
-  children?: ReactNode;
-  onClick: () => void;
   placeholder: string;
+  onClick: () => void;
+  children?: ReactNode;
 };
 
 const InputComment = ({ className, placeholder, onClick, children }: InputProps) => {
   return (
     <InputWrapper className={className}>
       {children}
-      <InputBox placeholder={placeholder} />
+      <InputArea placeholder={placeholder} />
       <InputButtonWrapper>
         <InputButton className={className} onClick={onClick}>
           댓글등록
@@ -37,10 +37,9 @@ const InputWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-const InputBox = styled.textarea`
+const InputArea = styled.textarea`
   flex: 1;
   display: block;
-  /* width: 85%; */
   min-height: 70px;
   resize: none;
   outline: none;

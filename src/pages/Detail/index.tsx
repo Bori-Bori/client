@@ -6,6 +6,8 @@ import SlideButton from './components/SlideButton';
 import Comment from './components/Comment';
 import InputComment from './components/InputComment';
 import InputCommentWithPage from './components/InputCommentWithPage';
+import SlideRange from './components/SlideRange';
+import CloseButton from '../../assets/icons/close-bk-24.png';
 
 const Detail = () => {
   const onClick = () => {
@@ -17,8 +19,15 @@ const Detail = () => {
         <BookInfo />
         <SlideButton />
         <Comment />
+        <SlideRange />
         <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
-        <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
+        <CommentConatiner>
+          <div>
+            <span>댓글쓰기</span>
+            <img src={CloseButton} />
+          </div>
+          <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
+        </CommentConatiner>
       </ContentContainer>
     </MainWrapper>
   );
@@ -27,10 +36,10 @@ const Detail = () => {
 export default Detail;
 
 const MainWrapper = styled.div`
-  /* width: 100%; */
   overflow: hidden;
   min-height: 100vh;
   position: relative;
+  padding-bottom: 200px;
   &::before {
     content: '';
     position: absolute;
@@ -62,7 +71,19 @@ const MainWrapper = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  position: relative;
   width: 1024px;
   margin: 0 auto;
   padding: 24px;
+  box-sizing: content-box;
+`;
+
+const CommentConatiner = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 1024px;
+  background-color: ${(props) => props.theme.colors.white};
+  padding: 17px 26px 24px;
+  z-index: 100;
+  border: 1px solid;
 `;
