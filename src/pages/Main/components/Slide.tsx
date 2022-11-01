@@ -222,6 +222,8 @@ const BookItem = styled.li`
     0% {
       left: 0;
       transform: scale(1);
+      top: 50%;
+      transform: translateY(-50%);
     }
     100% {
       top: calc(50% - 73px);
