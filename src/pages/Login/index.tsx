@@ -6,12 +6,18 @@ import { ModalPortal } from '../../components/Modal';
 import kakaoIcon from '../../assets/icons/kakaoIcon.png';
 import googleIcon from '../../assets/icons//googleIcon.png';
 const Login = () => {
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
+  const REDIRECT_URI = 'http://localhost:3000/login/kakao/oauth';
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const KakaoRedirectHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
   return (
     <ModalPortal>
       <LoginModal className="LoginModal">
         <h2>환영합니다!</h2>
         <span>회원이 되면 모든 서비스를 이용하실 수 있습니다.</span>
-        <KakaoLoginButton className="kakaoLogin" type="button">
+        <KakaoLoginButton className="kakaoLogin" type="button" onClick={KakaoRedirectHandler}>
           <img src={kakaoIcon} />
           카카오로 시작하기
         </KakaoLoginButton>
