@@ -3,13 +3,14 @@ import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
 type ModalProps = {
+  className?: string;
   onClick?: () => void;
   children: ReactNode;
 };
 
-const Modal = ({ onClick, children }: ModalProps) => {
+const Modal = ({ className, onClick, children }: ModalProps) => {
   return (
-    <Backdrop onClick={onClick}>
+    <Backdrop className={className} onClick={onClick}>
       <ModalOverlay>{children}</ModalOverlay>
     </Backdrop>
   );
@@ -27,14 +28,19 @@ const Backdrop = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.349);
   z-index: 50;
 `;
 
 const ModalOverlay = styled.div`
-  width: 50%;
-  padding: 2.5rem;
+  position: relative;
+  display: inline-block;
+  top: 20vh;
+  margin: 0 auto;
+  padding: 100px 80px 40px;
   background-color: ${(props) => props.theme.colors.white};
   border-radius: 12px;
   z-index: 100;
+  box-sizing: border-box;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
 `;
