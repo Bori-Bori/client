@@ -1,4 +1,5 @@
 type book = {
+  id: number;
   PAGE_NO?: string;
   TOTAL_COUNT?: string;
   TITLE?: string;
@@ -32,4 +33,4 @@ type book = {
   INPUT_DATE?: string;
   UPDATE_DATE?: string;
 };
-export type BookList = book[];
+export type bookType = book[];

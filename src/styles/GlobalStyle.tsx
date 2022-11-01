@@ -60,6 +60,11 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
+  button{
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
   .sr-only {
     position: absolute;
     clip: rect(0 0 0 0);

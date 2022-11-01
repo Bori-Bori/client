@@ -6,8 +6,7 @@ import SlideButton from './components/SlideButton';
 import Comment from './components/Comment';
 import InputComment from './components/InputComment';
 import InputCommentWithPage from './components/InputCommentWithPage';
-import SlideRange from './components/SlideRange';
-import CloseButton from '../../assets/icons/close-bk-24.png';
+import Login from '../Login';
 
 const Detail = () => {
   const onClick = () => {
@@ -19,15 +18,9 @@ const Detail = () => {
         <BookInfo />
         <SlideButton />
         <Comment />
-        <SlideRange />
         <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
-        <CommentConatiner>
-          <div>
-            <span>댓글쓰기</span>
-            <img src={CloseButton} />
-          </div>
-          <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
-        </CommentConatiner>
+        <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
+        <Login />
       </ContentContainer>
     </MainWrapper>
   );
