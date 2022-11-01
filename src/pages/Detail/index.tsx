@@ -6,6 +6,8 @@ import SlideButton from './components/SlideButton';
 import Comment from './components/Comment';
 import InputComment from './components/InputComment';
 import InputCommentWithPage from './components/InputCommentWithPage';
+import Modal from '../../components/Modal';
+import { ModalPortal } from '../../components/Modal';
 
 const Detail = () => {
   const onClick = () => {
@@ -19,6 +21,9 @@ const Detail = () => {
         <Comment />
         <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
         <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
+        <ModalPortal>
+          <Modal>모달</Modal>
+        </ModalPortal>
       </ContentContainer>
     </MainWrapper>
   );
