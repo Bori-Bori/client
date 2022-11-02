@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import InputComment from './InputComment';
 import CommonButton from '../../../components/CommonButton';
+import InputPageButton from './InputPageButton';
 
 type InputCommentProps = {
   className: string;
   onClick: () => void;
   placeholder: string;
 };
+
 const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentProps) => {
+  //서버에서 받아올 값
+  const maxPage = '524';
+  const [targetPage, setTargetPage] = useState('0');
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setTargetPage(parseInt(e.target.value));
+    const enteredValue = e.target.value.replace(/[^0-9.]/g, '');
+    setTargetPage(enteredValue);
+  };
   return (
     <InputCommentWrapper className={className} placeholder={placeholder} onClick={onClick}>
       <InputPageWrapper>
         <span>책 페이지</span>
-        <InputPage className="pageInput">
-          <input placeholder="숫자 입력" />
-          p.
-        </InputPage>
+        <InputPageButton value={targetPage} className="pageInput" onChange={onChange} maxPage={maxPage} />
       </InputPageWrapper>
     </InputCommentWrapper>
   );
@@ -39,22 +46,5 @@ const InputPageWrapper = styled.div`
   > span {
     font-size: ${(props) => props.theme.fontSize.body02};
     font-weight: ${(props) => props.theme.fontWeight.bold};
-  }
-`;
-const InputPage = styled(CommonButton)`
-  padding: 12px 16px;
-  border: 1px solid ${(props) => props.theme.colors.grey4};
-  background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.grey1};
-  > input {
-    width: 66px;
-    border: none;
-    outline: none;
-    &::placeholder {
-      font-family: inherit;
-      font-size: ${(props) => props.theme.fontSize.badge01};
-      font-weight: ${(props) => props.theme.fontWeight.bold};
-      color: ${(props) => props.theme.colors.grey1};
-    }
   }
 `;

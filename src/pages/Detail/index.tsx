@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import BookInfo from './components/BookInfo';
@@ -6,21 +6,24 @@ import SlideButton from './components/SlideButton';
 import Comment from './components/Comment';
 import InputComment from './components/InputComment';
 import InputCommentWithPage from './components/InputCommentWithPage';
-import Login from '../Login';
+import SlideRange from './components/SlideRange';
 
 const Detail = () => {
   const onClick = () => {
-    console.log('test');
+    console.log('this is comment test');
   };
+  const [sortIsLatest, setSortIsLatest] = useState(true);
   return (
     <MainWrapper>
       <ContentContainer>
         <BookInfo />
-        <SlideButton />
+        <SortingCommentContainer>
+          <SlideButton state={sortIsLatest} setState={setSortIsLatest} />
+          {sortIsLatest ? null : <SlideRange />}
+        </SortingCommentContainer>
         <Comment />
-        <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
+        {/* <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" /> */}
         <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
-        <Login />
       </ContentContainer>
     </MainWrapper>
   );
@@ -69,6 +72,12 @@ const ContentContainer = styled.div`
   margin: 0 auto;
   padding: 24px;
   box-sizing: content-box;
+`;
+
+const SortingCommentContainer = styled.div`
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const CommentConatiner = styled.div`
