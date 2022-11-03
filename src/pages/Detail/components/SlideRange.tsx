@@ -17,54 +17,64 @@ type PageValue = {
 const SlideRange = () => {
   const minPage = '1';
   const maxPage = '524'; //server에서 받아올 값
-  const [value, setValue] = useState('1');
+  const [curPage, setCurPage] = useState('1');
   const [passedValue, setPassedValue] = useState(0);
+  let rangeInputWidth;
+  let enteredValue = '';
 
   const [bubbleIconOffset, setBubbleIconOffset] = useState(0);
   const rangeInputRef = useRef<HTMLInputElement>(null);
-  let rangeInputWidth;
 
+  // 말풍선 위치
   useEffect(() => {
     setTimeout(() => {
       rangeInputWidth = rangeInputRef.current!.clientWidth;
-      console.log(rangeInputWidth);
-      setBubbleIconOffset((parseInt(value) / rangeInputWidth) * 100);
+      setBubbleIconOffset((parseInt(curPage) / rangeInputWidth) * 100);
     }, 1);
-  }, [rangeInputRef, rangeInputWidth, value]);
+  }, [rangeInputRef, rangeInputWidth, curPage]);
 
   const onChangeRangeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enteredValue = e.target.value.replace(/[^0-9.]/g, '');
-    setValue(enteredValue);
-    if (e.target.value !== '') {
-      const computedValue =
-        ((parseInt(e.target.value) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
-      setPassedValue(computedValue);
-    } else {
+    enteredValue = e.target.value.replace(/[^0-9.]/g, '');
+    if (enteredValue === '') {
       setPassedValue(0);
-    }
-  };
-
-  const onClickPrevButton = () => {
-    if (parseInt(value) <= 1) {
+      setCurPage('0');
       return;
     }
-    setValue((prev) => (parseInt(prev) - 1).toString());
-    const computedValue = ((parseInt(value) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
+    setCurPage(enteredValue);
+
+    const computedValue =
+      ((parseInt(enteredValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
+    setPassedValue(computedValue);
+  };
+
+  useEffect(() => {
+    if (curPage.length > 1 && curPage[0] === '0') {
+      const newCurPage = curPage.slice(1);
+      setCurPage(newCurPage);
+    }
+  }, [curPage]);
+
+  const onClickPrevButton = () => {
+    if (parseInt(curPage) <= 1) {
+      return;
+    }
+    setCurPage((prev) => (parseInt(prev) - 1).toString());
+    const computedValue = ((parseInt(curPage) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
     setPassedValue(computedValue);
   };
 
   const onClickNextButton = () => {
-    if (parseInt(value) >= parseInt(maxPage)) {
+    if (parseInt(curPage) >= parseInt(maxPage)) {
       return;
     }
-    setValue((prev) => (parseInt(prev) + 1).toString());
-    const computedValue = ((parseInt(value) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
+    setCurPage((prev) => (parseInt(prev) + 1).toString());
+    const computedValue = ((parseInt(curPage) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
     setPassedValue(computedValue);
   };
 
   return (
     <RangeWrapper>
-      <BubbleIcon className="currentPageBubble" text={value} offset={bubbleIconOffset} />
+      <BubbleIcon className="currentPageBubble" text={curPage} offset={bubbleIconOffset} />
       <RangeBar
         ref={rangeInputRef}
         type="range"
@@ -72,11 +82,11 @@ const SlideRange = () => {
         max={maxPage}
         step="1"
         onChange={onChangeRangeBar}
-        value={value}
+        value={curPage}
         passedValue={passedValue}
       />
       <PrevButtonImg src={prevButton} onClick={onClickPrevButton} />
-      <InputPageButton value={value} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
+      <InputPageButton value={curPage} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
       <NextButtonImg src={nextButton} onClick={onClickNextButton} />
     </RangeWrapper>
   );

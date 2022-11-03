@@ -5,17 +5,12 @@ import CommonButton from '../../../components/CommonButton';
 
 type InputPageProps = {
   className: string;
-  // value: number;
   value: string;
   maxPage: string;
-  // setValue : React.Dispatch<React.SetStateAction<number>>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const InputPageButton = ({ className, value, maxPage, onChange }: InputPageProps) => {
-  // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setValue(parseInt(e.target.value));
-  // };
   return (
     <InputPage className={className}>
       <input placeholder="숫자 입력" value={value} onChange={onChange} />

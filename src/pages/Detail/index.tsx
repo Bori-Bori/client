@@ -13,6 +13,7 @@ const Detail = () => {
     console.log('this is comment test');
   };
   const [sortIsLatest, setSortIsLatest] = useState(true);
+
   return (
     <MainWrapper>
       <ContentContainer>
