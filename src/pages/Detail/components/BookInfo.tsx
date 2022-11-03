@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
-import bookmark from '../../../assets/icons/bookmark-default-24.png';
+import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../components/CommonButton';
 
 type MoreIntro = {
@@ -122,7 +122,7 @@ const BookInfoRow3 = styled.div`
     margin-right: 12px;
   }
   img {
-    height: 16px;
+    height: 24px;
     margin-right: 3px;
     vertical-align: -4px;
     cursor: pointer;
