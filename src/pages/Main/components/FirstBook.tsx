@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import bookmark_default from '../../../assets/icons/bookmark-default-24.png';
-import bookmark_select from '../../../assets/icons/bookmark-select-24.png';
+import bookmark_default from '../../../assets/icons/bookmark-default-24-bg.png';
+import bookmark_select from '../../../assets/icons/bookmark-select-24-bg.png';
 import comment from '../../../assets/icons/common_comment_gr_24.png';
 import user from '../../../assets/icons/common_user_gr_24.png';
 import { bookData } from './bookData';

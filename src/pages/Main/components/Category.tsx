@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import comment from '../../../assets/icons/comment-gr-16.png';
 import user from '../../../assets/icons/user-gr-16.png';
 import { categoryData } from './categoryBookList';
+
+import bookmark_default from '../../../assets/icons/bookmark-default-24.png';
+import bookmark_select from '../../../assets/icons/bookmark-select-24.png';
+
 const Category = () => {
   const [mainselect, setMainselect] = useState('국내');
   const [middleselect, setMiddleselect] = useState('전체');
   const [subselect, setSubelect] = useState('🔍 추리,범죄');
+  const [bookMark, setBookMark] = useState(false);
 
   const mainClickBtn = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMainselect(e.target.id);
@@ -113,6 +118,15 @@ const Category = () => {
                     <div>
                       <BookImgWrap>
                         <BookImg src={value?.TITLE_URL} alt={value?.TITLE} />
+                        <BookBg>
+                          <BookmarkBtn
+                            onClick={() => {
+                              setBookMark(!bookMark);
+                            }}
+                          >
+                            <img src={bookMark ? bookmark_select : bookmark_default} alt="북마크" />
+                          </BookmarkBtn>
+                        </BookBg>
                       </BookImgWrap>
                       <BookWrap>
                         <BookTitle>{value?.TITLE}</BookTitle>
@@ -222,15 +236,38 @@ const CategoryWrap = styled.ul`
   flex-wrap: wrap;
   justify-content: space-between;
 `;
+const BookBg = styled.div`
+  display: none;
+  padding: 14px 16px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+`;
 const BookImgWrap = styled.div`
   width: 176px;
   height: 260px;
+  margin-bottom: 14px;
+  filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  :hover ${BookBg} {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
 `;
+
+const BookmarkBtn = styled.button``;
+
 const BookImg = styled.img`
   width: 100%;
 `;
