@@ -16,71 +16,59 @@ const FirstBook = () => {
       <FirstBookImgWrap>
         <BookImg src={bookData[count].TITLE_URL} alt="도서이미지" />
       </FirstBookImgWrap>
-      <BookTextWrap>
-        <Title>🔥 이번주 HOT 도서</Title>
-        <Line />
-        <BookTitleWrap>
-          <BookNumber>{count + 1}</BookNumber>
-          <BookTitle>{bookData[count].TITLE}</BookTitle>
-        </BookTitleWrap>
 
-        <BookAuthor>{bookData[count].AUTHOR}</BookAuthor>
-        <Subject>
-          <span>#{bookData[count].SUBJECT}</span>
-          <span>#{bookData[count].KDC}</span>
-        </Subject>
-        <BookContent>
-          <li>
-            <img src={comment} alt="댓글아이콘" />
-            <span> 12</span>
-          </li>
-          <li>
-            <img src={user} alt="유저아이콘" />
-            <span> 3</span>
-          </li>
-          <li>
-            <BookmarkBtn
-              onClick={() => {
-                setBookMark(!bookMark);
-              }}
-            >
-              <img src={bookMark ? bookmark_select : bookmark_default} alt="찜" />
-            </BookmarkBtn>
-          </li>
-        </BookContent>
+      <BookTextWrap>
+        <div>
+          <Title>🔥 이번주 HOT 도서</Title>
+          <Line />
+          <BookTitleWrap>
+            <BookNumber>{count + 1}</BookNumber>
+            <BookTitle>{bookData[count].TITLE}</BookTitle>
+          </BookTitleWrap>
+          <BookAuthor>{bookData[count].AUTHOR}</BookAuthor>
+          <Subject>
+            <span>#{bookData[count].SUBJECT}</span>
+            <span>#{bookData[count].KDC}</span>
+          </Subject>
+          <BookContent>
+            <li>
+              <img src={comment} alt="댓글아이콘" />
+              <span> 12</span>
+            </li>
+            <li>
+              <img src={user} alt="유저아이콘" />
+              <span> 3</span>
+            </li>
+            <li>
+              <BookmarkBtn
+                onClick={() => {
+                  setBookMark(!bookMark);
+                }}
+              >
+                <img src={bookMark ? bookmark_select : bookmark_default} alt="찜" />
+              </BookmarkBtn>
+            </li>
+          </BookContent>
+        </div>
       </BookTextWrap>
     </FirstBookWrap>
   );
 };
 
 export default FirstBook;
-const Title = styled.h1`
-  color: ${(props) => props.theme.colors.secondary1};
-  font-size: ${(props) => props.theme.fontSize.header01};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-`;
-
-const Line = styled.div`
-  width: 1px;
-  height: 40px;
-  background-color: ${(props) => props.theme.colors.secondary1};
-  margin: 20px 0;
-  margin-left: 10px;
-`;
-const BookTextWrap = styled.div`
-  width: 240px;
-`;
-const FirstBookImgWrap = styled.div`
-  width: 264px;
-  height: 420px;
-  position: relative;
-  overflow: hidden;
-`;
-const BookmarkBtn = styled.button``;
 const FirstBookWrap = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 60px;
+  position: relative;
+`;
+const BookTextWrap = styled.div`
+  > * {
+    width: 240px;
+  }
+  height: 420px;
+  padding-left: 364px;
+  padding-top: 92px;
 `;
 const BookTitleWrap = styled.div`
   position: relative;
@@ -134,3 +122,27 @@ const BookContent = styled.ul`
 const BookImg = styled.img`
   width: 100%;
 `;
+const Title = styled.h1`
+  color: ${(props) => props.theme.colors.secondary1};
+  font-size: ${(props) => props.theme.fontSize.header01};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
+
+const Line = styled.div`
+  width: 1px;
+  height: 40px;
+  background-color: ${(props) => props.theme.colors.secondary1};
+  margin: 20px 0;
+  margin-left: 10px;
+`;
+
+const FirstBookImgWrap = styled.div`
+  width: 264px;
+  height: 420px;
+  position: absolute;
+  top: 65px;
+  left: 60px;
+  overflow: hidden;
+  filter: drop-shadow(-30px 30px 30px rgba(74, 45, 0, 0.24));
+`;
+const BookmarkBtn = styled.button``;

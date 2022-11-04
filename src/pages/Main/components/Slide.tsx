@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { countState, hoverState } from './../../../recoil/slide';
@@ -24,12 +24,9 @@ const Home = () => {
   return (
     <Container>
       <HotBookRank>
-        <BookWrap>
-          <FirstBook />
-          <BookList />
-        </BookWrap>
+        <FirstBook />
+        <BookList />
       </HotBookRank>
-      <section />
     </Container>
   );
 };
@@ -44,12 +41,8 @@ const HotBookRank = styled.section`
   max-width: 1024px;
   min-width: 360px;
   margin: 0 auto;
-  height: 495px;
-  padding: 40px 24px;
-  overflow: hidden;
-`;
-
-const BookWrap = styled.div`
+  height: 435px;
   display: flex;
+  align-items: center;
   gap: 60px;
 `;
