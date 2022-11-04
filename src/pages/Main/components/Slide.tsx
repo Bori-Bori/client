@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import Header from '../../../components/Header';
 import { countState, hoverState } from './../../../recoil/slide';
 import BookList from './BookList';
 import FirstBook from './FirstBook';
@@ -23,6 +24,7 @@ const Home = () => {
 
   return (
     <Container>
+      <Header />
       <HotBookRank>
         <FirstBook />
         <BookList />
