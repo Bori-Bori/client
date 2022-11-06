@@ -1,38 +1,47 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 
+import sortCommentAtom from '../../../recoil/sortComment';
 import ToggleButton from './ToggleButton';
 import BubbleBox from './BubbleBox';
 
-const CommentItem = () => {
+type CommentItemProps = {
+  text: string;
+  writer: string;
+  publishDate: string;
+  replyNum: string;
+};
+const CommentItem = ({ text, writer, publishDate, replyNum }: CommentItemProps) => {
+  const curSortState = useRecoilValue(sortCommentAtom);
+
   const [commentIsOpened, setCommentIsOpened] = useState(false);
   const commentOpenHandler = () => {
     setCommentIsOpened((prev) => !prev);
   };
   return (
     <CommnetItemWrapper>
-      {
+      {curSortState && (
         <BubbleWrapper>
           <BubbleIcon className="commentPageBubble" text="122" />
         </BubbleWrapper>
-      }
+      )}
 
       <CommentTextWrapper>
-        <li>
+        <div>
           <UserImage />
-        </li>
+        </div>
         <CommentInfo>
-          <span>노래하는 라이언</span>
-          <span>22.10.22 16:23</span>
+          <span>{writer}</span>
+          <span>{publishDate}</span>
         </CommentInfo>
-        <CommentText>
-          대통령은 전시·사변 또는 이에 준하는 국가비상사태에 있어서 병력으로써 군사상의 필요에 응하거나 공공의
-          안녕질서를 유지할 필요가 있을 때에는 법률이 정하는 바에 의하여 계엄을 선포할 수 있다.정당의 설립은 자유이며,
-          복수정당제는 보장된다. 정부는 예산에 변경을 가할 필요가 있을 때에는 추가경정예산안을 편성하여 국회에 제출할 수
-          있다. 대통령의 국법상 행위는 문서로써 하며, 이 문서에는 국무총리와 관계 국무위원이 부서한다. 군사에 관한 것도
-          또한 같다.
-        </CommentText>
-        <ToggleButton className="toggleButton" onClick={commentOpenHandler} isOpened={commentIsOpened} />
+        <CommentText>{text}</CommentText>
+        <ToggleButton
+          className="toggleButton"
+          onClick={commentOpenHandler}
+          isOpened={commentIsOpened}
+          replyNumber={replyNum}
+        />
       </CommentTextWrapper>
     </CommnetItemWrapper>
   );
@@ -81,7 +90,7 @@ const UserImage = styled.img`
   background-color: grey;
   border-radius: 50%;
 `;
-const CommentInfo = styled.li`
+const CommentInfo = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 12px;
@@ -92,7 +101,7 @@ const CommentInfo = styled.li`
   }
 `;
 
-const CommentText = styled.li`
+const CommentText = styled.div`
   /* width: 70%; */
   flex: 1;
   word-wrap: break-word;
