@@ -1,12 +1,13 @@
 type book = {
+  id: number;
   PAGE_NO?: string;
   TOTAL_COUNT?: string;
   TITLE?: string;
   VOL?: string;
   SERIES_TITLE?: string;
-  SERIES_NO?: string;	
-  AUTHOR?: string;	
-  EA_ISBN?: string;	
+  SERIES_NO?: string;
+  AUTHOR?: string;
+  EA_ISBN?: string;
   EA_ADD_CODE?: string;
   SET_ISBN?: string;
   SET_ADD_CODE?: string;
@@ -31,5 +32,5 @@ type book = {
   PUBLISHER_URL?: string;
   INPUT_DATE?: string;
   UPDATE_DATE?: string;
-}
-export type BookList = book[]
+};
+export type bookType = book[];
