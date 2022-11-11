@@ -46,8 +46,14 @@ const BookList = () => {
 };
 
 export default BookList;
+const BookListWrap = styled.ul`
+  position: relative;
+  width: 412px;
+  filter: drop-shadow(0px 10px 16px rgba(0, 0, 0, 0.12));
+`;
 
 const BookBtn = styled.button`
+  padding-top: 35px;
   background-color: transparent;
   border: 0;
   cursor: pointer;
@@ -77,7 +83,7 @@ const BookItem = styled.li`
     }
     100% {
       top: calc(50% - 73px);
-      left: -490px;
+      left: -485px;
       transform: translateY(-50%);
       transform: scale(2.9);
     }
@@ -122,8 +128,4 @@ const BookItem = styled.li`
     left: calc(40px * 9);
     z-index: 10;
   }
-`;
-const BookListWrap = styled.ul`
-  position: relative;
-  width: 412px;
 `;
