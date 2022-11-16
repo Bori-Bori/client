@@ -28,7 +28,6 @@ export default InputComment;
 
 const InputWrapper = styled.div`
   display: flex;
-  width: 100%;
   min-height: 110px;
   padding: 20px;
   border: 1px solid ${(props) => props.theme.colors.grey4};
@@ -53,8 +52,8 @@ const InputButtonWrapper = styled.div`
 
 const InputButton = styled(CommonButton)`
   position: absolute;
-  right: 20px;
-  bottom: 20px;
+  right: 0px;
+  bottom: 0px;
   padding: 12px 16px;
   background-color: ${(props) => props.theme.colors.primary};
   border: none;

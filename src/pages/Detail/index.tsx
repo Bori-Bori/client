@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import BookInfo from './components/BookInfo';
-import Comment from './components/Comment';
-import InputCommentWithPage from './components/InputCommentWithPage';
 import SortingComment from './components/SortingComment';
+import SlideButton from './components/SlideButton';
+import SlideRange from './components/SlideRange';
+import InputCommentWithPage from './components/InputCommentWithPage';
+import Comment from './components/Comment';
+import ToggleInputComment from './components/ToggleInputComment';
 
 const Detail = () => {
-  const onClick = () => {
-    console.log('this is comment test');
+  const [moreIntro, setMoreIntro] = useState(false);
+
+  const toggleIntro = () => {
+    moreIntro ? setMoreIntro(false) : setMoreIntro(true);
   };
 
   return (
@@ -17,8 +22,7 @@ const Detail = () => {
         <BookInfo />
         <SortingComment />
         <Comment />
-        {/* <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" /> */}
-        <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
+        <ToggleInputComment />
       </ContentContainer>
     </MainWrapper>
   );
@@ -27,10 +31,9 @@ const Detail = () => {
 export default Detail;
 
 const MainWrapper = styled.div`
-  overflow: hidden;
-  min-height: 100vh;
+  width: 100%;
   position: relative;
-  padding-bottom: 200px;
+  overflow-x: hidden;
   &::before {
     content: '';
     position: absolute;
@@ -47,12 +50,14 @@ const MainWrapper = styled.div`
     -o-filter: blur(10px);
     -ms-filter: blur(10px);
     filter: blur(10px);
-    z-index: -10;
+    z-index: -1;
+    content: '';
+    height: 435px;
   }
   &::after {
     content: '';
     position: absolute;
-    top: 430px;
+    top: 420px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -66,5 +71,4 @@ const ContentContainer = styled.div`
   width: 1024px;
   margin: 0 auto;
   padding: 24px;
-  box-sizing: content-box;
 `;

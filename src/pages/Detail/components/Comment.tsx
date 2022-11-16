@@ -38,6 +38,7 @@ type Comment = {
   writer: string;
   replyNum: string;
 };
+
 const Comment = () => {
   const [curSortState, setCurSortState] = useRecoilState(sortCommentAtom);
   const { data, error, isLoading } = useQuery(

@@ -104,7 +104,7 @@ const RangeWrapper = styled.div`
 const BubbleIcon = styled(BubbleBox)<PageValue>`
   position: absolute;
   top: -70%;
-  left: ${(props) => props.offset + 0.5}%;
+  left: ${(props) => props.offset - 0.5}%;
 
   &::before {
     content: '';

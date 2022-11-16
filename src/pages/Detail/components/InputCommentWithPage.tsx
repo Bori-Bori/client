@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import InputComment from './InputComment';
-import CommonButton from '../../../components/CommonButton';
 import InputPageButton from './InputPageButton';
 
 type InputCommentProps = {
