@@ -5,6 +5,8 @@ import { useRecoilValue } from 'recoil';
 import sortCommentAtom from '../../../recoil/sortComment';
 import ToggleButton from './ToggleButton';
 import BubbleBox from './BubbleBox';
+import InputComment from './InputComment';
+import ReplyComment from './ReplyComment';
 
 type CommentItemProps = {
   text: string;
@@ -20,30 +22,33 @@ const CommentItem = ({ text, writer, publishDate, replyNum }: CommentItemProps) 
     setCommentIsOpened((prev) => !prev);
   };
   return (
-    <CommnetItemWrapper>
-      {curSortState && (
-        <BubbleWrapper>
-          <BubbleIcon className="commentPageBubble" text="122" />
-        </BubbleWrapper>
-      )}
+    <article>
+      <CommnetItemWrapper>
+        {curSortState && (
+          <BubbleWrapper>
+            <BubbleIcon className="commentPageBubble" text="122" />
+          </BubbleWrapper>
+        )}
 
-      <CommentTextWrapper>
-        <div>
-          <UserImage />
-        </div>
-        <CommentInfo>
-          <span>{writer}</span>
-          <span>{publishDate}</span>
-        </CommentInfo>
-        <CommentText>{text}</CommentText>
-        <ToggleButton
-          className="toggleButton"
-          onClick={commentOpenHandler}
-          isOpened={commentIsOpened}
-          replyNumber={replyNum}
-        />
-      </CommentTextWrapper>
-    </CommnetItemWrapper>
+        <CommentTextWrapper>
+          <div>
+            <UserImage />
+          </div>
+          <CommentInfo>
+            <span>{writer}</span>
+            <span>{publishDate}</span>
+          </CommentInfo>
+          <CommentText>{text}</CommentText>
+          <ToggleButton
+            className="toggleButton"
+            onClick={commentOpenHandler}
+            isOpened={commentIsOpened}
+            replyNumber={replyNum}
+          />
+        </CommentTextWrapper>
+      </CommnetItemWrapper>
+      {commentIsOpened && <ReplyComment />}
+    </article>
   );
 };
 

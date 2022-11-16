@@ -47,7 +47,8 @@ const InputArea = styled.textarea`
 `;
 
 const InputButtonWrapper = styled.div`
-  width: 100px;
+  position: relative;
+  width: 140px;
 `;
 
 const InputButton = styled(CommonButton)`

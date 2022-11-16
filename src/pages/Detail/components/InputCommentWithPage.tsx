@@ -32,7 +32,7 @@ const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentP
 export default InputCommentWithPage;
 
 const InputCommentWrapper = styled(InputComment)`
-  display: flex;
+  /* display: flex; */
 `;
 
 const InputPageWrapper = styled.div`

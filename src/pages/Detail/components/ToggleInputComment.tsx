@@ -19,7 +19,7 @@ const ToggleInputComment = () => {
         {inputIsOpen ? <img src={closeIcon} /> : <img src={upIcon} />}
       </InputTitle>
       {inputIsOpen && (
-        <StyledInputComment
+        <InputCommentWithPage
           className="input"
           onClick={() => {
             console.log('sa');
@@ -43,6 +43,7 @@ const InputWrapper = styled.article`
   z-index: 100;
   background-color: ${(props) => props.theme.colors.white};
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.08);
+  padding: 17px 24px;
 `;
 
 const InputTitle = styled.div`
@@ -51,10 +52,6 @@ const InputTitle = styled.div`
   align-items: center;
   font-size: ${(props) => props.theme.fontSize.body01};
   font-weight: ${(props) => props.theme.fontWeight.bold};
-  padding: 17px 24px;
   box-sizing: border-box;
-`;
-
-const StyledInputComment = styled(InputCommentWithPage)`
-  margin: 0 24px 24px;
+  margin-bottom: 12px;
 `;
