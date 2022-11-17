@@ -1,19 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
 import InputCommentWithPage from './InputCommentWithPage';
+import commentInputHeight from '../../../recoil/commentInputHeight';
 
 import upIcon from '../../../assets/icons/up-bk-24.png';
 import closeIcon from '../../../assets/icons/close-bk-24.png';
 
 const ToggleInputComment = () => {
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
+  const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
+
+  useEffect(() => {
+    setInputHeight(inputWrapperRef.current!.clientHeight);
+  }, []);
 
   const ToggleInputHandler = () => {
     setInputIsOpen((prev) => !prev);
+    setTimeout(() => {
+      setInputHeight(inputWrapperRef.current!.clientHeight);
+    }, 1);
   };
+
   return (
-    <InputWrapper>
+    <InputWrapper ref={inputWrapperRef}>
       <InputTitle onClick={ToggleInputHandler}>
         <span>댓글쓰기</span>
         {inputIsOpen ? <img src={closeIcon} /> : <img src={upIcon} />}

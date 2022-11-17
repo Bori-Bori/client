@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
 import sortCommentAtom from '../../../recoil/sortComment';
 import { getComments } from '../../../apis/comment';
-
+import commentInputHeight from '../../../recoil/commentInputHeight';
 import CommentItem from './CommentItem';
-import { idText } from 'typescript';
 
 type GetCommentsProps = {
   results: CommentsProps[];
 };
+
 type CommentsProps = {
   items: [
     {
@@ -39,7 +39,16 @@ type Comment = {
   replyNum: string;
 };
 
+type marginProps = {
+  margin: number;
+};
+
 const Comment = () => {
+  const inputWrapperHeight = useRecoilValue(commentInputHeight);
+  useEffect(() => {
+    console.log(inputWrapperHeight);
+  }, [inputWrapperHeight]);
+
   const [curSortState, setCurSortState] = useRecoilState(sortCommentAtom);
   const { data, error, isLoading } = useQuery(
     ['comments', curSortState],
@@ -49,9 +58,8 @@ const Comment = () => {
       keepPreviousData: true,
     },
   );
-
   return (
-    <CommentContainer>
+    <CommentContainer margin={inputWrapperHeight}>
       <div>
         {isLoading
           ? 'loading...'
@@ -71,6 +79,7 @@ const Comment = () => {
 
 export default Comment;
 
-const CommentContainer = styled.article`
+const CommentContainer = styled.article<marginProps>`
   width: 100%;
+  margin-bottom: ${(props) => props.margin}px;
 `;

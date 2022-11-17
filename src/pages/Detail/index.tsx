@@ -1,20 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import BookInfo from './components/BookInfo';
 import SortingComment from './components/SortingComment';
-import SlideButton from './components/SlideButton';
-import SlideRange from './components/SlideRange';
-import InputCommentWithPage from './components/InputCommentWithPage';
 import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
 
 const Detail = () => {
-  const [moreIntro, setMoreIntro] = useState(false);
-
-  const toggleIntro = () => {
-    moreIntro ? setMoreIntro(false) : setMoreIntro(true);
-  };
 
   return (
     <MainWrapper>
@@ -22,7 +14,7 @@ const Detail = () => {
         <BookInfo />
         <SortingComment />
         <Comment />
-        <ToggleInputComment />
+        <ToggleInputComment  />
       </ContentContainer>
     </MainWrapper>
   );
