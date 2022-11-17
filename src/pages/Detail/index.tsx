@@ -7,14 +7,13 @@ import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
 
 const Detail = () => {
-
   return (
     <MainWrapper>
       <ContentContainer>
         <BookInfo />
         <SortingComment />
         <Comment />
-        <ToggleInputComment  />
+        <ToggleInputComment />
       </ContentContainer>
     </MainWrapper>
   );
