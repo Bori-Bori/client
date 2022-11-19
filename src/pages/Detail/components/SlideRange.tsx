@@ -29,11 +29,11 @@ const SlideRange = () => {
   useEffect(() => {
     setTimeout(() => {
       rangeInputWidth = rangeInputRef.current!.clientWidth;
-      setBubbleIconOffset((parseInt(curPage) / rangeInputWidth) * 92);
+      setBubbleIconOffset((parseInt(curPage) / rangeInputWidth) * 83);
     }, 1);
   }, [rangeInputRef, rangeInputWidth, curPage]);
 
-  //range track
+  
   const onChangeRangeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
     enteredValue = e.target.value.replace(/[^0-9.]/g, '');
     if (enteredValue === '') {
@@ -108,7 +108,7 @@ const RangeWrapper = styled.div`
 const BubbleIcon = styled(BubbleBox)<PageValue>`
   position: absolute;
   top: -70%;
-  left: ${(props) => props.offset + 0.5}%;
+  left: ${(props) => props.offset + 2.5}%;
 
   &::before {
     content: '';
@@ -144,6 +144,7 @@ const RangeBar = styled.input<PassedValue>`
     border-radius: 50%;
     cursor: pointer;
   }
+  margin: 0 20px;
 `;
 
 const PrevButtonImg = styled.img`

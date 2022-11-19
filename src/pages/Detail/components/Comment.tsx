@@ -45,10 +45,6 @@ type marginProps = {
 
 const Comment = () => {
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
-  useEffect(() => {
-    console.log(inputWrapperHeight);
-  }, [inputWrapperHeight]);
-
   const [curSortState, setCurSortState] = useRecoilState(sortCommentAtom);
   const { data, error, isLoading } = useQuery(
     ['comments', curSortState],
