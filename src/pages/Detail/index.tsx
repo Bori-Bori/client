@@ -2,25 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 import BookInfo from './components/BookInfo';
-import SlideButton from './components/SlideButton';
+import SortingComment from './components/SortingComment';
 import Comment from './components/Comment';
-import InputComment from './components/InputComment';
-import InputCommentWithPage from './components/InputCommentWithPage';
-import Login from '../Login';
+import ToggleInputComment from './components/ToggleInputComment';
 
 const Detail = () => {
-  const onClick = () => {
-    console.log('test');
-  };
   return (
     <MainWrapper>
       <ContentContainer>
         <BookInfo />
-        <SlideButton />
+        <SortingComment />
         <Comment />
-        <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
-        <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
-        <Login />
+        <ToggleInputComment />
       </ContentContainer>
     </MainWrapper>
   );
@@ -29,10 +22,9 @@ const Detail = () => {
 export default Detail;
 
 const MainWrapper = styled.div`
-  /* width: 100%; */
-  overflow: hidden;
-  min-height: 100vh;
+  width: 100%;
   position: relative;
+  overflow-x: hidden;
   &::before {
     content: '';
     position: absolute;
@@ -49,12 +41,14 @@ const MainWrapper = styled.div`
     -o-filter: blur(10px);
     -ms-filter: blur(10px);
     filter: blur(10px);
-    z-index: -10;
+    z-index: -1;
+    content: '';
+    height: 435px;
   }
   &::after {
     content: '';
     position: absolute;
-    top: 430px;
+    top: 420px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -64,6 +58,7 @@ const MainWrapper = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  position: relative;
   width: 1024px;
   margin: 0 auto;
   padding: 24px;
