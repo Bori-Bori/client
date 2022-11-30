@@ -33,7 +33,6 @@ const SlideRange = () => {
     }, 1);
   }, [rangeInputRef, rangeInputWidth, curPage]);
 
-  
   const onChangeRangeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
     enteredValue = e.target.value.replace(/[^0-9.]/g, '');
     if (enteredValue === '') {

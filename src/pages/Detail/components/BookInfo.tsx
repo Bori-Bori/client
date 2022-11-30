@@ -74,7 +74,7 @@ const BookInfoContainer = styled.div`
   display: flex;
   & > img {
     position: relative;
-    top: 60px;
+    top: 20px;
     width: 266px;
     height: 396px;
     margin-right: 40px;
@@ -85,7 +85,7 @@ const BookInfoContainer = styled.div`
 const BookInfoContent = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
   margin-bottom: 40px;
   color: ${(props) => props.theme.colors.white};
   font-weight: ${(props) => props.theme.fontWeight.regular};
@@ -130,7 +130,7 @@ const BookInfoRow3 = styled.div`
 `;
 
 const BookIntro = styled.p<MoreIntro>`
-  padding-top: 96px;
+  padding-top: 80px;
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.body02};
   font-weight: ${(props) => props.theme.fontWeight.regular};
