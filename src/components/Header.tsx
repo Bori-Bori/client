@@ -46,14 +46,11 @@ const Header = () => {
 export default Header;
 
 const Container = styled.div`
-  max-width: 1024px;
-  min-width: 360px;
-  margin: 0 auto;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px;
+  padding: 24.2px 17px;
 `;
 const LogoWrap = styled.div`
   display: flex;

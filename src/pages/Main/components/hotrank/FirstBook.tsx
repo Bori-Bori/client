@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import bookmark_default from '../../../assets/icons/bookmark-default-24-bg.png';
-import bookmark_select from '../../../assets/icons/bookmark-select-24-bg.png';
-import comment from '../../../assets/icons/common_comment_gr_24.png';
-import user from '../../../assets/icons/common_user_gr_24.png';
-import { bookData } from './bookData';
-import { countState } from './../../../recoil/slide';
+import bookmark_default from '../../../../assets/icons/bookmark-default-24-bg.png';
+import bookmark_select from '../../../../assets/icons/bookmark-select-24-bg.png';
+import comment from '../../../../assets/icons/common_comment_gr_24.png';
+import user from '../../../../assets/icons/common_user_gr_24.png';
+import { bookData } from '../bookData';
+import { countState } from '../../../../recoil/slide';
 import { useRecoilValue } from 'recoil';
+
 const FirstBook = () => {
   const [bookMark, setBookMark] = useState(false);
   const count = useRecoilValue(countState);
+
   return (
     <FirstBookWrap>
       <FirstBookImgWrap>
         <BookImg src={bookData[count].TITLE_URL} alt="도서이미지" />
       </FirstBookImgWrap>
-
       <BookTextWrap>
         <div>
           <Title>🔥 이번주 HOT 도서</Title>
@@ -58,20 +59,22 @@ const FirstBook = () => {
 export default FirstBook;
 const FirstBookWrap = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 60px;
-  position: relative;
+  width: 58%;
+  position: absolute;
+  top: 3.4%;
+  left: 3.2%;
+`;
+const FirstBookImgWrap = styled.div`
+  width: 36%;
+  overflow: hidden;
+  filter: drop-shadow(-30px 30px 30px rgba(74, 45, 0, 0.24));
 `;
 const BookTextWrap = styled.div`
-  > * {
-    width: 240px;
-  }
-  height: 420px;
-  padding-left: 364px;
-  padding-top: 92px;
+  width: 54%;
 `;
 const BookTitleWrap = styled.div`
-  position: relative;
   margin-bottom: 8px;
 `;
 const BookNumber = styled.p`
@@ -130,19 +133,10 @@ const Title = styled.h1`
 
 const Line = styled.div`
   width: 1px;
-  height: 40px;
+  height: 82px;
   background-color: ${(props) => props.theme.colors.secondary1};
   margin: 20px 0;
   margin-left: 10px;
 `;
 
-const FirstBookImgWrap = styled.div`
-  width: 264px;
-  height: 420px;
-  position: absolute;
-  top: 65px;
-  left: 60px;
-  overflow: hidden;
-  filter: drop-shadow(-30px 30px 30px rgba(74, 45, 0, 0.24));
-`;
 const BookmarkBtn = styled.button``;
