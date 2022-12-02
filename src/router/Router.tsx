@@ -9,7 +9,7 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<Main />} />
-      <Route path="/detail" element={<Detail />} />
+      <Route path="/detail/:id" element={<Detail />} />
       <Route path="/login/kakao/oauth" element={<KakaoOauth />} />
     </Routes>
   );

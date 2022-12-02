@@ -1,15 +1,34 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+
 import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../components/CommonButton';
+import boardState from '../../../recoil/board';
 
 type MoreIntro = {
   moreIntro: boolean;
 };
 
+type BookState = {
+  title: string;
+  author: string;
+  pubDate: string;
+  category1: string;
+  category2: string;
+  category3: string;
+  description: string;
+  publisher: string;
+  imagePath: string;
+};
+
 const BookInfo = () => {
+  const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
+    useRecoilValue(boardState);
+  const eidtPubDate = pubDate?.replaceAll('-', '.');
+  const editImagePath = imagePath?.replace('coversum', 'cover500');
   const [moreIntro, setMoreIntro] = useState(false);
 
   const toggleIntro = () => {
@@ -18,44 +37,34 @@ const BookInfo = () => {
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
-        <img src="http://image.yes24.com/goods/113737324/XL" />
+        <img src={editImagePath} alt={title} />
         <BookInfoContent>
           <BookInfoRow1>
-            <h2>마지막 이야기 전달자</h2>
-            <span>#국내 #단편소설</span>
+            <h2>{title}</h2>
+            {category1 && <span>#{category1} </span>}
+            {category2 && <span>#{category2} </span>}
+            {category3 && <span>#{category3} </span>}
           </BookInfoRow1>
           <BookInfoRow2>
-            <h3>도나 바르바 이게라</h3>
-            <span>위즈덤 하우스 2022.10.05</span>
+            {author && <h3>{author}</h3>}
+            {publisher && <span>{publisher} </span>}
+            {eidtPubDate && <span>{eidtPubDate} </span>}
           </BookInfoRow2>
           <BookInfoRow3>
             <span>
-              <img src={comment} />
+              <img src={comment} alt="댓글 개수" />
               12
             </span>
             <span>
-              <img src={user} />3
+              <img src={user} alt="댓글 쓴 사람" />3
             </span>
             <span>
-              <img src={bookmark} />
+              <img src={bookmark} alt="북마크" />
             </span>
           </BookInfoRow3>
         </BookInfoContent>
       </BookInfoContainer>
-      <BookIntro moreIntro={moreIntro}>
-        『기억 전달자』를 잇는 또 하나의 SF 명작 탄생! 지구를 기억하는 마지막 이야기 전달자의 여정 2022년은 뉴베리상이
-        제정된 지 100주년이 되는 해이다. 뉴베리상은 미국의 가장 권위 있는 아동 문학상으로, 1922년부터 미국도서관협회가
-        매해 가장 뛰어난 작품에 수여해 왔다. 올해 초 뉴베리 대상작으로 『마지막 이야기 전달자』가 호명되는 순간 모두가
-        깜짝 놀랐다. 2021년 한국 문화에 뿌리를 둔 『호랑이를 덫에 가두면』에 이어 다시 한번 라틴 문화에 뿌리를 둔 ‘도나
-        바르바 이게라’의 『마지막 이야기 전달자』에 대상을 수여한 것이다. 이 책은 미국도서관협회가 가장 뛰어난 라틴
-        문학에 수여하는 ‘푸라 벨프레 대상’을 또 한 번 거머쥐며 2관왕의 영광을 누렸다. 이 책은1994년 뉴베리 대상작 『기억
-        전달자』를 잇는 SF 명작이라는 점에서도 의미가 깊다. 2061년 지구와 핼리 혜성의 충돌 뒤 세이건이라는 행성에 도착한
-        마지막 이야기 전달자 페트라의 여정을 통해 무엇이 우리를 인간이게 하는지를 탐구한다. 페트라는 콜렉티브가 차이가
-        없는 평등한 사회를 만들겠다는 명목 아래 과거의 모든 기억을 지운 세상에서 여전히 지구를 기억하며 눈을 뜬다.
-        자신이 누군인지조차 잊어버린 채 임무를 위해서만 움직이는 사람들 속에서 페트라는 사랑과 연민을 느끼는 진짜
-        인간이길 포기하지 않는다. 독자들은 낯선 행성에서 자신의 이야기를 이어 나가는 ‘마지막 이야기 전달자’ 페트라의
-        여정을 응원하며 세상을 구하는 놀라운 이야기의 힘에 매료될 것이다.
-      </BookIntro>
+      <BookIntro moreIntro={moreIntro}>{description}</BookIntro>
       <ToggleIntroButton className="moreIntroButton" onClick={toggleIntro}>
         {moreIntro ? '숨기기' : '더보기'}{' '}
       </ToggleIntroButton>
@@ -74,7 +83,7 @@ const BookInfoContainer = styled.div`
   display: flex;
   & > img {
     position: relative;
-    top: 20px;
+    top: 10px;
     width: 266px;
     height: 396px;
     margin-right: 40px;
