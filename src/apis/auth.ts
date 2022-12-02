@@ -5,5 +5,5 @@ type Code = {
 };
 
 export const KakaoLogin = (code: Code) => {
-  return authAxiosInstance.post(`/api/login/kakao?code=${code}`);
+  return authAxiosInstance.post(`/api/login/kakao?code=${code.code}`);
 };
