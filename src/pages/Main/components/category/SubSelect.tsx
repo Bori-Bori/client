@@ -1,41 +1,60 @@
 import React from 'react';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { subCategoryState } from '../../../../recoil/category';
 
-const SubSelect = () => {
+// 리코일
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { mainCategoryState, subCategoryState, middleCategoryState } from '../../../../recoil/category';
+
+// 카테고리목록
+import { middlecategory, subcategory } from '../../../../types/category';
+
+const SubSelect = (middleCategoryList: middlecategory[]) => {
+  const [middleCategory, setMiddleCategory] = useRecoilState(middleCategoryState);
   const setSubCategory = useSetRecoilState(subCategoryState);
-  const subClickBtn = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSubCategory(e.target.id);
-  };
+  const subCategorylist = middleCategoryList?.find((middle) => middle.name === middleCategory)?.subcategories;
+
   return (
-    <Container>
-      <li>
-        <SubInput type="radio" name="subselect" id="🔍 추리,범죄" defaultChecked onChange={subClickBtn} />
-        <SubLabel htmlFor="🔍 추리,범죄">🔍 추리,범죄</SubLabel>
-      </li>
-      <li>
-        <SubInput type="radio" name="subselect" id="💓 로맨스" onChange={subClickBtn} />
-        <SubLabel htmlFor="💓 로맨스">💓 로맨스</SubLabel>
-      </li>
-      <li>
-        <SubInput type="radio" name="subselect" id="🥋 판타지,무협" onChange={subClickBtn} />
-        <SubLabel htmlFor="🥋 판타지,무협">🥋 판타지,무협</SubLabel>
-      </li>
-      <li>
-        <SubInput type="radio" name="subselect" id="🤖 만화,코믹" onChange={subClickBtn} />
-        <SubLabel htmlFor="🤖 만화,코믹">🤖 만화,코믹</SubLabel>
-      </li>
-      <li>
-        <SubInput type="radio" name="subselect" id="📺 고전" onChange={subClickBtn} />
-        <SubLabel htmlFor="📺 고전">📺 고전</SubLabel>
-      </li>
-    </Container>
+    <SubSelectWrap>
+      <>
+        {(subCategorylist as subcategory[]).map((subSelect) => {
+          return (
+            subSelect.subCategoryId === 1 && (
+              <li key={subSelect.subCategoryId}>
+                <SubInput
+                  type="radio"
+                  name="subselect"
+                  id={subSelect.name}
+                  defaultChecked
+                  onChange={() => setSubCategory(subSelect.name)}
+                />
+                <SubLabel htmlFor={subSelect.name}>{subSelect.name}</SubLabel>
+              </li>
+            )
+          );
+        })}
+        {(subCategorylist as subcategory[]).map((subSelect) => {
+          return (
+            subSelect.subCategoryId > 1 && (
+              <li key={subSelect.subCategoryId}>
+                <SubInput
+                  type="radio"
+                  name="subselect"
+                  id={subSelect.name}
+                  onChange={() => setSubCategory(subSelect.name)}
+                />
+                <SubLabel htmlFor={subSelect.name}>{subSelect.name}</SubLabel>
+              </li>
+            )
+          );
+        })}
+      </>
+    </SubSelectWrap>
   );
 };
 
 export default SubSelect;
-const Container = styled.ul`
+
+const SubSelectWrap = styled.ul`
   display: flex;
   gap: 12px;
   width: 100%;

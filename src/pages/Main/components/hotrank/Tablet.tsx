@@ -30,10 +30,10 @@ const Tablet = () => {
 
   return (
     <ResponsiveWrap>
-      <LeftImg key={bookData[lastCount]?.TITLE}>
+      <LeftImg key={bookData[lastCount]?.id}>
         <img src={bookData[lastCount]?.TITLE_URL} alt={bookData[lastCount]?.TITLE} />
       </LeftImg>
-      <li key={bookData[count]?.TITLE}>
+      <li key={bookData[count]?.id}>
         <CenterBook>
           <CenterBookWrap>
             <CenterBookImg>
@@ -75,7 +75,7 @@ const Tablet = () => {
           </CenterBookWrap>
         </CenterBook>
       </li>
-      <RightImg key={bookData[count + 1]?.TITLE}>
+      <RightImg key={bookData[count + 1]?.id}>
         <img src={bookData[count + 1]?.TITLE_URL} alt={bookData[count + 1]?.TITLE} />
       </RightImg>
     </ResponsiveWrap>

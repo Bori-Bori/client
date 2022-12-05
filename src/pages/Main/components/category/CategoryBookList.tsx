@@ -1,24 +1,45 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { categoryData } from './categoryData';
 
 // 이미지
 import comment from '../../../../assets/icons/comment-gr-16.png';
 import user from '../../../../assets/icons/user-gr-16.png';
 import bookmark_default from '../../../../assets/icons/bookmark-default-24.png';
 import bookmark_select from '../../../../assets/icons/bookmark-select-24.png';
+import { useQuery } from '@tanstack/react-query';
+import { getBooklist } from './../../../../apis/category';
+import { useRecoilValue } from 'recoil';
+import { mainCategoryState, subCategoryState, middleCategoryState } from './../../../../recoil/category';
+import { Link } from 'react-router-dom';
 
 const CategoryBookList = () => {
   const [bookMark, setBookMark] = useState(false);
+  const category1 = useRecoilValue(mainCategoryState);
+  const category2 = useRecoilValue(middleCategoryState);
+  const category3 = useRecoilValue(subCategoryState);
 
+  const size = 10;
+  const page = 0;
+
+  interface IbookList {
+    isbn: number;
+    title: string;
+    imagePath: string;
+    author: string;
+    commentCount: number;
+  }
+  const data = useQuery(['bookList', category1, category2, category3, size, page], () =>
+    getBooklist(category1, category2, category3, size, page),
+  );
+  const bookList: IbookList[] = data.data?.content?.items;
   return (
     <CategoryWrap>
-      {categoryData.map((value) => {
+      {bookList?.map((value) => {
         return (
-          <li key={value?.TITLE}>
-            <div>
+          <li key={value?.title}>
+            <Link to={`/detail/${value?.isbn}`}>
               <BookImgWrap>
-                <BookImg src={value?.TITLE_URL} alt={value?.TITLE} />
+                <BookImg src={value?.imagePath} alt={value?.title} />
                 <BookBg>
                   <button
                     onClick={() => {
@@ -30,12 +51,12 @@ const CategoryBookList = () => {
                 </BookBg>
               </BookImgWrap>
               <BookWrap>
-                <BookTitle>{value?.TITLE}</BookTitle>
-                <BookAuthor>{value?.AUTHOR}</BookAuthor>
+                <BookTitle>{value?.title}</BookTitle>
+                <BookAuthor>{value?.author}</BookAuthor>
                 <BookContent>
                   <li>
                     <img src={comment} alt="댓글아이콘" />
-                    <span> 12</span>
+                    <span> {value?.commentCount}</span>
                   </li>
                   <li>
                     <img src={user} alt="유저아이콘" />
@@ -43,7 +64,7 @@ const CategoryBookList = () => {
                   </li>
                 </BookContent>
               </BookWrap>
-            </div>
+            </Link>
           </li>
         );
       })}
@@ -86,6 +107,7 @@ const BookBg = styled.div`
 `;
 
 const BookImgWrap = styled.div`
+  height: 260px;
   margin-bottom: 14px;
   filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
   border-radius: 8px;
@@ -113,7 +135,9 @@ const BookWrap = styled.div`
 
 const BookTitle = styled.h3`
   width: 100%;
-  text-align: center;
+  @media screen and (max-width: 768px) {
+    text-align: center;
+  }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -125,7 +149,12 @@ const BookTitle = styled.h3`
 
 const BookAuthor = styled.p`
   width: 100%;
-  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media screen and (max-width: 768px) {
+    text-align: center;
+  }
   line-height: 1.375rem;
   font-weight: ${(props) => props.theme.fontWeight.regular};
   font-size: ${(props) => props.theme.fontSize.body02};
@@ -137,9 +166,10 @@ const BookAuthor = styled.p`
 const BookContent = styled.ul`
   display: flex;
   gap: 19px;
-  align-items: center;
+
   @media screen and (max-width: 768px) {
     justify-content: center;
+    text-align: center;
   }
   li {
     display: flex;
