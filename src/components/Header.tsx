@@ -1,35 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
 
 import logo from '../assets/icons/logo-horizon-26.png';
 import search from '../assets/icons/search-yl-20.png';
 
 import { useNavigate } from 'react-router-dom';
+import showModal from '../recoil/showModal';
 
 const Header = () => {
   const navigate = useNavigate();
+  const setShowLoginModal = useSetRecoilState(showModal);
+  const onClickLogin = () => {
+    setShowLoginModal(true);
+  };
+  const onClickHome = () => {
+    navigate('/');
+  };
+  const onClickSearch = () => {
+    navigate('/search');
+  };
   return (
     <Container>
       <LogoWrap>
-        <img
-          onClick={() => {
-            navigate('/');
-          }}
-          src={logo}
-          alt="로고이미지"
-        />
+        <img onClick={onClickHome} src={logo} alt="로고이미지" />
         <Line />
         <HeaderTitle>책 읽고 오순도순 이야기하는 공간</HeaderTitle>
       </LogoWrap>
       <RightWrap>
         <SearchWrap>
-          <img
-            onClick={() => {
-              navigate('/search');
-            }}
-            src={search}
-            alt="검색이미지"
-          />
+          <img onClick={onClickSearch} src={search} alt="검색이미지" />
           <SearchTipWrap>
             <Triangle>
               <div />
@@ -37,7 +37,7 @@ const Header = () => {
             <SearchTip>빠르게 찾아보세요</SearchTip>
           </SearchTipWrap>
         </SearchWrap>
-        <LoginBtn>로그인</LoginBtn>
+        <LoginBtn onClick={onClickLogin}>로그인</LoginBtn>
       </RightWrap>
     </Container>
   );

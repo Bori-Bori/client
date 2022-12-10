@@ -9,11 +9,12 @@ type ToggleProps = {
   className: string;
   onClick: () => void;
   isOpened: boolean;
+  replyNumber: string;
 };
-const ToggleButton = ({ className, onClick, isOpened }: ToggleProps) => {
+const ToggleButton = ({ className, onClick, isOpened, replyNumber }: ToggleProps) => {
   return (
     <ToggleBtnWrapper className={className} onClick={onClick}>
-      + 12
+      + {replyNumber}
       <img src={isOpened ? up : down} />
     </ToggleBtnWrapper>
   );
@@ -26,6 +27,7 @@ const ToggleBtnWrapper = styled(CommonButton)`
   font-weight: ${(props) => props.theme.fontWeight.bold};
   font-size: ${(props) => props.theme.fontSize.body02};
   border: none;
+  background-color: ${(props) => props.theme.colors.grey5};
   > img {
     height: 12px;
     margin-left: 6px;

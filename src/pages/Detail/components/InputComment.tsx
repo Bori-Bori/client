@@ -5,16 +5,16 @@ import CommonButton from '../../../components/CommonButton';
 
 type InputProps = {
   className: string;
-  children?: ReactNode;
-  onClick: () => void;
   placeholder: string;
+  onClick: () => void;
+  children?: ReactNode;
 };
 
 const InputComment = ({ className, placeholder, onClick, children }: InputProps) => {
   return (
     <InputWrapper className={className}>
       {children}
-      <InputBox placeholder={placeholder} />
+      <InputArea placeholder={placeholder} />
       <InputButtonWrapper>
         <InputButton className={className} onClick={onClick}>
           댓글등록
@@ -28,7 +28,6 @@ export default InputComment;
 
 const InputWrapper = styled.div`
   display: flex;
-  width: 100%;
   min-height: 110px;
   padding: 20px;
   border: 1px solid ${(props) => props.theme.colors.grey4};
@@ -37,10 +36,9 @@ const InputWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-const InputBox = styled.textarea`
+const InputArea = styled.textarea`
   flex: 1;
   display: block;
-  /* width: 85%; */
   min-height: 70px;
   resize: none;
   outline: none;
@@ -49,13 +47,14 @@ const InputBox = styled.textarea`
 `;
 
 const InputButtonWrapper = styled.div`
-  width: 100px;
+  position: relative;
+  width: 140px;
 `;
 
 const InputButton = styled(CommonButton)`
   position: absolute;
-  right: 20px;
-  bottom: 20px;
+  right: 0px;
+  bottom: 0px;
   padding: 12px 16px;
   background-color: ${(props) => props.theme.colors.primary};
   border: none;

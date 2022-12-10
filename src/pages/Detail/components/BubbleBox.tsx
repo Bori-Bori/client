@@ -3,10 +3,11 @@ import styled from 'styled-components';
 
 type BubbleProps = {
   text: string;
+  className: string;
 };
 
-const BubbleBox = ({ text }: BubbleProps) => {
-  return <BubbleContainer>1p</BubbleContainer>;
+const BubbleBox = ({ text, className }: BubbleProps) => {
+  return <BubbleContainer className={className}>{text}</BubbleContainer>;
 };
 
 export default BubbleBox;
@@ -21,14 +22,4 @@ const BubbleContainer = styled.div`
   font-size: ${(props) => props.theme.fontSize.badge01};
   line-height: ${(props) => props.theme.lineHeight.lh20};
   background-color: ${(props) => props.theme.colors.secondary2};
-  &::after {
-    content: '';
-    position: absolute;
-    border-top: 8px solid transparent;
-    border-left: 12px solid ${(props) => props.theme.colors.secondary2};
-    border-right: 0px solid transparent;
-    border-bottom: 5px solid transparent;
-    top: 8px;
-    left: 95%;
-  }
 `;
