@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 // 이미지
 import comment from '../../../../assets/icons/comment-gr-16.png';
 import user from '../../../../assets/icons/user-gr-16.png';
-import bookmark_default from '../../../../assets/icons/bookmark-default-24.png';
-import bookmark_select from '../../../../assets/icons/bookmark-select-24.png';
 import { useQuery } from '@tanstack/react-query';
 import { getBooklist } from './../../../../apis/category';
 import { useRecoilValue } from 'recoil';
@@ -13,7 +11,6 @@ import { mainCategoryState, subCategoryState, middleCategoryState } from './../.
 import { Link } from 'react-router-dom';
 
 const CategoryBookList = () => {
-  const [bookMark, setBookMark] = useState(false);
   const category1 = useRecoilValue(mainCategoryState);
   const category2 = useRecoilValue(middleCategoryState);
   const category3 = useRecoilValue(subCategoryState);
@@ -40,15 +37,6 @@ const CategoryBookList = () => {
             <Link to={`/detail/${value?.isbn}`}>
               <BookImgWrap>
                 <BookImg src={value?.imagePath} alt={value?.title} />
-                <BookBg>
-                  <button
-                    onClick={() => {
-                      setBookMark(!bookMark);
-                    }}
-                  >
-                    <img src={bookMark ? bookmark_select : bookmark_default} alt="북마크" />
-                  </button>
-                </BookBg>
               </BookImgWrap>
               <BookWrap>
                 <BookTitle>{value?.title}</BookTitle>
@@ -94,6 +82,7 @@ const CategoryWrap = styled.ul`
     margin-left: 3.125%;
   }
 `;
+
 const BookBg = styled.div`
   display: none;
   padding: 14px 16px;
@@ -107,7 +96,13 @@ const BookBg = styled.div`
 `;
 
 const BookImgWrap = styled.div`
-  height: 260px;
+  max-height: 264px;
+  @media screen and (max-width: 768px) {
+    max-height: 302px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    max-height: 312px;
+  }
   margin-bottom: 14px;
   filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
   border-radius: 8px;

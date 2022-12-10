@@ -17,7 +17,6 @@ const Category = () => {
 
   const middleCategoryList = CATEGORIES.find((main) => main.name === mainCategory)?.middlecategories;
   const subCategorylist = middleCategoryList?.find((middle) => middle.name === middleCategory)?.subcategories;
-
   return (
     <Container>
       <CategoryTitle>
