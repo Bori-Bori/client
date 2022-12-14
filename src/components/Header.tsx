@@ -4,9 +4,10 @@ import { useSetRecoilState } from 'recoil';
 
 import logo from '../assets/icons/logo-horizon-26.png';
 import search from '../assets/icons/search-yl-20.png';
+import user from '../assets/icons/user-yl-20.png';
 
-import { useNavigate } from 'react-router-dom';
 import showModal from '../recoil/showModal';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,7 +30,14 @@ const Header = () => {
       </LogoWrap>
       <RightWrap>
         <SearchWrap>
-          <img onClick={onClickSearch} src={search} alt="검색이미지" />
+          <img onClick={onClickSearch} src={search} alt="검색" />
+          <img
+            onClick={() => {
+              navigate('/mypage');
+            }}
+            src={user}
+            alt="마이페이지"
+          />
           <SearchTipWrap>
             <Triangle>
               <div />
@@ -39,18 +47,26 @@ const Header = () => {
         </SearchWrap>
         <LoginBtn onClick={onClickLogin}>로그인</LoginBtn>
       </RightWrap>
+      <Outlet />
     </Container>
   );
 };
 
 export default Header;
 
-const Container = styled.div`
+const Container = styled.nav`
+  width: 100%;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 24.2px 17px;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  @media screen and (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 const LogoWrap = styled.div`
   display: flex;
@@ -70,11 +86,17 @@ const Line = styled.div`
   width: 80px;
   height: 1px;
   background-color: ${(props) => props.theme.colors.secondary1};
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 const HeaderTitle = styled.div`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   font-size: ${(props) => props.theme.fontSize.body02};
   color: ${(props) => props.theme.colors.secondary1};
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 const SearchWrap = styled.div`
   position: relative;
@@ -83,6 +105,16 @@ const SearchWrap = styled.div`
   align-items: center;
   img {
     cursor: pointer;
+    :last-of-type {
+      display: none;
+      @media screen and (max-width: 768px) {
+        margin-left: 27.5px;
+        display: block;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      width: 24px;
+    }
   }
 `;
 const SearchTipWrap = styled.div`
@@ -94,6 +126,9 @@ const SearchTipWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 const Triangle = styled.div`
   > div {
@@ -120,6 +155,9 @@ const SearchTip = styled.p`
   text-align: center;
 `;
 const LoginBtn = styled.button`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
   font-weight: ${(props) => props.theme.fontWeight.regular};
   font-size: ${(props) => props.theme.fontSize.body02};
   color: ${(props) => props.theme.colors.white};
