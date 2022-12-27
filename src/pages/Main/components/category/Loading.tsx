@@ -4,55 +4,59 @@ import styled from 'styled-components';
 const Loading = () => {
   return (
     <>
-      <li>
-        <BookImgWrap />
+      <ListItem>
+        <BookImg />
         <BookWrap>
           <BookTitle />
           <BookAuthor />
           <BookContent />
         </BookWrap>
-      </li>
-      <li>
-        <BookImgWrap />
+      </ListItem>
+      <ListItem>
+        <BookImg />
         <BookWrap>
           <BookTitle />
           <BookAuthor />
           <BookContent />
         </BookWrap>
-      </li>
-      <li>
-        <BookImgWrap />
+      </ListItem>
+      <ListItem>
+        <BookImg />
         <BookWrap>
           <BookTitle />
           <BookAuthor />
           <BookContent />
         </BookWrap>
-      </li>
-      <li>
-        <BookImgWrap />
+      </ListItem>
+      <ListItem>
+        <BookImg />
         <BookWrap>
           <BookTitle />
           <BookAuthor />
           <BookContent />
         </BookWrap>
-      </li>
-      <li>
-        <BookImgWrap />
+      </ListItem>
+      <ListItem>
+        <BookImg />
         <BookWrap>
           <BookTitle />
           <BookAuthor />
           <BookContent />
         </BookWrap>
-      </li>
+      </ListItem>
     </>
   );
 };
 
 export default Loading;
 
-const BookImgWrap = styled.div`
+const ListItem = styled.li`
+  display: block;
+`;
+const BookImg = styled.div`
+  width: 100%;
+  height: 265px;
   max-height: 264px;
-  background-color: ${(props) => props.theme.colors.grey3};
   @media screen and (max-width: 768px) {
     max-height: 302px;
   }
@@ -60,47 +64,93 @@ const BookImgWrap = styled.div`
     max-height: 312px;
   }
   margin-bottom: 14px;
-  filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
   border-radius: 8px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   position: relative;
+  background-color: #f2f2f2;
+  @keyframes loading {
+    0% {
+      transform: translateX(0);
+    }
+    50%,
+    100% {
+      transform: translateX(360px);
+    }
+  }
+  :before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ececec, #f2f2f2);
+    animation: loading 1s infinite linear;
+  }
 `;
 
 const BookWrap = styled.div`
-  width: 10.3rem;
+  width: 100%;
   margin: 0 auto;
 `;
 
 const BookTitle = styled.h3`
-  width: 100%;
-  @media screen and (max-width: 768px) {
-    text-align: center;
-  }
-  white-space: nowrap;
+  width: 80%;
+  height: 20px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.375rem;
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  font-size: ${(props) => props.theme.fontSize.body01};
-  color: ${(props) => props.theme.colors.black};
+  position: relative;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  @keyframes loading {
+    0% {
+      transform: translateX(0);
+    }
+    50%,
+    100% {
+      transform: translateX(360px);
+    }
+  }
+  :before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ececec, #f2f2f2);
+    animation: loading 1s infinite linear;
+  }
 `;
 
 const BookAuthor = styled.p`
-  width: 100%;
-  white-space: nowrap;
+  width: 60%;
+  height: 20px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  position: relative;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  @keyframes loading {
+    0% {
+      transform: translateX(0);
+    }
+    50%,
+    100% {
+      transform: translateX(360px);
+    }
+  }
+  :before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ececec, #f2f2f2);
+    animation: loading 1s infinite linear;
+  }
   @media screen and (max-width: 768px) {
     text-align: center;
   }
-  line-height: 1.375rem;
-  font-weight: ${(props) => props.theme.fontWeight.regular};
-  font-size: ${(props) => props.theme.fontSize.body02};
-  color: ${(props) => props.theme.colors.grey1};
   margin-top: 2px;
   margin-bottom: 15px;
 `;
@@ -113,18 +163,29 @@ const BookContent = styled.ul`
     justify-content: center;
     text-align: center;
   }
-  li {
-    display: flex;
-    align-items: center;
-    gap: 7.69px;
-    font-weight: ${(props) => props.theme.fontWeight.regular};
-    font-size: ${(props) => props.theme.fontSize.body02};
-    color: ${(props) => props.theme.colors.grey1};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    @media screen and (max-width: 768px) {
-      justify-content: center;
+  width: 20%;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  @keyframes loading {
+    0% {
+      transform: translateX(0);
     }
+    50%,
+    100% {
+      transform: translateX(360px);
+    }
+  }
+  :before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ececec, #f2f2f2);
+    animation: loading 1s infinite linear;
   }
 `;
