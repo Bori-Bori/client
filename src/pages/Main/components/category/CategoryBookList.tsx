@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
 
 // 이미지
 import comment from '../../../../assets/icons/comment-gr-16.png';
-import user from '../../../../assets/icons/user-gr-16.png';
-import { useQuery } from '@tanstack/react-query';
+
 import { getBooklist } from './../../../../apis/category';
-import { useRecoilValue } from 'recoil';
 import { mainCategoryState, subCategoryState, middleCategoryState } from './../../../../recoil/category';
-import { Link } from 'react-router-dom';
+
+// 컴포넌트
+import Loading from './Loading';
+import ErrorPage from './ErrorPage';
 
 const CategoryBookList = () => {
   const category1 = useRecoilValue(mainCategoryState);
   const category2 = useRecoilValue(middleCategoryState);
   const category3 = useRecoilValue(subCategoryState);
-
-  const size = 10;
-  const page = 0;
 
   interface IbookList {
     isbn: number;
@@ -25,37 +27,55 @@ const CategoryBookList = () => {
     author: string;
     commentCount: number;
   }
-  const data = useQuery(['bookList', category1, category2, category3, size, page], () =>
-    getBooklist(category1, category2, category3, size, page),
+
+  interface IfetchNextPage {
+    isLast: boolean;
+    nextPage: number;
+    items: IbookList[];
+  }
+
+  const { ref, inView } = useInView();
+  const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    ['bookList'],
+    ({ pageParam = 0 }) => getBooklist(category1, category2, category3, pageParam),
+    {
+      getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),
+    },
   );
-  const bookList: IbookList[] = data.data?.content?.items;
+
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  }, [inView]);
+
+  if (status === 'loading') return <Loading />;
+  if (status === 'error') return <ErrorPage />;
+
   return (
     <CategoryWrap>
-      {bookList?.map((value) => {
-        return (
-          <li key={value?.title}>
-            <Link to={`/detail/${value?.isbn}`}>
-              <BookImgWrap>
-                <BookImg src={value?.imagePath} alt={value?.title} />
-              </BookImgWrap>
-              <BookWrap>
-                <BookTitle>{value?.title}</BookTitle>
-                <BookAuthor>{value?.author}</BookAuthor>
-                <BookContent>
-                  <li>
-                    <img src={comment} alt="댓글아이콘" />
-                    <span> {value?.commentCount}</span>
-                  </li>
-                  <li>
-                    <img src={user} alt="유저아이콘" />
-                    <span> 3</span>
-                  </li>
-                </BookContent>
-              </BookWrap>
-            </Link>
-          </li>
-        );
-      })}
+      {data?.pages.map((page, index) => (
+        <React.Fragment key={index}>
+          {page.items.map((value: IbookList) => (
+            <li key={value?.title}>
+              <Link to={`/detail/${value?.isbn}`}>
+                <BookImgWrap>
+                  <BookImg src={value?.imagePath} alt={value?.title} />
+                </BookImgWrap>
+                <BookWrap>
+                  <BookTitle>{value?.title}</BookTitle>
+                  <BookAuthor>{value?.author}</BookAuthor>
+                  <BookContent>
+                    <li>
+                      <img src={comment} alt="댓글아이콘" />
+                      <span> {value?.commentCount}</span>
+                    </li>
+                  </BookContent>
+                </BookWrap>
+              </Link>
+            </li>
+          ))}
+        </React.Fragment>
+      ))}
+      {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
     </CategoryWrap>
   );
 };
@@ -173,6 +193,9 @@ const BookContent = styled.ul`
     font-weight: ${(props) => props.theme.fontWeight.regular};
     font-size: ${(props) => props.theme.fontSize.body02};
     color: ${(props) => props.theme.colors.grey1};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     @media screen and (max-width: 768px) {
       justify-content: center;
     }
