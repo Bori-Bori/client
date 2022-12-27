@@ -36,7 +36,7 @@ const CategoryBookList = () => {
 
   const { ref, inView } = useInView();
   const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['bookList'],
+    [category1, category2, category3],
     ({ pageParam = 0 }) => getBooklist(category1, category2, category3, pageParam),
     {
       getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),

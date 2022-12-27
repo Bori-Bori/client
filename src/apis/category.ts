@@ -3,12 +3,10 @@ export const getBookItem = async (
   category1: string,
   category2: string,
   category3: string,
-  size: number,
-  page: number,
-  keyword: string,
+  keyword: string | undefined,
 ) => {
   const response = await boardAxiosInstance.get(
-    `/api/boards?category1=${category1}&category2=${category2}&category3=${category3}&keyword=${keyword}&queryType=&size=${size}&page=${page}`,
+    `/api/boards?category1=${category1}&category2=${category2}&category3=${category3}&keyword=${keyword}&size=2&page=0`,
   );
   return response.data;
 };
