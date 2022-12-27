@@ -7,22 +7,18 @@ import { useRecoilValue } from 'recoil';
 import { bookData } from './../bookData';
 import { countState } from '../../../../recoil/slide';
 import { useQuery } from '@tanstack/react-query';
-import { GetBookInfo } from '../../../../apis/slide';
 import { getBookItem } from '../../../../apis/category';
 
 const BookText = () => {
   const count = useRecoilValue(countState);
-  const boardId = bookData[count].TITLE_URL;
-  const { data: bookInfo } = useQuery(['bookInfo', boardId], () => GetBookInfo(boardId));
-  const category1 = bookInfo?.data.content.category1;
-  const category2 = bookInfo?.data.content.category2;
-  const category3 = bookInfo?.data.content.category3;
-  const size = 5;
-  const page = 0;
-  const keyword = bookInfo?.data.content.title;
 
-  const { data: bookItem } = useQuery(['bookItem', category1, category2, category3, size, page, keyword], () =>
-    getBookItem(category1, category2, category3, size, page, keyword),
+  const category1 = bookData[count]?.category1;
+  const category2 = bookData[count]?.category2;
+  const category3 = bookData[count]?.category3;
+  const keyword = bookData[count]?.TITLE;
+
+  const { data: bookItem } = useQuery(['bookItem', category1, category2, category3, keyword], () =>
+    getBookItem(category1, category2, category3, keyword),
   );
   return (
     <BookTextWrap>
