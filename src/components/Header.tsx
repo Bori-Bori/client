@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { throttle } from 'lodash';
 
 import logo from '../assets/icons/logo-horizon-26.png';
 import search from '../assets/icons/search-yl-20.png';
 import user from '../assets/icons/user-yl-20.png';
 
 import showModal from '../recoil/showModal';
-import { Outlet, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -21,8 +22,32 @@ const Header = () => {
   const onClickSearch = () => {
     navigate('/search');
   };
+
+  const [isNavOn, setIsNavOn] = useState(true);
+  //이전 스크롤 초기값
+  const beforeScrollY = useRef(0);
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvent);
+  }, []);
+
+  const scrollEvent = useMemo(
+    () =>
+      throttle(() => {
+        const currentScrollY = window.scrollY;
+        if (beforeScrollY.current < currentScrollY) {
+          setIsNavOn(false);
+        } else if (currentScrollY === 0) {
+          setIsNavOn(true);
+        }
+        //이전 스크롤값 저장
+        beforeScrollY.current = currentScrollY;
+      }, 300),
+    [beforeScrollY],
+  );
+
   return (
-    <Container>
+    <Container isNavOn={isNavOn}>
       <LogoWrap>
         <img onClick={onClickHome} src={logo} alt="로고이미지" />
         <Line />
@@ -54,7 +79,7 @@ const Header = () => {
 
 export default Header;
 
-const Container = styled.nav`
+const Container = styled.nav<{ isNavOn: boolean }>`
   width: 100%;
   height: 60px;
   display: flex;
@@ -64,6 +89,7 @@ const Container = styled.nav`
   position: fixed;
   top: 0;
   z-index: 999;
+  background-color: ${(props) => (props.isNavOn ? 'transparent' : '#fff')};
   @media screen and (max-width: 768px) {
     padding: 20px;
   }
