@@ -8,13 +8,27 @@ type InputProps = {
   placeholder: string;
   onClick: () => void;
   children?: ReactNode;
+  commentContent: string;
+  changeCommentContent: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const InputComment = ({ className, placeholder, onClick, children }: InputProps) => {
+const InputComment = ({
+  className,
+  placeholder,
+  onClick,
+  children,
+  commentContent,
+  changeCommentContent,
+}: InputProps) => {
+
+  const onChangeCommentContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    changeCommentContent(e.target.value);
+  };
+  
   return (
     <InputWrapper className={className}>
       {children}
-      <InputArea placeholder={placeholder} />
+      <InputArea placeholder={placeholder} value={commentContent} onChange={onChangeCommentContent} />
       <InputButtonWrapper>
         <InputButton className={className} onClick={onClick}>
           댓글등록

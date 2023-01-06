@@ -48,7 +48,7 @@ const Comment = () => {
   const [curSortState, setCurSortState] = useRecoilState(sortCommentAtom);
   const { data, error, isLoading } = useQuery(
     ['comments', curSortState],
-    () => getComments(123, curSortState, 10, 10),
+    () => getComments('123', curSortState, 10, 10),
     {
       staleTime: 5000,
       keepPreviousData: true,
@@ -56,19 +56,19 @@ const Comment = () => {
   );
   return (
     <CommentContainer margin={inputWrapperHeight}>
-      <div>
-        {isLoading
-          ? 'loading...'
-          : data.content.map((comment: Comment) => (
-              <CommentItem
-                key={Math.random()}
-                text={comment.comment}
-                writer={comment.writer}
-                publishDate={comment.createdAt.slice(0, 10)}
-                replyNum={comment.replyNum}
-              />
-            ))}
-      </div>
+      {/* <div> */}
+      {isLoading
+        ? 'loading...'
+        : data.content.map((comment: Comment) => (
+            <CommentItem
+              key={Math.random()}
+              text={comment.comment}
+              writer={comment.writer}
+              publishDate={comment.createdAt.slice(0, 10)}
+              replyNum={comment.replyNum}
+            />
+          ))}
+      {/* </div> */}
     </CommentContainer>
   );
 };

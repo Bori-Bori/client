@@ -14,7 +14,8 @@ const KakaoOauth = () => {
 
   const postCodeMutate = useMutation((code: Code) => KakaoLogin(code), {
     onSuccess: (response) => {
-      const { id, accessToken, refreshToken, nickname } = response.data.content;
+      console.log(response.data);
+      const { id, accessToken, refreshToken, nickname } = response.data;
 
       window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
       navigate('/');
@@ -36,7 +37,7 @@ const KakaoOauth = () => {
     getKakao();
   }, []);
 
-  return <div>Kakao Oatuh 입니둥</div>;
+  return <div>Loading중</div>;
 };
 
 export default KakaoOauth;
