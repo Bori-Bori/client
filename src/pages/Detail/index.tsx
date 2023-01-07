@@ -20,6 +20,7 @@ type BookISBN = {
 const Detail = () => {
   const params = useParams();
   const setBoardState = useSetRecoilState(boardState);
+
   const getBoardMutate = useMutation((bookISBN: BookISBN) => GetBoard(bookISBN), {
     onSuccess: (response) => {
       const { isbn, title, author, pubDate, category1, category2, category3, description, publisher, imagePath } =
@@ -41,6 +42,7 @@ const Detail = () => {
       throw new Error(e);
     },
   });
+
   const getBoard = async () => {
     const bookISBN = params.id;
     if (bookISBN === undefined) {
@@ -48,6 +50,7 @@ const Detail = () => {
     }
     getBoardMutate.mutate({ bookISBN: bookISBN });
   };
+
   useEffect(() => {
     getBoard();
   }, []);
@@ -58,7 +61,7 @@ const Detail = () => {
       <ContentContainer>
         <BookInfo />
         <SortingComment />
-        {/* <Comment /> */}
+        <Comment />
         <ToggleInputComment />
       </ContentContainer>
     </MainWrapper>
@@ -74,7 +77,7 @@ const MainWrapper = styled.div`
   &::before {
     content: '';
     position: absolute;
-    height: 445px;
+    height: 435px;
     top: -10px;
     left: -10px;
     right: -10px;
@@ -88,8 +91,6 @@ const MainWrapper = styled.div`
     -ms-filter: blur(10px);
     filter: blur(10px);
     z-index: -1;
-    content: '';
-    height: 435px;
   }
   &::after {
     content: '';

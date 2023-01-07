@@ -14,7 +14,7 @@ const ReplyComment = () => {
         onClick={() => {
           console.log('re');
         }}
-        commentContent={'123'}
+        commentContent="123"
         changeCommentContent={setTest}
       />
     </ReplyCommentWrapper>

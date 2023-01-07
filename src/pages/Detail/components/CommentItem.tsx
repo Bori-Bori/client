@@ -11,10 +11,12 @@ import ReplyComment from './ReplyComment';
 type CommentItemProps = {
   text: string;
   writer: string;
-  publishDate: string;
+  publishDate?: string;
   replyNum: string;
+  pageNum: string;
+  userProfileImagePath: string;
 };
-const CommentItem = ({ text, writer, publishDate, replyNum }: CommentItemProps) => {
+const CommentItem = ({ text, writer, publishDate, replyNum, pageNum, userProfileImagePath }: CommentItemProps) => {
   const curSortState = useRecoilValue(sortCommentAtom);
 
   const [commentIsOpened, setCommentIsOpened] = useState(false);
@@ -26,13 +28,12 @@ const CommentItem = ({ text, writer, publishDate, replyNum }: CommentItemProps) 
       <CommnetItemWrapper>
         {curSortState && (
           <BubbleWrapper>
-            <BubbleIcon className="commentPageBubble" text="122" />
+            <BubbleIcon className="commentPageBubble" text={pageNum} />
           </BubbleWrapper>
         )}
-
         <CommentTextWrapper>
           <div>
-            <UserImage />
+            <UserImage src={userProfileImagePath} />
           </div>
           <CommentInfo>
             <span>{writer}</span>
@@ -64,6 +65,7 @@ const CommentTextWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  border-bottom: 1px solid ${(props) => props.theme.colors.grey5};
 
   padding: 20px 0;
   li {
@@ -89,10 +91,8 @@ const BubbleIcon = styled(BubbleBox)`
 `;
 
 const UserImage = styled.img`
-  /* data 받아오기 전 img 대용 styling*/
   width: 52px;
   height: 52px;
-  background-color: grey;
   border-radius: 50%;
 `;
 const CommentInfo = styled.div`

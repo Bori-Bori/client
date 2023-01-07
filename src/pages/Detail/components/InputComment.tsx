@@ -20,11 +20,10 @@ const InputComment = ({
   commentContent,
   changeCommentContent,
 }: InputProps) => {
-
   const onChangeCommentContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     changeCommentContent(e.target.value);
   };
-  
+
   return (
     <InputWrapper className={className}>
       {children}

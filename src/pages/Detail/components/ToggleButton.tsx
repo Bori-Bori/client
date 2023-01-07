@@ -14,7 +14,7 @@ type ToggleProps = {
 const ToggleButton = ({ className, onClick, isOpened, replyNumber }: ToggleProps) => {
   return (
     <ToggleBtnWrapper className={className} onClick={onClick}>
-      + {replyNumber}
+      답글 {replyNumber}
       <img src={isOpened ? up : down} />
     </ToggleBtnWrapper>
   );
