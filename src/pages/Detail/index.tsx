@@ -4,14 +4,13 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
-import { GetBoard } from '../../apis/board';
-
+import boardState from '../../recoil/board';
 import BookInfo from './components/BookInfo';
 import SortingComment from './components/SortingComment';
 import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
 import Header from '../../components/Header';
-import boardState from '../../recoil/board';
+import { GetBoard } from '../../apis/board';
 
 type BookISBN = {
   bookISBN: string;

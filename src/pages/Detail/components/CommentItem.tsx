@@ -5,7 +5,6 @@ import { useRecoilValue } from 'recoil';
 import sortCommentAtom from '../../../recoil/sortComment';
 import ToggleButton from './ToggleButton';
 import BubbleBox from './BubbleBox';
-import InputComment from './InputComment';
 import ReplyComment from './ReplyComment';
 
 type CommentItemProps = {

@@ -5,11 +5,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import sortCommentAtom from '../../../recoil/sortComment';
 import commentsListAtom, { commentIsLastAtom } from '../../../recoil/comment';
-import boardState from '../../../recoil/board';
-import { getComments } from '../../../apis/comment';
 import commentInputHeight from '../../../recoil/commentInputHeight';
+import boardState from '../../../recoil/board';
 import CommentItem from './CommentItem';
 import CommonButton from '../../../components/CommonButton';
+import { getComments } from '../../../apis/comment';
 
 type Comment = {
   comment: string;
@@ -39,11 +39,11 @@ const Comment = () => {
   const [commentIsLast, setCommentIsLast] = useRecoilState(commentIsLastAtom);
 
   const boardId = bookState.isbn;
-  const size = 3; // 고정값
+  const size = 5; // 고정값
   const bookPage = 1; //고정값
 
   const { fetchNextPage, status } = useInfiniteQuery({
-    queryKey: ['comments', boardId, curSortState, size, bookPage],
+    queryKey: ['commentsListAtom', boardId, curSortState, size, bookPage],
     queryFn: ({ pageParam = 0 }) => getComments({ boardId, curSortState, size, bookPage, pageParam }),
     onSuccess: (data) => {
       const newComments: Comment[] = [];

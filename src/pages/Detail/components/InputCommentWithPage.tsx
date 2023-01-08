@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import boardState from '../../../recoil/board';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { postComments } from '../../../apis/comment';
-import boardState from '../../../recoil/board';
 
 type InputCommentProps = {
   className: string;
@@ -14,9 +15,9 @@ type InputCommentProps = {
 };
 
 const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentProps) => {
-  const result = useRecoilValue(boardState);
-  //서버에서 받아올 값
-  const maxPage = '524';
+  const queryClient = useQueryClient();
+  const bookInfo = useRecoilValue(boardState);
+  const maxPage = '524'; //서버에서 받아올 값
   const [targetPage, setTargetPage] = useState('0');
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enteredValue = e.target.value.replace(/[^0-9.]/g, '');
@@ -24,15 +25,22 @@ const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentP
   };
   const [commentContent, setCommentContent] = useState<string>('');
 
-  const onClickSubmit = () => {
-    const data = {
-      content: commentContent,
-      page: targetPage,
-    };
-    const res = postComments(result.isbn, data);
-    console.log(res);
-    // 아직 res 를 저장하기 전!
+  const data = {
+    content: commentContent,
+    page: targetPage,
   };
+
+  const postCommentMutate = useMutation(() => postComments(bookInfo.isbn, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['commentsListAtom']);
+      setCommentContent('');
+    },
+  });
+
+  const onClickSubmit = () => {
+    postCommentMutate.mutate();
+  };
+
   return (
     <InputCommentWrapper
       className={className}
