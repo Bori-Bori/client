@@ -29,7 +29,7 @@ const BookInfo = () => {
   const params = useParams();
   const isbn = params.id!;
 
-  const { isLoading, isError, data, } = useQuery({
+  const { isLoading, isError, data } = useQuery({
     queryKey: ['bookInfo', isbn],
     queryFn: () => GetBoard(isbn),
   });

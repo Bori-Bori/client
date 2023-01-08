@@ -27,7 +27,6 @@ export const getComments = async ({ boardId, curSortState, size, bookPage, pageP
   return { items, isLast, nextPage: pageParam };
 };
 
-
 export const postComments = async (boardId: string, data: postCommentDataType) => {
   const path = `/api/board/${boardId}/comment`;
   const getToken = window.localStorage.getItem('user')!;
@@ -40,4 +39,3 @@ export const postComments = async (boardId: string, data: postCommentDataType) =
   const response = await boardAxiosInstance.post(path, data, { headers });
   return response;
 };
-
