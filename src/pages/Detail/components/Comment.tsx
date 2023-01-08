@@ -10,6 +10,7 @@ import boardState from '../../../recoil/board';
 import CommentItem from './CommentItem';
 import CommonButton from '../../../components/CommonButton';
 import { getComments } from '../../../apis/comment';
+import { useParams } from 'react-router-dom';
 
 type Comment = {
   comment: string;
@@ -35,15 +36,15 @@ const Comment = () => {
   const [curSortState, setCurSortState] = useRecoilState(sortCommentAtom);
   const [commentsList, setCommentsList] = useRecoilState(commentsListAtom);
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
-  const bookState = useRecoilValue(boardState);
   const [commentIsLast, setCommentIsLast] = useRecoilState(commentIsLastAtom);
+  const params = useParams();
 
-  const boardId = bookState.isbn;
+  const boardId = params.id!;
   const size = 5; // 고정값
   const bookPage = 1; //고정값
 
   const { fetchNextPage, status } = useInfiniteQuery({
-    queryKey: ['commentsListAtom', boardId, curSortState, size, bookPage],
+    queryKey: ['comments', boardId, curSortState, size, bookPage],
     queryFn: ({ pageParam = 0 }) => getComments({ boardId, curSortState, size, bookPage, pageParam }),
     onSuccess: (data) => {
       const newComments: Comment[] = [];
@@ -71,6 +72,7 @@ const Comment = () => {
         // 에러 페이지도 만들기
         commentsList.map((comment: Comment) => (
           <CommentItem
+            id={comment.id}
             key={Math.random()}
             text={comment.comment}
             writer={comment.writer}

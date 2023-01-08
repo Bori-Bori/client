@@ -7,6 +7,7 @@ import boardState from '../../../recoil/board';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { postComments } from '../../../apis/comment';
+import { useParams } from 'react-router-dom';
 
 type InputCommentProps = {
   className: string;
@@ -16,9 +17,11 @@ type InputCommentProps = {
 
 const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentProps) => {
   const queryClient = useQueryClient();
-  const bookInfo = useRecoilValue(boardState);
   const maxPage = '524'; //서버에서 받아올 값
   const [targetPage, setTargetPage] = useState('0');
+  const params = useParams();
+  const isbn = params.id!;
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enteredValue = e.target.value.replace(/[^0-9.]/g, '');
     setTargetPage(enteredValue);
@@ -30,9 +33,9 @@ const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentP
     page: targetPage,
   };
 
-  const postCommentMutate = useMutation(() => postComments(bookInfo.isbn, data), {
+  const postCommentMutate = useMutation(() => postComments(isbn, data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['commentsListAtom']);
+      queryClient.invalidateQueries(['comments']);
       setCommentContent('');
     },
   });

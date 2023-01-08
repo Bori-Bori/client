@@ -1,32 +1,41 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../components/CommonButton';
-import boardState from '../../../recoil/board';
+import { GetBoard } from '../../../apis/board';
 
 type MoreIntro = {
   moreIntro: boolean;
 };
 
-type BookState = {
-  title: string;
-  author: string;
-  pubDate: string;
-  category1: string;
-  category2: string;
-  category3: string;
-  description: string;
-  publisher: string;
-  imagePath: string;
-};
+// type BookState = {
+//   title: string;
+//   author: string;
+//   pubDate: string;
+//   category1: string;
+//   category2: string;
+//   category3: string;
+//   description: string;
+//   publisher: string;
+//   imagePath: string;
+// };
 
 const BookInfo = () => {
+  const params = useParams();
+  const isbn = params.id!;
+
+  const { isLoading, isError, data, } = useQuery({
+    queryKey: ['bookInfo', isbn],
+    queryFn: () => GetBoard(isbn),
+  });
+
   const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
-    useRecoilValue(boardState);
+    data?.data.content || '';
   const eidtPubDate = pubDate?.replaceAll('-', '.');
   const editImagePath = imagePath?.replace('coversum', 'cover500');
   const [moreIntro, setMoreIntro] = useState(false);
@@ -34,6 +43,7 @@ const BookInfo = () => {
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
   };
+
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
@@ -47,7 +57,7 @@ const BookInfo = () => {
           </BookInfoRow1>
           <BookInfoRow2>
             {author && <h3>{author}</h3>}
-            {publisher && <span>{publisher} </span>}
+            {publisher && <span>/{publisher} </span>}
             {eidtPubDate && <span>{eidtPubDate} </span>}
           </BookInfoRow2>
           <BookInfoRow3>

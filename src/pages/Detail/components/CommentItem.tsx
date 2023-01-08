@@ -8,6 +8,7 @@ import BubbleBox from './BubbleBox';
 import ReplyComment from './ReplyComment';
 
 type CommentItemProps = {
+  id: string;
   text: string;
   writer: string;
   publishDate?: string;
@@ -15,7 +16,7 @@ type CommentItemProps = {
   pageNum: string;
   userProfileImagePath: string;
 };
-const CommentItem = ({ text, writer, publishDate, replyNum, pageNum, userProfileImagePath }: CommentItemProps) => {
+const CommentItem = ({ id, text, writer, publishDate, replyNum, pageNum, userProfileImagePath }: CommentItemProps) => {
   const curSortState = useRecoilValue(sortCommentAtom);
 
   const [commentIsOpened, setCommentIsOpened] = useState(false);
@@ -47,7 +48,7 @@ const CommentItem = ({ text, writer, publishDate, replyNum, pageNum, userProfile
           />
         </CommentTextWrapper>
       </CommnetItemWrapper>
-      {commentIsOpened && <ReplyComment />}
+      {commentIsOpened && <ReplyComment commentId={id} />}
     </article>
   );
 };

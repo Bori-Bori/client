@@ -1,59 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { useSetRecoilState } from 'recoil';
 
-import boardState from '../../recoil/board';
 import BookInfo from './components/BookInfo';
 import SortingComment from './components/SortingComment';
 import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
 import Header from '../../components/Header';
-import { GetBoard } from '../../apis/board';
 
 type BookISBN = {
   bookISBN: string;
 };
 
 const Detail = () => {
-  const params = useParams();
-  const setBoardState = useSetRecoilState(boardState);
-
-  const getBoardMutate = useMutation((bookISBN: BookISBN) => GetBoard(bookISBN), {
-    onSuccess: (response) => {
-      const { isbn, title, author, pubDate, category1, category2, category3, description, publisher, imagePath } =
-        response.data.content;
-      setBoardState({
-        isbn,
-        title,
-        author,
-        pubDate,
-        category1,
-        category2,
-        category3,
-        description,
-        publisher,
-        imagePath,
-      });
-    },
-    onError: (e: any) => {
-      throw new Error(e);
-    },
-  });
-
-  const getBoard = async () => {
-    const bookISBN = params.id;
-    if (bookISBN === undefined) {
-      return;
-    }
-    getBoardMutate.mutate({ bookISBN: bookISBN });
-  };
-
-  useEffect(() => {
-    getBoard();
-  }, []);
-
   return (
     <MainWrapper>
       <Header />
