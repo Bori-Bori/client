@@ -13,18 +13,6 @@ type MoreIntro = {
   moreIntro: boolean;
 };
 
-// type BookState = {
-//   title: string;
-//   author: string;
-//   pubDate: string;
-//   category1: string;
-//   category2: string;
-//   category3: string;
-//   description: string;
-//   publisher: string;
-//   imagePath: string;
-// };
-
 const BookInfo = () => {
   const params = useParams();
   const isbn = params.id!;

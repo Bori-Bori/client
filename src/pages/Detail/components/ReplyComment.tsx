@@ -9,8 +9,9 @@ type ReplyPropsType = {
   commentId: string;
 };
 const ReplyComment = ({ commentId }: ReplyPropsType) => {
-  // test용
   const [replyContent, setReplyContent] = useState<string>('');
+
+  //getReply
 
   //postReply
   // 댓글의 id가 필요하니까 넘겨받아야겠다.
@@ -31,22 +32,14 @@ const ReplyComment = ({ commentId }: ReplyPropsType) => {
   };
 
   return (
-    <ReplyCommentWrapper>
-      <InputComment
-        className="ReplyInput"
-        placeholder="대댓글을 입력하세요"
-        onClick={onClickSubmit}
-        commentContent={replyContent}
-        changeCommentContent={setReplyContent}
-      />
-    </ReplyCommentWrapper>
+    <InputComment
+      className="ReplyInput"
+      placeholder="대댓글을 입력하세요"
+      onClick={onClickSubmit}
+      commentContent={replyContent}
+      changeCommentContent={setReplyContent}
+    ></InputComment>
   );
 };
 
 export default ReplyComment;
-
-const ReplyCommentWrapper = styled.article`
-  margin-left: 124px;
-`;
-
-// const StyledInputComment = styled(InputComment)``;

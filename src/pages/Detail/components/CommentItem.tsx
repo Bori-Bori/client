@@ -24,13 +24,13 @@ const CommentItem = ({ id, text, writer, publishDate, replyNum, pageNum, userPro
     setCommentIsOpened((prev) => !prev);
   };
   return (
-    <article>
+    <CommentItemContainer>
+      {curSortState && (
+        <BubbleWrapper>
+          <BubbleIcon className="commentPageBubble" text={pageNum} />
+        </BubbleWrapper>
+      )}
       <CommnetItemWrapper>
-        {curSortState && (
-          <BubbleWrapper>
-            <BubbleIcon className="commentPageBubble" text={pageNum} />
-          </BubbleWrapper>
-        )}
         <CommentTextWrapper>
           <div>
             <UserImage src={userProfileImagePath} />
@@ -47,25 +47,28 @@ const CommentItem = ({ id, text, writer, publishDate, replyNum, pageNum, userPro
             replyNumber={replyNum}
           />
         </CommentTextWrapper>
+        {commentIsOpened && <ReplyComment commentId={id} />}
       </CommnetItemWrapper>
-      {commentIsOpened && <ReplyComment commentId={id} />}
-    </article>
+    </CommentItemContainer>
   );
 };
 
 export default CommentItem;
 
-const CommnetItemWrapper = styled.li`
+const CommentItemContainer = styled.article`
   display: flex;
+  align-items: flex-start;
+`;
+const CommnetItemWrapper = styled.li`
+  width: 100%;
   list-style: none;
-  align-items: center;
+  border-bottom: 1px solid ${(props) => props.theme.colors.grey5};
 `;
 
 const CommentTextWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid ${(props) => props.theme.colors.grey5};
 
   padding: 20px 0;
   li {
@@ -76,6 +79,7 @@ const CommentTextWrapper = styled.div`
 const BubbleWrapper = styled.div`
   min-width: 50px;
   margin-right: 15px;
+  margin-top: 30px;
 `;
 const BubbleIcon = styled(BubbleBox)`
   &::before {
@@ -107,7 +111,6 @@ const CommentInfo = styled.div`
 `;
 
 const CommentText = styled.div`
-  /* width: 70%; */
   flex: 1;
   word-wrap: break-word;
   margin: 0 40px 0 50px;
