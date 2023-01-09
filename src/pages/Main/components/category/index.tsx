@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { mainCategoryState, subCategoryState, middleCategoryState } from '../../../../recoil/category';
 
 // 카테고리목록
-import { CATEGORIES } from './categoryList';
+import { CATEGORIES } from '../../../shared/categoryList';
 import { middlecategory, subcategory } from '../../../../types/category';
 import CategoryBookList from './CategoryBookList';
 

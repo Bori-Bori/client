@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ErrorPage = () => {
+const Error = () => {
   return <ErrorMsg>에러가 발생했습니다.</ErrorMsg>;
 };
 
-export default ErrorPage;
+export default Error;
 
 const ErrorMsg = styled.div`
   width: 100%;
