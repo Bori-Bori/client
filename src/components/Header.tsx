@@ -1,29 +1,38 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useMatch, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { throttle } from 'lodash';
 
 import logo from '../assets/icons/logo-horizon-26.png';
 import search from '../assets/icons/search-yl-20.png';
 import user from '../assets/icons/user-yl-20.png';
+import close from '../assets/icons/common_close_bk_24.png';
 
 import showModal from '../recoil/showModal';
 
 const Header = () => {
+  const match = useMatch('/search');
   const navigate = useNavigate();
   const setShowLoginModal = useSetRecoilState(showModal);
+
   const onClickLogin = () => {
     setShowLoginModal(true);
   };
+
   const onClickHome = () => {
     navigate('/');
+  };
+
+  const onClickClose = () => {
+    navigate(-1);
   };
   const onClickSearch = () => {
     navigate('/search');
   };
 
   const [isNavOn, setIsNavOn] = useState(true);
+
   //이전 스크롤 초기값
   const beforeScrollY = useRef(0);
 
@@ -55,20 +64,30 @@ const Header = () => {
       </LogoWrap>
       <RightWrap>
         <SearchWrap>
-          <img onClick={onClickSearch} src={search} alt="검색" />
-          <img
+          {match ? (
+            <Close onClick={onClickClose}>
+              <img src={close} alt="닫기아이콘" />
+            </Close>
+          ) : (
+            <>
+              <Search onClick={onClickSearch}>
+                <img src={search} alt="검색" />
+              </Search>
+              <SearchTipWrap>
+                <Triangle>
+                  <div />
+                </Triangle>
+                <SearchTip>빠르게 찾아보세요</SearchTip>
+              </SearchTipWrap>
+            </>
+          )}
+          <MyPage
             onClick={() => {
               navigate('/mypage');
             }}
-            src={user}
-            alt="마이페이지"
-          />
-          <SearchTipWrap>
-            <Triangle>
-              <div />
-            </Triangle>
-            <SearchTip>빠르게 찾아보세요</SearchTip>
-          </SearchTipWrap>
+          >
+            <img src={user} alt="마이페이지" />
+          </MyPage>
         </SearchWrap>
         <LoginBtn onClick={onClickLogin}>로그인</LoginBtn>
       </RightWrap>
@@ -124,22 +143,47 @@ const HeaderTitle = styled.div`
     display: none;
   }
 `;
+
 const SearchWrap = styled.div`
   position: relative;
   height: 60px;
   display: flex;
   align-items: center;
+`;
+const Close = styled.button`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   img {
-    cursor: pointer;
-    :last-of-type {
-      display: none;
-      @media screen and (max-width: 768px) {
-        margin-left: 27.5px;
-        display: block;
-      }
-    }
+    width: 24px;
     @media screen and (max-width: 768px) {
-      width: 24px;
+      width: 18px;
+    }
+  }
+`;
+const Search = styled.button`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 24px;
+    @media screen and (max-width: 768px) {
+      width: 18px;
+    }
+  }
+`;
+const MyPage = styled.button`
+  cursor: pointer;
+  display: none;
+  img {
+    width: 24px;
+    @media screen and (max-width: 768px) {
+      width: 18px;
+      margin-left: 27.5px;
+      display: flex;
+      align-items: center;
     }
   }
 `;
