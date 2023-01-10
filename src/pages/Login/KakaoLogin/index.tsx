@@ -14,13 +14,15 @@ const KakaoOauth = () => {
 
   const postCodeMutate = useMutation((code: Code) => KakaoLogin(code), {
     onSuccess: (response) => {
-      console.log(response.data);
       const { id, accessToken, refreshToken, nickname } = response.data;
 
       window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
       navigate('/');
     },
     onError: (e: any) => {
+      if (e.status === 500) {
+        alert('로그인에 실패하였습니다. 잠시후에 다시 시도해주세요.');
+      }
       throw new Error(e);
     },
   });
@@ -37,7 +39,7 @@ const KakaoOauth = () => {
     getKakao();
   }, []);
 
-  return <div>Loading중</div>;
+  return <div>Kakao Login Loading...</div>;
 };
 
 export default KakaoOauth;

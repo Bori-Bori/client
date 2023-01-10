@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import Header from '../../../components/Header';
-import { countState, hoverState } from './../../../recoil/slide';
 import BookList from './BookList';
 import FirstBook from './FirstBook';
+import { countState, hoverState } from './../../../../recoil/slide';
 
-const Home = () => {
+const Slide = () => {
   const [count, setCount] = useRecoilState(countState);
   const hover = useRecoilValue(hoverState);
   useEffect(() => {
@@ -17,14 +16,13 @@ const Home = () => {
           clearInterval(id);
           setCount(0);
         }
-      }, 2000);
+      }, 3000);
       return () => clearInterval(id);
     }
   }, [count, hover]);
 
   return (
     <Container>
-      <Header />
       <HotBookRank>
         <FirstBook />
         <BookList />
@@ -33,18 +31,23 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Slide;
 
-const Container = styled.div`
+const Container = styled.section`
   width: 100%;
+  height: 63.7vh;
   background: linear-gradient(97.15deg, #fff6d7 21.51%, #d7f4ec 79.56%);
+  @media screen and (max-width: 1024px) {
+    display: none;
+    max-width: 1024px;
+  }
 `;
-const HotBookRank = styled.section`
-  max-width: 1024px;
-  min-width: 360px;
-  margin: 0 auto;
-  height: 435px;
+
+const HotBookRank = styled.div`
+  width: 93.75%;
+  height: 100%;
+  padding: 0 3.125%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 60px;
 `;
