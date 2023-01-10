@@ -1,4 +1,4 @@
-import { categoryType } from '../../../../types/category';
+import { categoryType } from '../../types/category';
 
 export const CATEGORIES: categoryType = [
   {
