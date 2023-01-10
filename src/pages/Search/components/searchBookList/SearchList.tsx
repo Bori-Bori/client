@@ -1,43 +1,34 @@
 import React, { useEffect } from 'react';
+
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
+import { useRecoilValue } from 'recoil';
+import { getSearchBooklist } from '../../../../apis/search';
+import { categoryState, contentTypeState, keywordState } from '../../../../recoil/search';
+
 // 이미지
 import comment from '../../../../assets/icons/comment-gr-16.png';
-
-import { getBooklist } from './../../../../apis/category';
-import { mainCategoryState, subCategoryState, middleCategoryState } from './../../../../recoil/category';
 
 // 컴포넌트
 import Loading from '../../../../components/Loading';
 import Error from '../../../../components/Error';
 
-const CategoryBookList = () => {
-  const category1 = useRecoilValue(mainCategoryState);
-  const category2 = useRecoilValue(middleCategoryState);
-  const category3 = useRecoilValue(subCategoryState);
+// 타입
+import { IfetchNextPage, IbookList } from '../../../../types/search';
 
-  interface IbookList {
-    isbn: number;
-    title: string;
-    imagePath: string;
-    author: string;
-    commentCount: number;
-  }
-
-  interface IfetchNextPage {
-    isLast: boolean;
-    nextPage: number;
-    items: IbookList[];
-  }
+const SearchList = () => {
+  const category = useRecoilValue(categoryState); // 카테고리1/2/3 저장
+  const { category1, category2, category3 } = category; // 카테고리1/2/3 꺼내기
+  const contentType = useRecoilValue(contentTypeState); // 검색분류
+  const keyword = useRecoilValue(keywordState); // 검색어
 
   const { ref, inView } = useInView();
   const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [category1, category2, category3],
-    ({ pageParam = 0 }) => getBooklist(category1, category2, category3, pageParam),
+    [contentType, category1, category2, category3, keyword],
+    ({ pageParam = 0 }) => getSearchBooklist(contentType, pageParam, category1, category2, category3, keyword),
     {
       getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),
     },
@@ -51,9 +42,9 @@ const CategoryBookList = () => {
   if (status === 'error') return <Error />;
 
   return (
-    <CategoryWrap>
+    <SearchListContainer>
       {data?.pages.map((page, index) => (
-        <React.Fragment key={index}>
+        <ul key={index}>
           {page.items.map((value: IbookList) => (
             <li key={value?.title}>
               <Link to={`/detail/${value?.isbn}`}>
@@ -73,18 +64,16 @@ const CategoryBookList = () => {
               </Link>
             </li>
           ))}
-        </React.Fragment>
+        </ul>
       ))}
       {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
-    </CategoryWrap>
+    </SearchListContainer>
   );
 };
 
-export default CategoryBookList;
+export default SearchList;
 
-const CategoryWrap = styled.ul`
-  width: 61rem;
-  margin-left: 5.4%;
+const SearchListContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.25rem;
@@ -102,7 +91,6 @@ const CategoryWrap = styled.ul`
     margin-left: 3.125%;
   }
 `;
-
 const BookBg = styled.div`
   display: none;
   padding: 14px 16px;
@@ -181,7 +169,6 @@ const BookAuthor = styled.p`
 const BookContent = styled.ul`
   display: flex;
   gap: 19px;
-
   @media screen and (max-width: 768px) {
     justify-content: center;
     text-align: center;

@@ -6,7 +6,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mainCategoryState, middleCategoryState } from '../../../../recoil/category';
 
 // 카테고리목록
-import { CATEGORIES } from './categoryList';
+import { CATEGORIES } from '../../../shared/categoryList';
 import { middlecategory } from '../../../../types/category';
 
 const MiddleSelect = () => {

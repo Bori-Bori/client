@@ -4,52 +4,44 @@ import styled from 'styled-components';
 const Loading = () => {
   return (
     <>
-      <ListItem>
-        <BookImg />
-        <BookWrap>
-          <BookTitle />
-          <BookAuthor />
-          <BookContent />
-        </BookWrap>
-      </ListItem>
-      <ListItem>
-        <BookImg />
-        <BookWrap>
-          <BookTitle />
-          <BookAuthor />
-          <BookContent />
-        </BookWrap>
-      </ListItem>
-      <ListItem>
-        <BookImg />
-        <BookWrap>
-          <BookTitle />
-          <BookAuthor />
-          <BookContent />
-        </BookWrap>
-      </ListItem>
-      <ListItem>
-        <BookImg />
-        <BookWrap>
-          <BookTitle />
-          <BookAuthor />
-          <BookContent />
-        </BookWrap>
-      </ListItem>
-      <ListItem>
-        <BookImg />
-        <BookWrap>
-          <BookTitle />
-          <BookAuthor />
-          <BookContent />
-        </BookWrap>
-      </ListItem>
+      {[0, 0, 0, 0, 0].map((value, index) => {
+        return (
+          <ListItem key={index}>
+            <BookImg />
+            <BookWrap>
+              <BookTitle />
+              <BookAuthor />
+              <BookContent />
+            </BookWrap>
+          </ListItem>
+        );
+      })}
     </>
   );
 };
 
 export default Loading;
 
+const LoadingWrap = styled.div`
+  width: 61rem;
+  margin-left: 5.4%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-left: 5.5%;
+  }
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    width: 90%;
+    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    margin-left: 3.125%;
+  }
+`;
 const ListItem = styled.li`
   display: block;
 `;
