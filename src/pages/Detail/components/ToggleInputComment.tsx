@@ -34,6 +34,7 @@ const ToggleInputComment = () => {
         <InputCommentWithPage
           className="input"
           onClick={() => {
+            // 클릭했을 때 댓글등록 api 요청이 가야됨.. onClick을 여기서 만들어서 안 전해주고 밑에서 만들어도 되지 않나?
             console.log('sa');
           }}
           placeholder="댓글을 입력하세요"

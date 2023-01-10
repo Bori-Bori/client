@@ -7,6 +7,10 @@ import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
 import Header from '../../components/Header';
 
+type BookISBN = {
+  bookISBN: string;
+};
+
 const Detail = () => {
   return (
     <MainWrapper>
@@ -30,7 +34,7 @@ const MainWrapper = styled.div`
   &::before {
     content: '';
     position: absolute;
-    height: 445px;
+    height: 435px;
     top: -10px;
     left: -10px;
     right: -10px;
@@ -44,8 +48,6 @@ const MainWrapper = styled.div`
     -ms-filter: blur(10px);
     filter: blur(10px);
     z-index: -1;
-    content: '';
-    height: 435px;
   }
   &::after {
     content: '';
