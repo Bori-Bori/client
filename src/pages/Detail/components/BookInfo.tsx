@@ -7,7 +7,7 @@ import comment from '../../../assets/icons/comment-wh-24.png';
 import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../components/CommonButton';
-import { GetBoard } from '../../../apis/board';
+import { getBoard } from '../../../apis/board';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -19,9 +19,9 @@ const BookInfo = () => {
 
   const { isLoading, isError, data } = useQuery({
     queryKey: ['bookInfo', isbn],
-    queryFn: () => GetBoard(isbn),
+    queryFn: () => getBoard(isbn),
   });
-
+  
   const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
     data?.data.content || '';
   const eidtPubDate = pubDate?.replaceAll('-', '.');

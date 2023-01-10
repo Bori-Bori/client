@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import boardState from '../../../recoil/board';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { postComments } from '../../../apis/comment';

@@ -1,5 +1,5 @@
 import { boardAxiosInstance } from './axiosInstance';
 
-export const GetBoard = (boardId: string) => {
+export const getBoard = (boardId: string) => {
   return boardAxiosInstance.get(`/api/board/${boardId}`);
 };
