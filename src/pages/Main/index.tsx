@@ -1,10 +1,10 @@
 import React from 'react';
-import Category from './components/Category';
-import Slide from './components/Slide';
+import Category from './components/category';
+import Hotrank from './components/hotrank';
 const index = () => {
   return (
     <>
-      <Slide />
+      <Hotrank />
       <Category />
     </>
   );

@@ -4,18 +4,22 @@ import styled from 'styled-components';
 type SlideType = {
   latestSort: boolean;
 };
+type SlideButtonProps = {
+  state: boolean;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const SlideButton = () => {
+const SlideButton = ({ state, setState }: SlideButtonProps) => {
   const [latestSort, setLatestSort] = useState(true);
 
   const slideHandler = () => {
-    setLatestSort((prev) => !prev);
+    setState((prev) => !prev);
   };
 
   return (
     <BtnWrapper>
       <CheckBox type="checkbox" id="toggleBtn" onChange={slideHandler} />
-      <ButtonLabel htmlFor="toggleBtn" latestSort={latestSort} />
+      <ButtonLabel htmlFor="toggleBtn" latestSort={state} />
     </BtnWrapper>
   );
 };
@@ -34,7 +38,7 @@ const CheckBox = styled.input`
 const ButtonLabel = styled.label<SlideType>`
   position: relative;
   z-index: 10;
-  width: 12rem;
+  width: 11rem;
   height: 3rem;
   border-radius: 2em;
   background-color: ${(props) => props.theme.colors.grey5};
@@ -47,7 +51,7 @@ const ButtonLabel = styled.label<SlideType>`
     padding-left: 1em;
     justify-content: flex-start;
     align-items: center;
-    width: 10rem;
+    width: 9rem;
     height: 3rem;
     color: ${(props) => props.theme.colors.grey1};
     font-size: ${(props) => props.theme.fontSize.body02};
@@ -60,11 +64,11 @@ const ButtonLabel = styled.label<SlideType>`
     display: flex;
     position: relative;
     content: '페이지 순';
-    width: 6rem;
+    width: 5.5rem;
     height: 3rem;
     justify-content: center;
     align-items: center;
-    left: 6rem;
+    left: 5.5rem;
     font-weight: ${(props) => props.theme.fontWeight.bold};
     font-size: ${(props) => props.theme.fontSize.body02};
     line-height: ${(props) => props.theme.lineHeight.lh20};
@@ -84,7 +88,7 @@ const ButtonLabel = styled.label<SlideType>`
     };
     &::after {
       content: '최신 댓글 순';
-      width: 6rem;
+      width: 5.5rem;
       height: 3rem;
       left: 0rem;
     }
