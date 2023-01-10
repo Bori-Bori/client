@@ -7,6 +7,7 @@ type ButtonProps = {
   className: string;
   onClick?: () => void;
   children?: ReactNode;
+  disabled?: boolean;
 };
 
 const CommonButton = ({ className, onClick, children }: ButtonProps) => {
@@ -24,4 +25,5 @@ const ButtonWrapper = styled.button`
   outline: none;
   align-items: center;
   border-radius: 20px;
+  font-family: inherit;
 `;

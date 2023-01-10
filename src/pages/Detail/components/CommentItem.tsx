@@ -1,113 +1,105 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 
-import sortCommentAtom from '../../../recoil/sortComment';
 import ToggleButton from './ToggleButton';
-import BubbleBox from './BubbleBox';
-import InputComment from './InputComment';
-import ReplyComment from './ReplyComment';
 
 type CommentItemProps = {
+  id?: string;
   text: string;
   writer: string;
-  publishDate: string;
-  replyNum: string;
+  publishDate?: string;
+  userProfileImagePath: string;
+  replyNum?: string;
+  isReply: boolean;
 };
-const CommentItem = ({ text, writer, publishDate, replyNum }: CommentItemProps) => {
-  const curSortState = useRecoilValue(sortCommentAtom);
 
-  const [commentIsOpened, setCommentIsOpened] = useState(false);
-  const commentOpenHandler = () => {
-    setCommentIsOpened((prev) => !prev);
-  };
+const CommentItem = ({ id, text, writer, publishDate, userProfileImagePath, replyNum, isReply }: CommentItemProps) => {
+  const formattedPublishDate = publishDate?.slice(2, 16).split('T').join(' ').replaceAll('-', '.');
+  // const replyOpenHandler = () => {
+  //   replyIsOpenFn((prev) => !prev);
+  // };
+
   return (
-    <article>
-      <CommnetItemWrapper>
-        {curSortState && (
-          <BubbleWrapper>
-            <BubbleIcon className="commentPageBubble" text="122" />
-          </BubbleWrapper>
-        )}
+    <CommentTextWrapper>
+      <div>
+        <UserImage src={userProfileImagePath} />
+      </div>
+      <CommentInfo>
+        <Writer>{writer}</Writer>
+        <PublishDate>
+          <span>{formattedPublishDate}</span>
+          <NewCommentBadge>N</NewCommentBadge>
+        </PublishDate>
+      </CommentInfo>
+      <CommentText>{text}</CommentText>
 
-        <CommentTextWrapper>
-          <div>
-            <UserImage />
-          </div>
-          <CommentInfo>
-            <span>{writer}</span>
-            <span>{publishDate}</span>
-          </CommentInfo>
-          <CommentText>{text}</CommentText>
-          <ToggleButton
-            className="toggleButton"
-            onClick={commentOpenHandler}
-            isOpened={commentIsOpened}
-            replyNumber={replyNum}
-          />
-        </CommentTextWrapper>
-      </CommnetItemWrapper>
-      {commentIsOpened && <ReplyComment />}
-    </article>
+      {/* {!isReply && (
+        <ToggleButton
+          className="toggleButton"
+          onClick={replyOpenHandler}
+          isOpened={replyIsOpen}
+          replyNumber={replyNum}
+        />
+      )} */}
+    </CommentTextWrapper>
   );
 };
 
 export default CommentItem;
 
-const CommnetItemWrapper = styled.li`
-  display: flex;
-  list-style: none;
-  align-items: center;
-`;
+// const CommnetItemWrapper = styled.li``;
 
 const CommentTextWrapper = styled.div`
+  width: 100%;
+  list-style: none;
+  /* border-bottom: 1px solid ${(props) => props.theme.colors.grey5}; */
   display: flex;
   align-items: center;
   width: 100%;
-
   padding: 20px 0;
-  li {
+  /* li {
     list-style: none;
-  }
-`;
-
-const BubbleWrapper = styled.div`
-  min-width: 50px;
-  margin-right: 15px;
-`;
-const BubbleIcon = styled(BubbleBox)`
-  &::before {
-    content: '';
-    position: absolute;
-    border-top: 8px solid transparent;
-    border-left: 12px solid ${(props) => props.theme.colors.secondary2};
-    border-right: 0px solid transparent;
-    border-bottom: 5px solid transparent;
-    top: 8px;
-    left: 95%;
-  }
+  } */
 `;
 
 const UserImage = styled.img`
-  /* data 받아오기 전 img 대용 styling*/
   width: 52px;
   height: 52px;
-  background-color: grey;
   border-radius: 50%;
 `;
 const CommentInfo = styled.div`
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
   margin-left: 12px;
   font-size: ${(props) => props.theme.fontSize.body02};
   line-height: ${(props) => props.theme.lineHeight.lh20};
   > span:first-child {
-    font-weight: ${(props) => props.theme.fontWeight.bold};
   }
 `;
 
+const Writer = styled.span`
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
+
+const PublishDate = styled.div`
+  color: ${(props) => props.theme.colors.grey1};
+`;
+
+const NewCommentBadge = styled.span`
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-left: 4px;
+  line-height: ${(props) => props.theme.lineHeight.lh22};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  text-align: center;
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.notice1};
+  border-radius: 50%;
+`;
+
 const CommentText = styled.div`
-  /* width: 70%; */
   flex: 1;
   word-wrap: break-word;
   margin: 0 40px 0 50px;
