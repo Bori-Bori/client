@@ -10,11 +10,10 @@ import { useParams } from 'react-router-dom';
 
 type InputCommentProps = {
   className: string;
-  onClick: () => void;
   placeholder: string;
 };
 
-const InputCommentWithPage = ({ className, onClick, placeholder }: InputCommentProps) => {
+const InputCommentWithPage = ({ className, placeholder }: InputCommentProps) => {
   const queryClient = useQueryClient();
   const maxPage = '524'; //서버에서 받아올 값
   const [targetPage, setTargetPage] = useState('0');
