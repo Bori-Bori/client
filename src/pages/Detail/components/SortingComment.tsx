@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
-import sortCommentAtom from '../../../recoil/sortComment';
+import { sortCommentAtom } from '../../../recoil/sortComment';
 import SlideButton from './SlideButton';
 import SlideRange from './SlideRange';
 

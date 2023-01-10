@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import InputPageButton from '../components/InputPageButton';
 import prevButton from '../../../assets/icons/prv-bk-20.png';
 import nextButton from '../../../assets/icons/nxt-bk-20.png';
 import BubbleBox from '../components/BubbleBox';
+import { slideRangeValueAtom } from '../../../recoil/sortComment';
 
 type PassedValue = {
   passedValue: number;
@@ -17,7 +19,7 @@ type PageValue = {
 const SlideRange = () => {
   const minPage = '1';
   const maxPage = '524'; //server에서 받아올 값
-  const [curPage, setCurPage] = useState('1');
+  const [rangeValue, setRangeValue] = useRecoilState(slideRangeValueAtom);
   const [passedValue, setPassedValue] = useState(0);
   let rangeInputWidth;
   let enteredValue = '';
@@ -29,18 +31,18 @@ const SlideRange = () => {
   useEffect(() => {
     setTimeout(() => {
       rangeInputWidth = rangeInputRef.current!.clientWidth;
-      setBubbleIconOffset((parseInt(curPage) / rangeInputWidth) * 83);
+      setBubbleIconOffset((parseInt(rangeValue) / rangeInputWidth) * 83);
     }, 1);
-  }, [rangeInputRef, rangeInputWidth, curPage]);
+  }, [rangeInputRef, rangeInputWidth, rangeValue]);
 
   const onChangeRangeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
     enteredValue = e.target.value.replace(/[^0-9.]/g, '');
     if (enteredValue === '') {
       setPassedValue(0);
-      setCurPage('0');
+      setRangeValue('0');
       return;
     }
-    setCurPage(enteredValue);
+    setRangeValue(enteredValue);
 
     const computedValue =
       ((parseInt(enteredValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
@@ -49,35 +51,35 @@ const SlideRange = () => {
   };
 
   useEffect(() => {
-    if (curPage.length > 1 && curPage[0] === '0') {
-      const newCurPage = curPage.slice(1);
-      setCurPage(newCurPage);
+    if (rangeValue.length > 1 && rangeValue[0] === '0') {
+      const newrangeValue = rangeValue.slice(1);
+      setRangeValue(newrangeValue);
     }
-  }, [curPage]);
+  }, [rangeValue]);
 
   //PrevButton
   const onClickPrevButton = () => {
-    if (parseInt(curPage) <= 1) {
+    if (parseInt(rangeValue) <= 0) {
       return;
     }
-    setCurPage((prev) => (parseInt(prev) - 1).toString());
-    const computedValue = ((parseInt(curPage) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
+    setRangeValue((prev) => (parseInt(prev) - 1).toString());
+    const computedValue = ((parseInt(rangeValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
     setPassedValue(computedValue);
   };
 
   //NextButton
   const onClickNextButton = () => {
-    if (parseInt(curPage) >= parseInt(maxPage)) {
+    if (parseInt(rangeValue) >= parseInt(maxPage)) {
       return;
     }
-    setCurPage((prev) => (parseInt(prev) + 1).toString());
-    const computedValue = ((parseInt(curPage) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
+    setRangeValue((prev) => (parseInt(prev) + 1).toString());
+    const computedValue = ((parseInt(rangeValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
     setPassedValue(computedValue);
   };
 
   return (
     <RangeWrapper>
-      <BubbleIcon className="currentPageBubble" text={curPage} offset={bubbleIconOffset} />
+      <BubbleIcon className="currentPageBubble" text={rangeValue} offset={bubbleIconOffset} />
       <RangeBar
         ref={rangeInputRef}
         type="range"
@@ -85,11 +87,11 @@ const SlideRange = () => {
         max={maxPage}
         step="1"
         onChange={onChangeRangeBar}
-        value={curPage}
+        value={rangeValue}
         passedValue={passedValue}
       />
       <PrevButtonImg src={prevButton} onClick={onClickPrevButton} />
-      <InputPageButton value={curPage} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
+      <InputPageButton value={rangeValue} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
       <NextButtonImg src={nextButton} onClick={onClickNextButton} />
     </RangeWrapper>
   );

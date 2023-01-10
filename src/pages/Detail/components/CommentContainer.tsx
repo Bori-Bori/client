@@ -94,10 +94,3 @@ const BubbleIcon = styled(BubbleBox)`
     left: 95%;
   }
 `;
-
-// const CommentText = styled.div`
-//   flex: 1;
-//   word-wrap: break-word;
-//   margin: 0 40px 0 50px;
-//   font-size: ${(props) => props.theme.fontSize.body02};
-// `;

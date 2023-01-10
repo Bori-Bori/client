@@ -7,20 +7,19 @@ type postCommentDataType = {
 
 type getCommentDataType = {
   boardId: string;
-  curSortState: boolean;
+  searchOrder: string;
   size: number;
-  bookPage: number;
+  bookPage: number | undefined;
   pageParam: number;
 };
 
-export const getComments = async ({ boardId, curSortState, size, bookPage, pageParam }: getCommentDataType) => {
+export const getComments = async ({ boardId, searchOrder, size, bookPage, pageParam }: getCommentDataType) => {
+  const path = `/api/board/${boardId}/comment`;
+  const params = { order: searchOrder, page: pageParam, size, bookPage };
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
-
-  const path = `/api/board/${boardId}/comment`;
-  const params = { order: curSortState, page: pageParam, size, bookPage };
 
   const response = await boardAxiosInstance.get(path, { params, headers });
   const { items, isLast } = response.data.content;

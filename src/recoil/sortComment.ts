@@ -1,8 +1,11 @@
 import { atom } from 'recoil';
 
-const sortCommentAtom = atom({
+export const sortCommentAtom = atom({
   key: 'sortCommentAtom',
   default: true,
 });
 
-export default sortCommentAtom;
+export const slideRangeValueAtom = atom({
+  key: 'slideRangeValue',
+  default: '0',
+});

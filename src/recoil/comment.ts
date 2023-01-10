@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
-type commentsListAtomType = {
+
+export type commentsListAtomType = {
   comment: string;
   createdAt: string;
   id: string;

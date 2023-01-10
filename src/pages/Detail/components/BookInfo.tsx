@@ -21,7 +21,7 @@ const BookInfo = () => {
     queryKey: ['bookInfo', isbn],
     queryFn: () => getBoard(isbn),
   });
-  
+
   const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
     data?.data.content || '';
   const eidtPubDate = pubDate?.replaceAll('-', '.');

@@ -6,7 +6,7 @@ type postReplyDataType = {
 
 export const getReply = async (commentId: string, size: number, page: number) => {
   const path = `/api/comment/${commentId}/reply`;
-  const params = { size , page };
+  const params = { size, page };
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',

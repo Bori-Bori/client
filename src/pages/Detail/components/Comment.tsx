@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
 
-import sortCommentAtom from '../../../recoil/sortComment';
-import commentsListAtom, { commentIsLastAtom } from '../../../recoil/comment';
+import { sortCommentAtom } from '../../../recoil/sortComment';
+import { slideRangeValueAtom } from '../../../recoil/sortComment';
 import commentInputHeight from '../../../recoil/commentInputHeight';
-import boardState from '../../../recoil/board';
-import CommentItem from './CommentItem';
+import CommentContainer from './CommentContainer';
 import CommonButton from '../../../components/CommonButton';
-import { getComments } from '../../../apis/comment';
 import { useParams } from 'react-router-dom';
+import useCommentQuery from '../../../hooks/useCommentQuery';
+import commentImg from '../../../assets/icons/comment-gr-60.png';
 
 type Comment = {
   comment: string;
@@ -26,75 +25,75 @@ type marginProps = {
   margin: number;
 };
 
-interface IfetchNextPage {
-  isLast: boolean;
-  nextPage: number;
-  items: Comment[];
-}
-
 const Comment = () => {
-  const [curSortState, setCurSortState] = useRecoilState(sortCommentAtom);
-  const [commentsList, setCommentsList] = useRecoilState(commentsListAtom);
+  const curSortState = useRecoilValue(sortCommentAtom);
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
-  const [commentIsLast, setCommentIsLast] = useRecoilState(commentIsLastAtom);
   const params = useParams();
 
   const boardId = params.id!;
   const size = 5; // 고정값
-  const bookPage = 1; //고정값
+  const slideRangeValue = useRecoilValue(slideRangeValueAtom);
+  const bookPage = parseInt(slideRangeValue);
+  const searchOrder = curSortState ? 'recent' : 'page';
 
-  const { fetchNextPage, status } = useInfiniteQuery({
-    queryKey: ['comments', boardId, curSortState, size, bookPage],
-    queryFn: ({ pageParam = 0 }) => getComments({ boardId, curSortState, size, bookPage, pageParam }),
-    onSuccess: (data) => {
-      const newComments: Comment[] = [];
-      data.pages.map((page) => newComments.push(...page.items));
-      setCommentsList(newComments);
+  const { fetchNextPage, status, commentsList, commentIsLast } = useCommentQuery(boardId, searchOrder, size, bookPage);
 
-      const arrLastIndex = data.pages.length;
-      const newIsLast = {
-        isLast: data.pages[arrLastIndex - 1].isLast,
-      };
-      setCommentIsLast(newIsLast);
-    },
-    getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage + 1 : undefined),
-  });
+  // useEffect(() => {
+  //   const setTimeountFunc = setTimeout(() => {
+  //     console.log('bookPage 설정');
+  //   }, 500);
+  //   return () => {
+  //     clearTimeout(setTimeountFunc);
+  //     console.log('bookPage ');
+  //   };
+  // }, [bookPage]);
 
   const onClickShowMoreCommentBtn = () => {
     fetchNextPage();
   };
 
+  if (status === 'loading') {
+    return <p>loading...</p>;
+  }
   return (
-    <CommentContainer margin={inputWrapperHeight}>
-      {status === 'loading' ? (
-        <p>loading...</p>
-      ) : (
-        // 에러 페이지도 만들기
-        commentsList.map((comment: Comment) => (
-          <CommentItem
-            id={comment.id}
+    <CommentWrapper margin={inputWrapperHeight}>
+      {curSortState || (
+        <CommentNumberAlert>
+          해당 페이지 댓글 <Strong>{commentsList.length}</Strong>건
+        </CommentNumberAlert>
+      )}
+      {commentsList.length ? (
+        commentsList.map((item: Comment) => (
+          <CommentContainer
             key={Math.random()}
-            text={comment.comment}
-            writer={comment.writer}
-            publishDate={comment.createdAt.slice(0, 10)}
-            replyNum={comment.replyNum}
-            pageNum={comment.page}
-            userProfileImagePath={comment.userProfileImagePath}
+            id={item.id}
+            comment={item.comment}
+            writer={item.writer}
+            createdAt={item.createdAt}
+            replyNum={item.replyNum}
+            userProfileImagePath={item.userProfileImagePath}
+            page={item.page}
           />
         ))
+      ) : (
+        <NoCommentAlertWrapper>
+          <img src={commentImg} />
+          <span>첫번째 댓글을 남겨주세요!</span>
+        </NoCommentAlertWrapper>
       )}
+
       {!commentIsLast.isLast && (
         <ShowMoreCommentBtn className="showMoreCommentBtn" onClick={onClickShowMoreCommentBtn}>
           댓글 더보기
         </ShowMoreCommentBtn>
       )}
-    </CommentContainer>
+    </CommentWrapper>
   );
 };
 
 export default Comment;
 
-const CommentContainer = styled.article<marginProps>`
+const CommentWrapper = styled.article<marginProps>`
   width: 100%;
   margin-bottom: ${(props) => props.margin}px;
 `;
@@ -108,4 +107,27 @@ const ShowMoreCommentBtn = styled(CommonButton)`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.secondary1};
   font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
+const CommentNumberAlert = styled.span`
+  display: inline-block;
+  margin: 33px 0 10px;
+  color: ${(props) => props.theme.colors.grey1};
+`;
+
+const Strong = styled.b`
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
+const NoCommentAlertWrapper = styled.div`
+  width: 100%;
+  height: 196px;
+  margin: 0 auto;
+  text-align: center;
+  > img {
+    margin-top: 43px;
+  }
+  > span {
+    display: block;
+    margin-top: 20px;
+    color: ${(props) => props.theme.colors.grey1};
+  }
 `;
