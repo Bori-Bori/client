@@ -27,7 +27,11 @@ const CommentContainer = ({ id, comment, writer, createdAt, replyNum, userProfil
   };
   return (
     <CommentItemContainer>
-      {curSortState && <BubbleWrapper>{<BubbleIcon className="commentPageBubble" text={page} />}</BubbleWrapper>}
+      {curSortState && (
+        <BubbleWrapper>
+          <BubbleIcon className="commentPageBubble" text={page} />
+        </BubbleWrapper>
+      )}
       <CommentItemWrapper>
         <CommentRow>
           <CommentItem

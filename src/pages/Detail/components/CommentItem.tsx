@@ -1,8 +1,5 @@
-import React, { SetStateAction, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-import ToggleButton from './ToggleButton';
 
 type CommentItemProps = {
   id?: string;
@@ -15,10 +12,17 @@ type CommentItemProps = {
 };
 
 const CommentItem = ({ id, text, writer, publishDate, userProfileImagePath, replyNum, isReply }: CommentItemProps) => {
+  const [commentIsNew, setCommentIsNew] = useState(false);
+
   const formattedPublishDate = publishDate?.slice(2, 16).split('T').join(' ').replaceAll('-', '.');
-  // const replyOpenHandler = () => {
-  //   replyIsOpenFn((prev) => !prev);
-  // };
+  const nowDate = new Date();
+  const commentDate = publishDate && new Date(publishDate);
+
+  useEffect(() => {
+    commentDate && (nowDate.getTime() - commentDate.getTime()) / (1000 * 60 * 60) <= 24
+      ? setCommentIsNew(true)
+      : setCommentIsNew(false);
+  }, []);
 
   return (
     <CommentTextWrapper>
@@ -29,38 +33,23 @@ const CommentItem = ({ id, text, writer, publishDate, userProfileImagePath, repl
         <Writer>{writer}</Writer>
         <PublishDate>
           <span>{formattedPublishDate}</span>
-          <NewCommentBadge>N</NewCommentBadge>
+          {commentIsNew && <NewCommentBadge>N</NewCommentBadge>}
         </PublishDate>
       </CommentInfo>
       <CommentText>{text}</CommentText>
-
-      {/* {!isReply && (
-        <ToggleButton
-          className="toggleButton"
-          onClick={replyOpenHandler}
-          isOpened={replyIsOpen}
-          replyNumber={replyNum}
-        />
-      )} */}
     </CommentTextWrapper>
   );
 };
 
 export default CommentItem;
 
-// const CommnetItemWrapper = styled.li``;
-
 const CommentTextWrapper = styled.div`
   width: 100%;
   list-style: none;
-  /* border-bottom: 1px solid ${(props) => props.theme.colors.grey5}; */
   display: flex;
   align-items: center;
   width: 100%;
   padding: 20px 0;
-  /* li {
-    list-style: none;
-  } */
 `;
 
 const UserImage = styled.img`
@@ -69,8 +58,6 @@ const UserImage = styled.img`
   border-radius: 50%;
 `;
 const CommentInfo = styled.div`
-  /* display: flex; */
-  /* flex-direction: column; */
   margin-left: 12px;
   font-size: ${(props) => props.theme.fontSize.body02};
   line-height: ${(props) => props.theme.lineHeight.lh20};
@@ -83,11 +70,14 @@ const Writer = styled.span`
 `;
 
 const PublishDate = styled.div`
+  position: relative;
   color: ${(props) => props.theme.colors.grey1};
 `;
 
 const NewCommentBadge = styled.span`
   display: inline-block;
+  position: absolute;
+  top: -1px;
   width: 22px;
   height: 22px;
   margin-left: 4px;

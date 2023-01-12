@@ -95,7 +95,7 @@ export default Comment;
 
 const CommentWrapper = styled.article<marginProps>`
   width: 100%;
-  margin-bottom: ${(props) => props.margin}px;
+  margin-bottom: ${(props) => props.margin + 30}px;
 `;
 
 const ShowMoreCommentBtn = styled(CommonButton)`
