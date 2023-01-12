@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
@@ -21,6 +21,8 @@ type ReplyType = {
 };
 
 const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
+  // ReplyComments.displayName = 'ReplyComments';
+  const scrollPoint = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyCurPage, setReplyCurPage] = useState<number>(0);
@@ -52,8 +54,19 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
     postReplyMutate.mutate();
   };
 
+  // scrollToReply
+  const scrollDown = () => {
+    if (scrollPoint.current) {
+      scrollPoint.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  };
+
+  useEffect(() => {
+    scrollDown();
+  }, [replyList]);
+
   return (
-    <div>
+    <div ref={scrollPoint}>
       <ReplyInput
         className="ReplyInput"
         placeholder="대댓글을 입력하세요"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
@@ -26,6 +26,7 @@ type marginProps = {
 };
 
 const Comment = () => {
+  const scrollPoint = useRef<HTMLDivElement>(null);
   const curSortState = useRecoilValue(sortCommentAtom);
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
   const params = useParams();
@@ -47,6 +48,14 @@ const Comment = () => {
   //     console.log('bookPage ');
   //   };
   // }, [bookPage]);
+  
+  const scrollToBottom = () => {
+    scrollPoint.current?.scrollIntoView({behavior:'smooth' ,block:'end', inline: 'nearest'});
+  };
+
+  useEffect(()=>{
+  scrollToBottom();
+},[commentsList])
 
   const onClickShowMoreCommentBtn = () => {
     fetchNextPage();
@@ -56,7 +65,7 @@ const Comment = () => {
     return <p>loading...</p>;
   }
   return (
-    <CommentWrapper margin={inputWrapperHeight}>
+    <CommentWrapper margin={inputWrapperHeight} >
       {curSortState || (
         <CommentNumberAlert>
           해당 페이지 댓글 <Strong>{commentsList.length}</Strong>건
@@ -81,12 +90,12 @@ const Comment = () => {
           <span>첫번째 댓글을 남겨주세요!</span>
         </NoCommentAlertWrapper>
       )}
-
       {!commentIsLast.isLast && (
         <ShowMoreCommentBtn className="showMoreCommentBtn" onClick={onClickShowMoreCommentBtn}>
           댓글 더보기
         </ShowMoreCommentBtn>
       )}
+      <ScrollPointBox style={{height: '10px'}} ref={scrollPoint}></ScrollPointBox>
     </CommentWrapper>
   );
 };
@@ -131,3 +140,7 @@ const NoCommentAlertWrapper = styled.div`
     color: ${(props) => props.theme.colors.grey1};
   }
 `;
+
+const ScrollPointBox = styled.div`
+  /* height: 5px; */
+`

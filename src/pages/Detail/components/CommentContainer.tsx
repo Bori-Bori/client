@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
@@ -19,14 +19,24 @@ type Comment = {
 };
 
 const CommentContainer = ({ id, comment, writer, createdAt, replyNum, userProfileImagePath, page }: Comment) => {
+  // const replyContainerBox = useRef<HTMLDivElement>(null);
   const curSortState = useRecoilValue(sortCommentAtom);
   const [replyIsOpen, setReplyIsOpen] = useState(false);
   const [replyCount, setReplyCount] = useState(replyNum);
   const replyOpenHandler = () => {
     setReplyIsOpen((prev) => !prev);
   };
+  // const scrollDown = () => {
+  //   if (replyContainerBox.current) {
+  //     replyContainerBox.current.scrollTop = replyContainerBox.current.scrollHeight;
+  //   }
+  // };
+  // useEffect(() => {
+  //   scrollDown();
+  // }, [replyIsOpen]);
+
   return (
-    <CommentItemContainer>
+    <CommentItemContainer >
       {curSortState && (
         <BubbleWrapper>
           <BubbleIcon className="commentPageBubble" text={page} />
