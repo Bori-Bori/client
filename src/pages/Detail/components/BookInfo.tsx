@@ -17,16 +17,17 @@ const BookInfo = () => {
   const params = useParams();
   const isbn = params.id!;
 
-  const { isLoading, isError, data } = useQuery({
+  const { isError, data } = useQuery({
     queryKey: ['bookInfo', isbn],
     queryFn: () => getBoard(isbn),
   });
-
+ 
   const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
-    data?.data.content || '';
+  data?.data.content || '';
+
+  const [moreIntro, setMoreIntro] = useState(false);
   const eidtPubDate = pubDate?.replaceAll('-', '.');
   const editImagePath = imagePath?.replace('coversum', 'cover500');
-  const [moreIntro, setMoreIntro] = useState(false);
 
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
@@ -35,7 +36,7 @@ const BookInfo = () => {
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
-        <img src={editImagePath} alt={title} />
+        {imagePath ? <img src={editImagePath} alt={title} /> : <LoadingImg />}
         <BookInfoContent>
           <BookInfoRow1>
             <h2>{title}</h2>
@@ -89,6 +90,14 @@ const BookInfoContainer = styled.div`
     filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
   }
 `;
+
+const LoadingImg = styled.div`
+  width: 266px;
+  height: 396px;
+  background-color: ${props => props.theme.colors.grey1};
+  border-radius: 8px;
+`
+
 const BookInfoContent = styled.div`
   display: flex;
   flex-direction: column;
