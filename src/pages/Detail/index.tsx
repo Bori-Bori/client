@@ -14,7 +14,6 @@ type BookISBN = {
 const Detail = () => {
   return (
     <MainWrapper>
-      <Header />
       <ContentContainer>
         <BookInfo />
         <SortingComment />
@@ -64,6 +63,6 @@ const MainWrapper = styled.div`
 const ContentContainer = styled.div`
   position: relative;
   width: 1024px;
-  margin: 0 auto;
+  margin: 70px auto;
   padding: 24px;
 `;
