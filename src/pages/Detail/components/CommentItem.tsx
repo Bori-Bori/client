@@ -13,13 +13,14 @@ type CommentItemProps = {
 
 const CommentItem = ({ id, text, writer, publishDate, userProfileImagePath, replyNum, isReply }: CommentItemProps) => {
   const [commentIsNew, setCommentIsNew] = useState(false);
-
-  const formattedPublishDate = publishDate?.slice(2, 16).split('T').join(' ').replaceAll('-', '.');
+  const KR_TIME_DIFF = 18 * 60 * 60 * 1000;
+  const publishDate_millisecond = publishDate ? new Date(publishDate).getTime() : null;
+  const publishDate_KST = publishDate_millisecond ? new Date(publishDate_millisecond + KR_TIME_DIFF) : null;
+  const formattedPublishDate =
+    publishDate_KST && publishDate_KST.toISOString().slice(2, 16).split('T').join(' ').replaceAll('-', '.');
   const nowDate = new Date();
-  const commentDate = publishDate && new Date(publishDate);
-
   useEffect(() => {
-    commentDate && (nowDate.getTime() - commentDate.getTime()) / (1000 * 60 * 60) <= 24
+    publishDate_KST && (nowDate.getTime() - publishDate_KST.getTime()) / (1000 * 60 * 60) <= 24
       ? setCommentIsNew(true)
       : setCommentIsNew(false);
   }, []);
