@@ -79,21 +79,35 @@ const CommentItemContainer = styled.article`
 const CommentItemWrapper = styled.div`
   width: 100%;
   border-bottom: 1px solid ${(props) => props.theme.colors.grey5};
+  ${props => props.theme.media.tablet`
+    padding-bottom: 30px;
+  `}
+`;
+
+const CommentRow = styled.div`
+position: relative;
+display: flex;
+align-items: center;
+${props=> props.theme.media.tablet`
+    flex-direction: column;
+    `}
 `;
 
 const ButtonBox = styled.div`
   width: 100px;
+  ${props => props.theme.media.tablet`
+    position: absolute;
+    right: -25px;
+    bottom: -15px;
+  `}
 `;
-
-const CommentRow = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const BubbleWrapper = styled.div`
   min-width: 50px;
   margin-right: 15px;
   margin-top: 30px;
+  ${props => props.theme.media.tablet`
+    display: none;
+  `}
 `;
 
 const BubbleIcon = styled(BubbleBox)`

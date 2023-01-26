@@ -104,6 +104,7 @@ export default Comment;
 
 const CommentWrapper = styled.article<marginProps>`
   width: 100%;
+  padding: 0 20px;
   margin-bottom: ${(props) => props.margin + 30}px;
 `;
 

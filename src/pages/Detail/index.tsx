@@ -5,6 +5,7 @@ import BookInfo from './components/BookInfo';
 import SortingComment from './components/SortingComment';
 import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
+import ToggelInputCommentMoblie from './components/ToggleInputCommentMoblie';
 import Header from '../../components/Header';
 
 type BookISBN = {
@@ -19,6 +20,7 @@ const Detail = () => {
         <SortingComment />
         <Comment />
         <ToggleInputComment />
+        <ToggelInputCommentMoblie />
       </ContentContainer>
     </MainWrapper>
   );
@@ -29,7 +31,7 @@ export default Detail;
 const MainWrapper = styled.div`
   width: 100%;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   &::before {
     content: '';
     position: absolute;
@@ -58,11 +60,24 @@ const MainWrapper = styled.div`
     background-color: ${(props) => props.theme.colors.white};
     z-index: -1;
   }
+  ${props => props.theme.media.tablet`
+    
+    &::before {
+      top: -50px;
+    }
+    &:after {
+      top: 370px;
+    }
+  `}
 `;
 
 const ContentContainer = styled.div`
   position: relative;
-  width: 1024px;
+  width: 100%;
+  max-width: 1024px;
   margin: 70px auto;
-  padding: 24px;
+  /* padding: 24px; */
+  ${props => props.theme.media.tablet`
+  // padding: 0 20px;
+  `}
 `;

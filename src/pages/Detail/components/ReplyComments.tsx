@@ -66,7 +66,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
   }, [replyList]);
 
   return (
-    <div ref={scrollPoint}>
+    <ReplyInputWrapper ref={scrollPoint}>
       <ReplyInput
         className="ReplyInput"
         placeholder="대댓글을 입력하세요"
@@ -90,11 +90,17 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
       {replyList?.length > 0 && (
         <ReplyPagination pageLength={totalPageNum} curPage={replyCurPage} setCurPage={setReplyCurPage} />
       )}
-    </div>
+    </ReplyInputWrapper>
   );
 };
 
 export default ReplyComments;
+
+const ReplyInputWrapper = styled.article`
+  ${props => props.theme.media.tablet`
+    margin-top: 40px;
+  `}
+`
 
 const ReplyInput = styled(InputComment)`
   margin-bottom: 20px;

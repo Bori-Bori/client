@@ -71,16 +71,21 @@ from {
 
 const CommnetInputContainer = styled.article<inputIsOpenType>`
   position: fixed;
-  bottom: ${(props) => (props.inputIsOpen ? '0' : '-100px')};
+  bottom: ${(props) => (props.inputIsOpen ? '0px' : '-100px')};
   left: 50%;
   transform: translateX(-50%);
+  /* bottom: 0; */
   width: inherit;
+  /* height: 64px; */
   max-width: 1024px;
   z-index: 100;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.08);
   padding: 17px 24px;
   background-color: ${(props) => props.theme.colors.white};
   transition: all 0.5s linear;
+  ${props => props.theme.media.tablet`
+    display: none;
+  `}
 `;
 
 const InputWrapper = styled.div<inputIsOpenType>`
@@ -92,6 +97,9 @@ const InputWrapper = styled.div<inputIsOpenType>`
       : css`
           animation: ${InputFadeOut} 0.6s linear forwards;
         `}
+  ${props => props.theme.media.tablet`
+    display: none;
+  `}
 `;
 
 const WriteCommentBtn = styled.div<inputIsOpenType>`
@@ -103,11 +111,10 @@ const WriteCommentBtn = styled.div<inputIsOpenType>`
   width: 68px;
   height: 68px;
   top: -200px;
-  right: -80px;
+  right: 30px;
   border-radius: 50%;
   background-color: ${(props) => props.theme.colors.primary};
   opacity: ${(props) => (props.inputIsOpen ? 0 : 1)};
-  transition: all 10s linear;
   ${(props) =>
     props.inputIsOpen
       ? css`
@@ -127,7 +134,11 @@ const WriteCommentBtn = styled.div<inputIsOpenType>`
     font-weight: ${(props) => props.theme.fontWeight.bold};
     cursor: pointer;
   }
+  ${(props) => props.theme.media.tablet`
+    display: none;
+  `}
 `;
+
 const InputTitle = styled.div`
   display: flex;
   justify-content: space-between;
