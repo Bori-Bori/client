@@ -22,4 +22,9 @@ const SortingCommentContainer = styled.div`
   margin-top: 40px;
   display: flex;
   justify-content: space-between;
+  ${(props) => props.theme.media.tablet`
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+  `}
 `;
