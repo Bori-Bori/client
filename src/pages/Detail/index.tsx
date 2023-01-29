@@ -5,7 +5,7 @@ import BookInfo from './components/BookInfo';
 import SortingComment from './components/SortingComment';
 import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
-import Header from '../../components/Header';
+import Header from '../../components/header/Header';
 
 type BookISBN = {
   bookISBN: string;
