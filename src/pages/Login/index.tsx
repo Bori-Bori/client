@@ -6,7 +6,7 @@ import Modal from '../../components/Modal';
 import { ModalPortal } from '../../components/Modal';
 import kakaoIcon from '../../assets/icons/kakaoIcon.png';
 import googleIcon from '../../assets/icons//googleIcon.png';
-import showModal from '../../recoil/showModal';
+import showLoginModal from '../../recoil/showLoginModal';
 
 const Login = () => {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
@@ -15,7 +15,7 @@ const Login = () => {
   const KakaoRedirectHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-  const setShowLoginModal = useSetRecoilState(showModal);
+  const setShowLoginModal = useSetRecoilState(showLoginModal);
 
   const onHideLoginModal = () => {
     setShowLoginModal(false);
