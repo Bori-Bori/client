@@ -1,13 +1,11 @@
-import { authAxiosInstance } from './axiosInstance';
+import { authAxios } from './axiosInstance';
 
 export const notifications = async () => {
   const getToken = window.localStorage.getItem('user')!;
-  const Token = JSON.parse(getToken).accessToken || JSON.parse(getToken).refreshToken;
+  const accessToken = JSON.parse(getToken).accessToken;
   const headers = {
-    'Content-Type': 'application/json; charset=UTF-8',
-    Authorization: `Bearer ${Token}`,
-    Accept: 'application/json',
+    Authorization: `Bearer ${accessToken}`,
   };
-  const response = await authAxiosInstance.get(`/api/member/notification`, { headers });
+  const response = await authAxios.get(`/api/member/notification`, { headers });
   return response;
 };
