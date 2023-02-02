@@ -8,6 +8,10 @@ import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../components/CommonButton';
 import { getBoard } from '../../../apis/board';
+import { ThemeType } from '../../../styles/Theme';
+import { isPropertySignature } from 'typescript';
+import commentGrey from '../../../assets/icons/common_comment_gr_12.png';
+import userGrey from '../../../assets/icons/common_user_gr_16.png';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -17,16 +21,17 @@ const BookInfo = () => {
   const params = useParams();
   const isbn = params.id!;
 
-  const { isLoading, isError, data } = useQuery({
+  const { isError, data } = useQuery({
     queryKey: ['bookInfo', isbn],
     queryFn: () => getBoard(isbn),
   });
 
   const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
     data?.data.content || '';
+
+  const [moreIntro, setMoreIntro] = useState(false);
   const eidtPubDate = pubDate?.replaceAll('-', '.');
   const editImagePath = imagePath?.replace('coversum', 'cover500');
-  const [moreIntro, setMoreIntro] = useState(false);
 
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
@@ -35,10 +40,20 @@ const BookInfo = () => {
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
-        <img src={editImagePath} alt={title} />
+        {imagePath ? <img src={editImagePath} alt={title} /> : <LoadingImg />}
         <BookInfoContent>
           <BookInfoRow1>
             <h2>{title}</h2>
+            <BookInfoCountsRow>
+              <span>
+                <img src={commentGrey} />
+                12
+              </span>
+              <span>
+                <img src={userGrey} />
+                12
+              </span>
+            </BookInfoCountsRow>
             {category1 && <span>#{category1} </span>}
             {category2 && <span>#{category2} </span>}
             {category3 && <span>#{category3} </span>}
@@ -73,12 +88,17 @@ const BookInfo = () => {
 export default BookInfo;
 
 const BookInfoWrapper = styled.section`
-  padding-bottom: 40px;
+  padding:0 20px 40px;
   border-bottom: 1px solid ${(props) => props.theme.colors.grey4};
 `;
 
 const BookInfoContainer = styled.div`
   display: flex;
+  /* width: 100vw; */
+  ${(props) => props.theme.media.tablet`
+    // width: 100vw;
+    flex-direction: column;
+  `}
   & > img {
     position: relative;
     top: 10px;
@@ -87,21 +107,41 @@ const BookInfoContainer = styled.div`
     margin-right: 40px;
     border-radius: 8px;
     filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
+    ${(props) => props.theme.media.tablet`
+      width: 216px;
+      height: 320px;
+      margin: 0 auto;
+      top: 20px;
+    
+    `}
   }
 `;
+
+const LoadingImg = styled.div`
+  width: 266px;
+  height: 396px;
+  background-color: ${(props) => props.theme.colors.grey1};
+  border-radius: 8px;
+`;
+
 const BookInfoContent = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-bottom: 40px;
   color: ${(props) => props.theme.colors.white};
   font-weight: ${(props) => props.theme.fontWeight.regular};
+  ${(props) => props.theme.media.tablet`
+    top: 30px;
+  `}
 `;
 
 const BookInfoRow1 = styled.div`
   margin-bottom: 30px;
   h2 {
     display: block;
+    width: 65%;
     font-size: 2.25rem;
     font-weight: ${(props) => props.theme.fontWeight.bold};
     line-height: 2.9rem;
@@ -112,7 +152,46 @@ const BookInfoRow1 = styled.div`
     font-size: ${(props) => props.theme.fontSize.header02};
     line-height: ${(props) => props.theme.lineHeight.lh24};
   }
+
+  ${(props) => props.theme.media.tablet`
+  margin-bottom: 0px;
+    color: ${(props: any) => props.theme.colors.black};
+    & > h2 {
+      font-size: ${(props: any) => props.theme.fontSize.header01};
+      margin-top: 28px;
+      line-height: ${(props: any) => props.theme.lineHeight.lh26};
+    }
+    & > span {
+      position: relative;
+      top: 39px;
+      color: ${(props: any) => props.theme.colors.secondary1};
+      font-size: ${(props: any) => props.theme.fontSize.badge01};
+      line-height: ${(props: any) => props.theme.lineHeight.lh20}l;
+      margin-right: 5px;
+    }
+  `}
 `;
+
+const BookInfoCountsRow = styled.div`
+  display: none;
+  top: 33px;
+  ${(props) => props.theme.media.tablet`
+    display: block;
+    position: absolute;
+    right: 0;
+    & > span {
+      margin-left: 12px;
+      color: ${(props: any) => props.theme.colors.grey1};
+      font-size: ${(props: any) => props.theme.fontSize.badge01};
+      line-height: ${(props: any) => props.theme.lineHeight.lh20}l;
+      > img {
+        margin-right: 3px;
+      }
+    }
+
+  `}
+`;
+
 const BookInfoRow2 = styled.div`
   margin-bottom: 42px;
   h3 {
@@ -121,6 +200,19 @@ const BookInfoRow2 = styled.div`
     line-height: 2.25rem;
     margin-bottom: 8px;
   }
+  ${(props) => props.theme.media.tablet`
+  height: 0px;
+  margin-bottom: 0px;
+  h3{
+    color: ${(props: any) => props.theme.colors.grey1};
+    font-size: ${(props: any) => props.theme.fontSize.body02};
+    position: relative;
+    top: -25px;
+  }
+  span {
+      display: none;
+    }
+  `}
 `;
 const BookInfoRow3 = styled.div`
   > span {
@@ -134,6 +226,9 @@ const BookInfoRow3 = styled.div`
     vertical-align: -4px;
     cursor: pointer;
   }
+  ${(props) => props.theme.media.tablet`
+    display: none;
+  `}
 `;
 
 const BookIntro = styled.p<MoreIntro>`
@@ -153,6 +248,16 @@ const BookIntro = styled.p<MoreIntro>`
       -webkit-line-clamp: 2;
     
   `}
+  ${(props) => props.theme.media.tablet`
+    padding-top: 0;
+    margin-top: 70px;
+    ${(props: any) =>
+      props.moreIntro
+        ? null
+        : `
+        height: 77px;
+    `}
+  `}
 `;
 const ToggleIntroButton = styled(CommonButton)`
   display: block;
@@ -170,4 +275,8 @@ const ToggleIntroButton = styled(CommonButton)`
   font-family: inherit;
   border-radius: 24px;
   outline: none;
+  ${props => props.theme.media.tablet`
+    font-size: ${(props: any) => props.theme.fontSize.body02};
+    padding: 8px 14px;
+  `}
 `;

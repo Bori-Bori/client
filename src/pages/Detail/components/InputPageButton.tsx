@@ -13,8 +13,8 @@ type InputPageProps = {
 const InputPageButton = ({ className, value, maxPage, onChange }: InputPageProps) => {
   return (
     <InputPage className={className}>
-      <input placeholder="숫자 입력" value={value} onChange={onChange} />
-      p. / {maxPage}
+      <input placeholder="숫자만 입력" value={value} onChange={onChange} />
+      p. / {maxPage}p.
     </InputPage>
   );
 };
@@ -27,7 +27,7 @@ const InputPage = styled(CommonButton)`
   background-color: ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.grey1};
   > input {
-    width: 35px;
+    width: 65px;
     border: none;
     outline: none;
     font-weight: ${(props) => props.theme.fontWeight.bold};

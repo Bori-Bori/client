@@ -46,6 +46,9 @@ const PaginationContainer = styled.section`
   transform: translateX(-50%);
   padding-top: 20px;
   margin-bottom: 44px;
+  ${props => props.theme.media.tablet`
+    margin-bottom: 0px;
+  `}
 `;
 const PaginationWrapper = styled.div`
   display: flex;
