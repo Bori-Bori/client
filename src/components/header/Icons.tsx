@@ -9,6 +9,8 @@ import showModal from '../../recoil/showModal';
 
 import Notification from './Notification';
 import Search from './Search';
+import { useQuery } from '@tanstack/react-query';
+import { getUserInfo } from '../../apis/userInfo';
 
 const Icons = () => {
   const navigate = useNavigate();
@@ -17,19 +19,25 @@ const Icons = () => {
   const onClickLogin = () => {
     setShowLoginModal(true);
   };
+
+  const { data } = useQuery(['userInfo'], getUserInfo, {
+    refetchOnWindowFocus: false,
+    retry: 0,
+  });
+  const img = data?.data.content.profileImage;
   return (
     <IconWrap>
       <Search />
       {window.localStorage.getItem('user') ? (
         <>
           <Notification />
-          <MyPage
+          <ProfileImg
             onClick={() => {
               navigate('/mypage');
             }}
           >
-            <img src={user} alt="마이페이지" />
-          </MyPage>
+            <img src={img} alt="프로필이미지" />
+          </ProfileImg>
         </>
       ) : (
         <LoginBtn onClick={onClickLogin}>로그인</LoginBtn>
@@ -47,16 +55,15 @@ const IconWrap = styled.div`
   align-items: center;
   gap: 24px;
 `;
-const MyPage = styled.button`
+const ProfileImg = styled.button`
   cursor: pointer;
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 100%;
+  overflow: hidden;
   img {
-    width: 24px;
-    @media screen and (max-width: 768px) {
-      width: 18px;
-      margin-left: 27.5px;
-      display: flex;
-      align-items: center;
-    }
+    height: 100%;
   }
 `;
 const LoginBtn = styled.button`

@@ -54,9 +54,6 @@ const SearchWrap = styled.button`
   align-items: center;
   img {
     width: 24px;
-    @media screen and (max-width: 768px) {
-      width: 18px;
-    }
   }
 `;
 
