@@ -32,7 +32,7 @@ const ToggleBtnWrapper = styled(CommonButton)`
     height: 12px;
     margin-left: 6px;
   }
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     font-size: ${(props: any) => props.theme.fontSize.badge02}
   `}
 `;

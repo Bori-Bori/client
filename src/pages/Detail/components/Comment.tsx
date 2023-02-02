@@ -48,14 +48,14 @@ const Comment = () => {
   //     console.log('bookPage ');
   //   };
   // }, [bookPage]);
-  
+
   const scrollToBottom = () => {
-    scrollPoint.current?.scrollIntoView({behavior:'smooth' ,block:'end', inline: 'nearest'});
+    scrollPoint.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
 
-  useEffect(()=>{
-  scrollToBottom();
-},[commentsList])
+  useEffect(() => {
+    scrollToBottom();
+  }, [commentsList]);
 
   const onClickShowMoreCommentBtn = () => {
     fetchNextPage();
@@ -65,7 +65,7 @@ const Comment = () => {
     return <p>loading...</p>;
   }
   return (
-    <CommentWrapper margin={inputWrapperHeight} >
+    <CommentWrapper margin={inputWrapperHeight}>
       {curSortState || (
         <CommentNumberAlert>
           해당 페이지 댓글 <Strong>{commentsList.length}</Strong>건
@@ -95,7 +95,7 @@ const Comment = () => {
           댓글 더보기
         </ShowMoreCommentBtn>
       )}
-      <ScrollPointBox style={{height: '10px'}} ref={scrollPoint} />
+      <ScrollPointBox style={{ height: '10px' }} ref={scrollPoint} />
     </CommentWrapper>
   );
 };
@@ -144,4 +144,4 @@ const NoCommentAlertWrapper = styled.div`
 
 const ScrollPointBox = styled.div`
   /* height: 5px; */
-`
+`;

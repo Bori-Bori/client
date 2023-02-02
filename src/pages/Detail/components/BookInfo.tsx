@@ -88,7 +88,7 @@ const BookInfo = () => {
 export default BookInfo;
 
 const BookInfoWrapper = styled.section`
-  padding:0 20px 40px;
+  padding: 0 20px 40px;
   border-bottom: 1px solid ${(props) => props.theme.colors.grey4};
 `;
 
@@ -275,7 +275,7 @@ const ToggleIntroButton = styled(CommonButton)`
   font-family: inherit;
   border-radius: 24px;
   outline: none;
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     font-size: ${(props: any) => props.theme.fontSize.body02};
     padding: 8px 14px;
   `}
