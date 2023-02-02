@@ -95,7 +95,7 @@ const Comment = () => {
           댓글 더보기
         </ShowMoreCommentBtn>
       )}
-      <ScrollPointBox style={{height: '10px'}} ref={scrollPoint}></ScrollPointBox>
+      <ScrollPointBox style={{height: '10px'}} ref={scrollPoint} />
     </CommentWrapper>
   );
 };

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-import user from '../../assets/icons/user-yl-20.png';
-
 import showModal from '../../recoil/showModal';
 
 import Notification from './Notification';
@@ -20,10 +18,7 @@ const Icons = () => {
     setShowLoginModal(true);
   };
 
-  const { data } = useQuery(['userInfo'], getUserInfo, {
-    refetchOnWindowFocus: false,
-    retry: 0,
-  });
+  const { data } = useQuery(['userInfo'], getUserInfo);
   const img = data?.data.content.profileImage;
   return (
     <IconWrap>
@@ -63,7 +58,9 @@ const ProfileImg = styled.button`
   border-radius: 100%;
   overflow: hidden;
   img {
-    height: 100%;
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
   }
 `;
 const LoginBtn = styled.button`
