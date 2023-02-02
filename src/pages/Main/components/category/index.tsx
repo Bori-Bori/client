@@ -138,22 +138,22 @@ const Category = () => {
 
 export default Category;
 const Container = styled.section`
-  margin: 10rem 0;
+  padding: 10rem 0;
   @media screen and (max-width: 768px) {
-    margin: 5rem 0;
+    padding: 5rem 0;
   }
   @media screen and (min-width: 768px) and (max-width: 1024px) {
-    margin: 7.9rem 0;
+    padding: 7.9rem 0;
   }
   width: 100%;
 `;
 const CategoryTitle = styled.div`
-  margin-left: 5.4%;
+  padding-left: 5.4%;
   @media screen and (max-width: 768px) {
-    margin-left: 5.5%;
+    padding-left: 5.5%;
   }
   @media screen and (min-width: 768px) and (max-width: 1024px) {
-    margin-left: 3.125%;
+    padding-left: 3.125%;
   }
 `;
 const MainSelect = styled.ul`

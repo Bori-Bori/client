@@ -18,7 +18,7 @@ import Error from '../../../../components/Error';
 const CategoryBookList = () => {
   const category1 = useRecoilValue(mainCategoryState);
   const category2 = useRecoilValue(middleCategoryState);
-  const category3 = useRecoilValue(subCategoryState);
+  const category3 = useRecoilValue(subCategoryState).substr(2);
 
   interface IbookList {
     isbn: number;

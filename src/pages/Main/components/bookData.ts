@@ -78,7 +78,7 @@ export const bookData: bookType = [
   },
   {
     id: 4,
-    TITLE: '셜록 홈스 이스케이프 룸 퍼즐 ',
+    TITLE: '셜록 홈스 이스케이프 룸 퍼즐',
     AUTHOR: '제임스 해머모턴',
     KDC: '건강/취미',
     SUBJECT: '국내',
