@@ -64,6 +64,11 @@ const BookTitle = styled.p`
   font-size: 1.5rem;
   color: ${(props) => props.theme.colors.black};
   line-height: 2.375rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const Subject = styled.p`

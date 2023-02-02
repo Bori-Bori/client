@@ -97,7 +97,7 @@ export const bookData: bookType = [
     SUBJECT: '국내',
     BOOKBG: `${bookbg06}`,
     BOOGIMG: `${book06}`,
-    TITLE_URL: `9788936438838`,
+    TITLE_URL: `9788997943838`,
     category1: '국내도서',
     category2: '소설/시/희곡',
     category3: '한국소설',

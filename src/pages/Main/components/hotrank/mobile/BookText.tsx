@@ -81,6 +81,11 @@ const BookTitle = styled.p`
   font-size: ${(props) => props.theme.fontSize.header02};
   color: ${(props) => props.theme.colors.white};
   line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const BookAuthor = styled.p`

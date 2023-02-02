@@ -60,7 +60,7 @@ const SearchWrap = styled.button`
 const SearchTipWrap = styled.div`
   position: absolute;
   height: 48px;
-  bottom: -48px;
+  bottom: -58px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
