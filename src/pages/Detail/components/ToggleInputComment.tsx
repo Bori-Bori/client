@@ -83,7 +83,7 @@ const CommnetInputContainer = styled.article<inputIsOpenType>`
   padding: 17px 24px;
   background-color: ${(props) => props.theme.colors.white};
   transition: all 0.5s linear;
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     display: none;
   `}
 `;
@@ -97,7 +97,7 @@ const InputWrapper = styled.div<inputIsOpenType>`
       : css`
           animation: ${InputFadeOut} 0.6s linear forwards;
         `}
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     display: none;
   `}
 `;

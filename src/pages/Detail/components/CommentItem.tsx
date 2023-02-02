@@ -53,19 +53,19 @@ const CommentTextWrapper = styled.div`
   align-items: center;
   width: 100%;
   padding: 20px 0;
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     flex-direction: column;
   `}
 `;
 
 const UserImageWrapper = styled.div`
   margin-right: 10px;
-`
+`;
 const UserImage = styled.img`
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     width: 32px;
     height: 32px;
   `}
@@ -78,8 +78,8 @@ const CommentInfo = styled.div`
   line-height: ${(props) => props.theme.lineHeight.lh20};
   & > span:first-child {
   }
-  
-  ${props => props.theme.media.tablet`
+
+  ${(props) => props.theme.media.tablet`
       width: 100%;
     /* margin: 0 auto; */
     // justify-content: center;
@@ -119,7 +119,7 @@ const CommentText = styled.div`
   word-wrap: break-word;
   margin: 0 40px 0 50px;
   font-size: ${(props) => props.theme.fontSize.body02};
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
   width: 100%;
   margin-top: 8px;
   `}

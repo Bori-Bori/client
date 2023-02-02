@@ -59,7 +59,7 @@ const MainWrapper = styled.div`
     background-color: ${(props) => props.theme.colors.white};
     z-index: -1;
   }
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     
     &::before {
       top: -50px;
@@ -76,7 +76,7 @@ const ContentContainer = styled.div`
   max-width: 1024px;
   margin: 70px auto;
   /* padding: 24px; */
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
   // padding: 0 20px;
   `}
 `;

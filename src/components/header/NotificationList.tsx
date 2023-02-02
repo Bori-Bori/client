@@ -73,6 +73,9 @@ const NotificationContainer = styled.div`
   border: 1.5px solid ${(props) => props.theme.colors.primary};
   border-radius: 8px;
   padding: 18px 20px;
+  @media screen and (max-width: 768px) {
+    width: calc(100% - 40px);
+  }
 `;
 
 const NotificationNum = styled.h2`
