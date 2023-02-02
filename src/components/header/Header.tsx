@@ -4,14 +4,18 @@ import { Outlet, useMatch, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { throttle } from 'lodash';
 
-import logo from '../assets/icons/logo-horizon-26.png';
-import search from '../assets/icons/search-yl-20.png';
-import user from '../assets/icons/user-yl-20.png';
-import close from '../assets/icons/common_close_bk_24.png';
+import logo from '../../assets/icons/logo-horizon-26.png';
+import search from '../../assets/icons/search-yl-20.png';
+import user from '../../assets/icons/user-yl-20.png';
+import close from '../../assets/icons/common_close_bk_24.png';
+import bell from '../../assets/icons/common_bell_yl_24.png';
+import triangle from '../../assets/icons/common_alarm_triangle.png';
 
-import showModal from '../recoil/showModal';
+import showModal from '../../recoil/showModal';
+import NotificationBox from './NotificationBox';
 
 const Header = () => {
+  const [showNotification, setShowNotification] = useState(false);
   const match = useMatch('/search');
   const navigate = useNavigate();
   const setShowLoginModal = useSetRecoilState(showModal);
@@ -30,7 +34,9 @@ const Header = () => {
   const onClickSearch = () => {
     navigate('/search');
   };
-
+  const onClickNotification = () => {
+    setShowNotification(!showNotification);
+  };
   const [isNavOn, setIsNavOn] = useState(true);
 
   //이전 스크롤 초기값
@@ -63,13 +69,13 @@ const Header = () => {
         <HeaderTitle>책 읽고 오순도순 이야기하는 공간</HeaderTitle>
       </LogoWrap>
       <RightWrap>
-        <SearchWrap>
+        <IconWrap>
           {match ? (
             <Close onClick={onClickClose}>
               <img src={close} alt="닫기아이콘" />
             </Close>
           ) : (
-            <>
+            <SearchWrap>
               <Search onClick={onClickSearch}>
                 <img src={search} alt="검색" />
               </Search>
@@ -79,8 +85,14 @@ const Header = () => {
                 </Triangle>
                 <SearchTip>빠르게 찾아보세요</SearchTip>
               </SearchTipWrap>
-            </>
+            </SearchWrap>
           )}
+          <NotificationWrap>
+            <NotificationButton onClick={onClickNotification}>
+              <img src={bell} alt="알림" />
+              {showNotification && <TriangleIcon src={triangle} alt="삼각형아이콘" />}
+            </NotificationButton>
+          </NotificationWrap>
           <MyPage
             onClick={() => {
               navigate('/mypage');
@@ -88,7 +100,8 @@ const Header = () => {
           >
             <img src={user} alt="마이페이지" />
           </MyPage>
-        </SearchWrap>
+        </IconWrap>
+        {showNotification && <NotificationBox />}
         <LoginBtn onClick={onClickLogin}>로그인</LoginBtn>
       </RightWrap>
       <Outlet />
@@ -125,7 +138,6 @@ const RightWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 28px;
-  position: relative;
 `;
 const Line = styled.div`
   width: 80px;
@@ -144,7 +156,7 @@ const HeaderTitle = styled.div`
   }
 `;
 
-const SearchWrap = styled.div`
+const IconWrap = styled.div`
   position: relative;
   height: 60px;
   display: flex;
@@ -162,6 +174,9 @@ const Close = styled.button`
     }
   }
 `;
+const SearchWrap = styled.div`
+  position: relative;
+`;
 const Search = styled.button`
   cursor: pointer;
   display: flex;
@@ -173,6 +188,19 @@ const Search = styled.button`
       width: 18px;
     }
   }
+`;
+
+const NotificationButton = styled.button`
+  position: relative;
+`;
+const TriangleIcon = styled.img`
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+const NotificationWrap = styled.div`
+  position: relative;
 `;
 const MyPage = styled.button`
   cursor: pointer;
@@ -190,7 +218,7 @@ const MyPage = styled.button`
 const SearchTipWrap = styled.div`
   position: absolute;
   height: 48px;
-  bottom: -36px;
+  bottom: -48px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;

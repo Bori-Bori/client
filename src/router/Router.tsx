@@ -5,7 +5,7 @@ import Main from '../pages/Main';
 import Search from '../pages/Search';
 import Detail from '../pages/Detail/index';
 import KakaoOauth from '../pages/Login/KakaoLogin';
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 
 function Router() {
   return (

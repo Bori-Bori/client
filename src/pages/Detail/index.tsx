@@ -6,7 +6,6 @@ import SortingComment from './components/SortingComment';
 import Comment from './components/Comment';
 import ToggleInputComment from './components/ToggleInputComment';
 import ToggelInputCommentMoblie from './components/ToggleInputCommentMoblie';
-import Header from '../../components/Header';
 
 type BookISBN = {
   bookISBN: string;
