@@ -7,6 +7,7 @@ import prevButton from '../../../assets/icons/prv-bk-20.png';
 import nextButton from '../../../assets/icons/nxt-bk-20.png';
 import BubbleBox from '../components/BubbleBox';
 import { slideRangeValueAtom } from '../../../recoil/sortComment';
+import { REPL_MODE_SLOPPY } from 'repl';
 
 type PassedValue = {
   passedValue: number;
@@ -91,8 +92,20 @@ const SlideRange = () => {
         passedValue={passedValue}
       />
       <PrevButtonImg src={prevButton} onClick={onClickPrevButton} />
-      <InputPageButton value={rangeValue} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
+      <StyledInputPageButton value={rangeValue} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
       <NextButtonImg src={nextButton} onClick={onClickNextButton} />
+      <PageInputMobileWrapper>
+        <PageButtonsWrapper>
+          <img src={prevButton} onClick={onClickPrevButton} />
+          <img src={nextButton} onClick={onClickNextButton} />
+        </PageButtonsWrapper>
+        <StyledInputPageButtonMobile
+          value={rangeValue}
+          className="inputPage"
+          onChange={onChangeRangeBar}
+          maxPage={maxPage}
+        />
+      </PageInputMobileWrapper>
     </RangeWrapper>
   );
 };
@@ -104,12 +117,16 @@ const RangeWrapper = styled.div`
   position: relative;
   width: 100%;
   align-items: center;
+  ${(props) => props.theme.media.tablet`
+    flex-direction: column;
+    padding-bottom: 20px;
+  `}
 `;
 
 const BubbleIcon = styled(BubbleBox)<PageValue>`
   position: absolute;
   top: -70%;
-  left: ${(props) => props.offset + 2.5}%;
+  left: ${(props) => props.offset + 1}%;
 
   &::before {
     content: '';
@@ -122,8 +139,14 @@ const BubbleIcon = styled(BubbleBox)<PageValue>`
     bottom: -25%;
     z-index: 0;
   }
+  ${(props) => props.theme.media.tablet`
+    font-size: 11px;
+    top: 20px;
+    left: ${(props: any) => props.offset * 0.7}%;
+  `}
 `;
 const RangeBar = styled.input<PassedValue>`
+  position: relative;
   flex: 1;
   -webkit-appearance: none;
   background: transparent;
@@ -146,12 +169,61 @@ const RangeBar = styled.input<PassedValue>`
     cursor: pointer;
   }
   margin: 0 20px;
+  ${(props) => props.theme.media.tablet`
+    width: 100%;
+    margin: 67px 0 25px;
+    ::-webkit-slider-thumb {
+      position: relative;
+      top: -5px;
+    }
+    ::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 12px;
+    }
+  `}
 `;
 
 const PrevButtonImg = styled.img`
   cursor: pointer;
+  ${(props) => props.theme.media.tablet`
+    display: none;
+  `}
 `;
 
 const NextButtonImg = styled.img`
   cursor: pointer;
+  ${(props) => props.theme.media.tablet`
+    display: none;
+  `}
 `;
+
+const StyledInputPageButton = styled(InputPageButton)`
+  ${(props) => props.theme.media.tablet`
+    display: none;
+  `}
+`;
+
+const PageInputMobileWrapper = styled.div`
+  display: none;
+  ${(props) => props.theme.media.tablet`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`}
+`;
+
+const StyledInputPageButtonMobile = styled(InputPageButton)`
+  display: none;
+  ${(props) => props.theme.media.tablet`
+    display: block;
+    // float: right;
+  `}
+`;
+
+const PageButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  > img  {
+    margin-right: 15px;
+  }
+`

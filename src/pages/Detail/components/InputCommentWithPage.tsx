@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { postComments } from '../../../apis/comment';
-import { useParams } from 'react-router-dom';
 
 type InputCommentProps = {
   className: string;
@@ -20,7 +20,7 @@ const InputCommentWithPage = ({ className, placeholder }: InputCommentProps) => 
   const params = useParams();
   const isbn = params.id!;
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeTargetPage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enteredValue = e.target.value.replace(/[^0-9.]/g, '');
     setTargetPage(enteredValue);
   };
@@ -52,7 +52,7 @@ const InputCommentWithPage = ({ className, placeholder }: InputCommentProps) => 
     >
       <InputPageWrapper>
         <span>책 페이지</span>
-        <InputPageButton value={targetPage} className="pageInput" onChange={onChange} maxPage={maxPage} />
+        <InputPageButton value={targetPage} className="pageInput" onChange={onChangeTargetPage} maxPage={maxPage} />
       </InputPageWrapper>
     </InputCommentWrapper>
   );
