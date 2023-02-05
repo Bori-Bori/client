@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 const showEditProfileModal = atom({
-  key: 'shoeEditProfileModal',
+  key: 'showEditProfileModal',
   default: false,
 })
 

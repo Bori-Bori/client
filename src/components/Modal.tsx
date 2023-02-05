@@ -9,9 +9,12 @@ type ModalProps = {
 };
 
 const Modal = ({ className, onClick, children }: ModalProps) => {
+  const preventBubbling = (event: React.MouseEvent) => {
+    event.stopPropagation()
+  }
   return (
     <Backdrop className={className} onClick={onClick}>
-      <ModalOverlay>{children}</ModalOverlay>
+      <ModalOverlay onClick={preventBubbling}>{children}</ModalOverlay>
     </Backdrop>
   );
 };
@@ -35,6 +38,7 @@ const Backdrop = styled.div`
 const ModalOverlay = styled.div`
   position: relative;
   display: inline-block;
+  max-width: 481px;
   top: 20vh;
   margin: 0 auto;
   padding: 100px 80px 40px;
@@ -43,4 +47,8 @@ const ModalOverlay = styled.div`
   z-index: 100;
   box-sizing: border-box;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
+  ${props => props.theme.media.tablet`
+    max-width: 320px;
+    padding: 60px 0 20px;
+  `}
 `;

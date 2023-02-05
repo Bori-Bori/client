@@ -1,13 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
 
+import showEditProfileModal from '../../../recoil/showEditProfileModal'
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 
 const Profile = () => {
+  const setShowEditProfileModal = useSetRecoilState(showEditProfileModal);
+
+  const onShowEditProfile = () => {
+    setShowEditProfileModal(true);
+  };
   return (
     // login 상태, logout 상태 다르게 보여야됨
     <ProfileWrapper>
-      <ProfileImg>
+      <ProfileImg onClick={onShowEditProfile}>
         <SettingIconWrapper>
           <img src={SettingIcon} />
         </SettingIconWrapper>

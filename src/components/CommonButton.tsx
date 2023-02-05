@@ -24,6 +24,7 @@ const ButtonWrapper = styled.button`
   display: flex;
   outline: none;
   align-items: center;
+justify-content: center;
   border-radius: 20px;
   font-family: inherit;
 `;
