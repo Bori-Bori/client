@@ -12,7 +12,7 @@ type ButtonProps = {
 
 const CommonButton = ({ className, onClick, children }: ButtonProps) => {
   return (
-    <ButtonWrapper className={className} onClick={onClick}>
+    <ButtonWrapper type='button' className={className} onClick={onClick}>
       {children}
     </ButtonWrapper>
   );

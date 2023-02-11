@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
+import { useMutation } from '@tanstack/react-query';
 
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 
+import { postProfile } from '../../../apis/profile';
 import Modal from '../../../components/Modal';
 import { ModalPortal } from '../../../components/Modal';
 import CommonButton from '../../../components/CommonButton';
@@ -33,18 +35,6 @@ const img_array = [
   { file: ProfileImg_10, color: 'orange' },
   { file: ProfileImg_11, color: 'orange' },
   { file: ProfileImg_12, color: 'orange' },
-
-  // ProfileImg_2,
-  // ProfileImg_3,
-  // ProfileImg_4,
-  // ProfileImg_5,
-  // ProfileImg_6,
-  // ProfileImg_7,
-  // ProfileImg_8,
-  // ProfileImg_9,
-  // ProfileImg_10,
-  // ProfileImg_11,
-  // ProfileImg_12,
 ];
 
 const EditProfileModal = () => {
@@ -74,6 +64,22 @@ const EditProfileModal = () => {
     setShowEditProfileModal(false);
   };
 
+  //postProfile{
+  const getId = window.localStorage.getItem('user')!;
+  const id = JSON.parse(getId).id;
+  const profileData = {
+    id,
+    imagePath: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`
+  };
+
+  const postProfileMutate = useMutation(() => postProfile(profileData), {
+    onSuccess: (response) => console.log(response),
+    onError: (error) => console.log(error)
+  });
+
+  const onClickSubmit = () => {
+    postProfileMutate.mutate();
+  }
   return (
     <ModalPortal>
       <ProfileModal className="editProfileModal" onClick={onShowEditProfile}>
@@ -94,7 +100,7 @@ const EditProfileModal = () => {
             </div>
           ))}
         </ProfileImgWrapper>
-        <StyledButton className="editProfileButton">확인</StyledButton>
+        <StyledButton className="editProfileButton" onClick={onClickSubmit}>확인</StyledButton>
       </ProfileModal>
     </ModalPortal>
   );
@@ -111,7 +117,7 @@ const EditProfileHeader = styled.h2`
   font-weight: ${(props) => props.theme.fontWeight.bold};
   word-break: keep-all;
   line-height: 40px;
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     font-size: 26px;
     line-height: 34px;
   `}
@@ -174,7 +180,7 @@ const StyledButton = styled(CommonButton)`
   font-size: ${(props) => props.theme.fontSize.body01};
   font-weight: ${(props) => props.theme.fontWeight.bold};
   background-color: ${(props) => props.theme.colors.primary};
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     width: 90%;
   `}
 `;
