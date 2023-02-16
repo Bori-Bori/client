@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
 
-import showEditProfileModal from '../../../recoil/showEditProfileModal'
+import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
+import { getProfile } from '../../../apis/profile';
+import { profileAtom } from '../../../recoil/profile';
+
+type profileImageType = {
+  profileImage: string;
+};
 
 const Profile = () => {
-  const setShowEditProfileModal = useSetRecoilState(showEditProfileModal);
+  const { data, refetch } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
+
+  const { nickname, profileImage } = data || '';
+
+  const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
+  const fetchedProfile = useRecoilValue(profileAtom);
 
   const onShowEditProfile = () => {
     setShowEditProfileModal(true);
   };
+  useEffect(() => {
+    refetch();
+  }, [showProfileModal]);
+  
   return (
     // login 상태, logout 상태 다르게 보여야됨
     <ProfileWrapper>
-      <ProfileImg onClick={onShowEditProfile}>
+      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage}>
         <SettingIconWrapper>
           <img src={SettingIcon} />
         </SettingIconWrapper>
       </ProfileImg>
       <div>
-        <Username>이름</Username>
+        <Username>{nickname}</Username>
         <LogoutButton>로그아웃</LogoutButton>
       </div>
     </ProfileWrapper>
@@ -40,17 +59,18 @@ const ProfileWrapper = styled.section`
   `}
 `;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.div<profileImageType>`
   position: relative;
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: red;
   margin-right: 15px;
   cursor: pointer;
+  background: url(${(props) => props.profileImage}) center;
   ${(props) => props.theme.media.tablet`
     width: 80px;
     height: 80px;
+    background-size: 80px 80px;
   `}
 `;
 

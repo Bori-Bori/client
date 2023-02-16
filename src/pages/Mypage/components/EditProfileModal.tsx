@@ -4,8 +4,9 @@ import { useSetRecoilState } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
 
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
-
 import { postProfile } from '../../../apis/profile';
+import { profileAtom } from '../../../recoil/profile';
+
 import Modal from '../../../components/Modal';
 import { ModalPortal } from '../../../components/Modal';
 import CommonButton from '../../../components/CommonButton';
@@ -40,6 +41,7 @@ const img_array = [
 const EditProfileModal = () => {
   const [selectImgIndex, setSelectImgIndex] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const setProfile = useSetRecoilState(profileAtom);
 
   useEffect(() => {
     selectImgIndex && handleItemClick(selectImgIndex);
@@ -64,7 +66,8 @@ const EditProfileModal = () => {
     setShowEditProfileModal(false);
   };
 
-  //postProfile{
+
+  //postProfile
   const getId = window.localStorage.getItem('user')!;
   const id = JSON.parse(getId).id;
   const profileData = {
@@ -73,13 +76,15 @@ const EditProfileModal = () => {
   };
 
   const postProfileMutate = useMutation(() => postProfile(profileData), {
-    onSuccess: (response) => console.log(response),
+    onSuccess: (response) => setProfile(response.content),
     onError: (error) => console.log(error)
   });
 
   const onClickSubmit = () => {
     postProfileMutate.mutate();
+    setShowEditProfileModal(false);
   }
+
   return (
     <ModalPortal>
       <ProfileModal className="editProfileModal" onClick={onShowEditProfile}>
