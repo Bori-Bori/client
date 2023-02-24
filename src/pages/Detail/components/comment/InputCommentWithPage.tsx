@@ -7,15 +7,18 @@ import { useParams } from 'react-router-dom';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { postComments } from '../../../../apis/comment';
+import bookPageAtom from '../../../../recoil/bookPage';
 
 type InputCommentProps = {
   className: string;
   placeholder: string;
+  isLogin: boolean | undefined;
 };
 
-const InputCommentWithPage = ({ className, placeholder }: InputCommentProps) => {
+const InputCommentWithPage = ({ className, placeholder, isLogin }: InputCommentProps) => {
   const queryClient = useQueryClient();
-  const maxPage = '524'; //서버에서 받아올 값
+  const bookTotalPage = useRecoilValue(bookPageAtom);
+  const maxPage = bookTotalPage.toString();
   const [targetPage, setTargetPage] = useState('0');
   const params = useParams();
   const isbn = params.id!;
@@ -39,7 +42,7 @@ const InputCommentWithPage = ({ className, placeholder }: InputCommentProps) => 
   });
 
   const onClickSubmit = () => {
-    postCommentMutate.mutate();
+    isLogin ? postCommentMutate.mutate() : alert('로그인 후 이용해주세요.')
   };
 
   return (
