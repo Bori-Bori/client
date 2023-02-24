@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import InputPageButton from '../comment/InputPageButton';
@@ -7,7 +7,7 @@ import prevButton from '../../../../assets/icons/prv-bk-20.png';
 import nextButton from '../../../../assets/icons/nxt-bk-20.png';
 import BubbleBox from '../comment/BubbleBox';
 import { slideRangeValueAtom } from '../../../../recoil/sortComment';
-import { REPL_MODE_SLOPPY } from 'repl';
+import bookPageAtom from '../../../../recoil/bookPage';
 
 type PassedValue = {
   passedValue: number;
@@ -19,7 +19,8 @@ type PageValue = {
 
 const SlideRange = () => {
   const minPage = '1';
-  const maxPage = '524'; //server에서 받아올 값
+  const totalBookPage = useRecoilValue(bookPageAtom);
+  const maxPage = totalBookPage.toString();
   const [rangeValue, setRangeValue] = useRecoilState(slideRangeValueAtom);
   const [passedValue, setPassedValue] = useState(0);
   let rangeInputWidth;
