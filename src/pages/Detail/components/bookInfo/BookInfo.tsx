@@ -12,6 +12,7 @@ import { getBoard } from '../../../../apis/board';
 import commentGrey from '../../../../assets/icons/common_comment_gr_12.png';
 import userGrey from '../../../../assets/icons/common_user_gr_16.png';
 import bookPageAtom from '../../../../recoil/bookPage';
+import bookImageAtom from '../../../../recoil/bookImage';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -21,6 +22,7 @@ const BookInfo = () => {
   const params = useParams();
   const isbn = params.id!;
   const setBookPage = useSetRecoilState(bookPageAtom);
+  const setBookImage = useSetRecoilState(bookImageAtom);
 
   const { isError, data } = useQuery({
     queryKey: ['bookInfo', isbn],
@@ -36,7 +38,8 @@ const BookInfo = () => {
   //책 페이지 저장
   useEffect(()=>{
     page && setBookPage(page);
-  },[page])
+    imagePath && setBookImage(imagePath);
+  },[page, imagePath])
 
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
