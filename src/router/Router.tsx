@@ -5,6 +5,7 @@ import Main from '../pages/Main';
 import Search from '../pages/Search';
 import Detail from '../pages/Detail/index';
 import KakaoOauth from '../pages/Login/KakaoLogin';
+import Mypage from '../pages/Mypage';
 import Header from '../components/Header';
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login/kakao/oauth" element={<KakaoOauth />} />
+        <Route path="/mypage" element={<Mypage />} />
       </Routes>
     </>
   );

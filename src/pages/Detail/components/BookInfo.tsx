@@ -8,8 +8,6 @@ import user from '../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../components/CommonButton';
 import { getBoard } from '../../../apis/board';
-import { ThemeType } from '../../../styles/Theme';
-import { isPropertySignature } from 'typescript';
 import commentGrey from '../../../assets/icons/common_comment_gr_12.png';
 import userGrey from '../../../assets/icons/common_user_gr_16.png';
 

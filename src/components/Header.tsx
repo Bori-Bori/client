@@ -9,12 +9,12 @@ import search from '../assets/icons/search-yl-20.png';
 import user from '../assets/icons/user-yl-20.png';
 import close from '../assets/icons/common_close_bk_24.png';
 
-import showModal from '../recoil/showModal';
+import showLoginModal from '../recoil/showLoginModal';
 
 const Header = () => {
   const match = useMatch('/search');
   const navigate = useNavigate();
-  const setShowLoginModal = useSetRecoilState(showModal);
+  const setShowLoginModal = useSetRecoilState(showLoginModal);
 
   const onClickLogin = () => {
     setShowLoginModal(true);
