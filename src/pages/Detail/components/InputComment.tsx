@@ -47,7 +47,7 @@ const InputWrapper = styled.div`
   border-radius: 8px;
   position: relative;
   box-sizing: border-box;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.white};
 `;
 
 const InputArea = styled.textarea`

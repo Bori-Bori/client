@@ -21,7 +21,8 @@ import { IfetchNextPage, IbookList } from '../../../../types/search';
 
 const SearchList = () => {
   const category = useRecoilValue(categoryState); // 카테고리1/2/3 저장
-  const { category1, category2, category3 } = category; // 카테고리1/2/3 꺼내기
+  const { category1, category2 } = category; // 카테고리1/2/3 꺼내기
+  const category3 = category.category3.substr(2);
   const contentType = useRecoilValue(contentTypeState); // 검색분류
   const keyword = useRecoilValue(keywordState); // 검색어
 

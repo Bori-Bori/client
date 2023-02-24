@@ -97,10 +97,10 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
 export default ReplyComments;
 
 const ReplyInputWrapper = styled.article`
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     margin-top: 40px;
   `}
-`
+`;
 
 const ReplyInput = styled(InputComment)`
   margin-bottom: 20px;

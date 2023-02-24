@@ -17,8 +17,10 @@ const BookText = () => {
   const category3 = bookData[count]?.category3;
   const keyword = bookData[count]?.TITLE;
 
-  const { data: bookItem } = useQuery(['bookItem', category1, category2, category3, keyword], () =>
-    getBookItem(category1, category2, category3, keyword),
+  const { data: bookItem } = useQuery(
+    ['bookItem', category1, category2, category3, keyword],
+    () => getBookItem(category1, category2, category3, keyword),
+    { refetchOnWindowFocus: false, retry: 0 },
   );
   return (
     <BookTextWrap>
@@ -87,6 +89,11 @@ const BookTitle = styled.p`
   font-size: 2.25rem;
   color: ${(props) => props.theme.colors.black};
   line-height: 38px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 const BookAuthor = styled.p`
   white-space: nowrap;

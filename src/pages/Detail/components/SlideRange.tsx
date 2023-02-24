@@ -223,7 +223,7 @@ const StyledInputPageButtonMobile = styled(InputPageButton)`
 const PageButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
-  > img  {
+  > img {
     margin-right: 15px;
   }
-`
+`;
