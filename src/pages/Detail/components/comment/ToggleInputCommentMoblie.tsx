@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
 import InputComment from './InputComment';
-import { postComments } from '../../../apis/comment';
+import { postComments } from '../../../../apis/comment';
 import InputPageButton from './InputPageButton';
-import closeIcon from '../../../assets/icons/close-bk-24.png';
-import writeIcon from '../../../assets/icons/write_br_24.png';
-import commentInputHeight from '../../../recoil/commentInputHeight';
+import closeIcon from '../../../../assets/icons/close-bk-24.png';
+import writeIcon from '../../../../assets/icons/write_br_24.png';
+import commentInputHeight from '../../../../recoil/commentInputHeight';
 
 const ToggelInputCommentMoblie = () => {
   const maxPage = '524'; //서버에서 받아올 값

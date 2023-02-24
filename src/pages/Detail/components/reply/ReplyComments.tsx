@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
-import { getReply, postReply } from '../../../apis/reply';
-import InputComment from './InputComment';
+import { getReply, postReply } from '../../../../apis/reply';
+import InputComment from '../comment/InputComment';
 import ReplyPagination from './ReplyPagination';
-import CommentItem from './CommentItem';
+import CommentItem from '../comment/CommentItem';
 
 type ReplyPropsType = {
   commentId: string;

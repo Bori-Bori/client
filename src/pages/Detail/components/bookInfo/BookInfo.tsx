@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import comment from '../../../assets/icons/comment-wh-24.png';
-import user from '../../../assets/icons/user-wh-24.png';
-import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
-import CommonButton from '../../../components/CommonButton';
-import { getBoard } from '../../../apis/board';
-import commentGrey from '../../../assets/icons/common_comment_gr_12.png';
-import userGrey from '../../../assets/icons/common_user_gr_16.png';
+import comment from '../../../../assets/icons/comment-wh-24.png'
+import user from '../../../../assets/icons/user-wh-24.png'
+import bookmark from '../../../../assets/icons/common-bookmark-default-24.png';
+import CommonButton from '../../../../components/CommonButton';
+import { getBoard } from '../../../../apis/board';
+import commentGrey from '../../../../assets/icons/common_comment_gr_12.png';
+import userGrey from '../../../../assets/icons/common_user_gr_16.png';
 
 type MoreIntro = {
   moreIntro: boolean;

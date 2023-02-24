@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
-import { sortCommentAtom } from '../../../recoil/sortComment';
-import { slideRangeValueAtom } from '../../../recoil/sortComment';
-import commentInputHeight from '../../../recoil/commentInputHeight';
+import { sortCommentAtom } from '../../../../recoil/sortComment';
+import { slideRangeValueAtom } from '../../../../recoil/sortComment';
+import commentInputHeight from '../../../../recoil/commentInputHeight';
 import CommentContainer from './CommentContainer';
-import CommonButton from '../../../components/CommonButton';
+import CommonButton from '../../../../components/CommonButton';
 import { useParams } from 'react-router-dom';
-import useCommentQuery from '../../../hooks/useCommentQuery';
-import commentImg from '../../../assets/icons/comment-gr-60.png';
+import useCommentQuery from '../../../../hooks/useCommentQuery';
+import commentImg from '../../../../assets/icons/comment-gr-60.png';
 
 type Comment = {
   comment: string;

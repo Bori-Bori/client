@@ -3,11 +3,11 @@ import styled, { keyframes, css } from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 import InputCommentWithPage from './InputCommentWithPage';
-import commentInputHeight from '../../../recoil/commentInputHeight';
+import commentInputHeight from '../../../../recoil/commentInputHeight';
 
-import upIcon from '../../../assets/icons/up-bk-24.png';
-import closeIcon from '../../../assets/icons/close-bk-24.png';
-import writeIcon from '../../../assets/icons/write_br_24.png';
+import upIcon from '../../../../assets/icons/up-bk-24.png';
+import closeIcon from '../../../../assets/icons/close-bk-24.png';
+import writeIcon from '../../../../assets/icons/write_br_24.png';
 
 type inputIsOpenType = {
   inputIsOpen: boolean;

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import BookInfo from './components/BookInfo';
-import SortingComment from './components/SortingComment';
-import Comment from './components/Comment';
-import ToggleInputComment from './components/ToggleInputComment';
-import ToggelInputCommentMoblie from './components/ToggleInputCommentMoblie';
+import BookInfo from './components/bookInfo/BookInfo';
+import SortingComment from './components/sorting/SortingComment';
+import Comment from './components/comment/Comment';
+import ToggleInputComment from './components/comment/ToggleInputComment';
+import ToggelInputCommentMoblie from './components/comment/ToggleInputCommentMoblie';
 
 type BookISBN = {
   bookISBN: string;

@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import InputPageButton from '../components/InputPageButton';
-import prevButton from '../../../assets/icons/prv-bk-20.png';
-import nextButton from '../../../assets/icons/nxt-bk-20.png';
-import BubbleBox from '../components/BubbleBox';
-import { slideRangeValueAtom } from '../../../recoil/sortComment';
+import InputPageButton from '../comment/InputPageButton';
+import prevButton from '../../../../assets/icons/prv-bk-20.png';
+import nextButton from '../../../../assets/icons/nxt-bk-20.png';
+import BubbleBox from '../comment/BubbleBox';
+import { slideRangeValueAtom } from '../../../../recoil/sortComment';
 import { REPL_MODE_SLOPPY } from 'repl';
 
 type PassedValue = {

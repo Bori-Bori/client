@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
-import { postComments } from '../../../apis/comment';
+import { postComments } from '../../../../apis/comment';
 
 type InputCommentProps = {
   className: string;
