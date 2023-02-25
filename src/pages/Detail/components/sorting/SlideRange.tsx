@@ -23,6 +23,7 @@ const SlideRange = () => {
   const maxPage = totalBookPage.toString();
   const [rangeValue, setRangeValue] = useRecoilState(slideRangeValueAtom);
   const [passedValue, setPassedValue] = useState(0);
+
   let rangeInputWidth;
   let enteredValue = '';
 
@@ -37,6 +38,7 @@ const SlideRange = () => {
     }, 1);
   }, [rangeInputRef, rangeInputWidth, rangeValue]);
 
+  // range bar 변경 함수
   const onChangeRangeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
     enteredValue = e.target.value.replace(/[^0-9.]/g, '');
     if (enteredValue === '') {
@@ -44,12 +46,11 @@ const SlideRange = () => {
       setRangeValue('0');
       return;
     }
-    setRangeValue(enteredValue);
-
     const computedValue =
       ((parseInt(enteredValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
 
-    setPassedValue(computedValue);
+      setRangeValue(enteredValue);
+      setPassedValue(computedValue);
   };
 
   useEffect(() => {
