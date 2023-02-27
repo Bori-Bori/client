@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import down from '../../../assets/icons/down-bk-24.png';
-import up from '../../../assets/icons/up-bk-24.png';
-import CommonButton from '../../../components/CommonButton';
+import down from '../../../../assets/icons/down-bk-24.png';
+import up from '../../../../assets/icons/up-bk-24.png';
+import CommonButton from '../../../../components/CommonButton';
 
 type ToggleProps = {
   className: string;

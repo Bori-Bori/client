@@ -1,19 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 
-import BookInfo from './components/BookInfo';
-import SortingComment from './components/SortingComment';
-import Comment from './components/Comment';
-import ToggleInputComment from './components/ToggleInputComment';
-import ToggelInputCommentMoblie from './components/ToggleInputCommentMoblie';
+import BookInfo from './components/bookInfo/BookInfo';
+import SortingComment from './components/sorting/SortingComment';
+import Comment from './components/comment/Comment';
+import ToggleInputComment from './components/comment/ToggleInputComment';
+import ToggelInputCommentMoblie from './components/comment/ToggleInputCommentMoblie';
+import bookImageAtom from '../../recoil/bookImage';
 
-type BookISBN = {
-  bookISBN: string;
+type bookImageType = {
+  bookImage: string;
 };
-
 const Detail = () => {
+  const bookImage = useRecoilValue(bookImageAtom);
+
   return (
-    <MainWrapper>
+    <MainWrapper bookImage={bookImage}>
       <ContentContainer>
         <BookInfo />
         <SortingComment />
@@ -27,7 +30,7 @@ const Detail = () => {
 
 export default Detail;
 
-const MainWrapper = styled.div`
+const MainWrapper = styled.div<bookImageType>`
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -39,7 +42,7 @@ const MainWrapper = styled.div`
     left: -10px;
     right: -10px;
     bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(http://image.yes24.com/goods/113737324/XL);
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${(props) => props.bookImage});
     background-position: center;
     background-size: 100% 300%;
     -webkit-filter: blur(10px);

@@ -1,21 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 import { getProfile } from '../../../apis/profile';
 import { profileAtom } from '../../../recoil/profile';
+import showLoginModal from '../../../recoil/showLoginModal';
 
 type profileImageType = {
   profileImage: string;
+  isLogin: string | null | undefined;
 };
 
 const Profile = () => {
+  const setShowLoginModal = useSetRecoilState(showLoginModal);
+  const [isLogin, setIsLogin] = useState<string | undefined | null>();
+
+  useEffect(() => {
+    const user = window.localStorage.getItem('user');
+    setIsLogin(user);
+  }, [isLogin]);
+
   const { data, refetch } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', isLogin],
     queryFn: () => getProfile(),
+    enabled: !!isLogin,
   });
 
   const { nickname, profileImage } = data || '';
@@ -24,23 +35,33 @@ const Profile = () => {
   const fetchedProfile = useRecoilValue(profileAtom);
 
   const onShowEditProfile = () => {
-    setShowEditProfileModal(true);
+    isLogin ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
   };
+
   useEffect(() => {
     refetch();
   }, [showProfileModal]);
-  
+
+  const onClickLogoutBtn = () => {
+    if (isLogin) {
+      window.localStorage.removeItem('user');
+      setIsLogin(null);
+      return;
+    }
+    setShowLoginModal(true);
+  };
+
   return (
     // login 상태, logout 상태 다르게 보여야됨
     <ProfileWrapper>
-      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage}>
+      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={isLogin}>
         <SettingIconWrapper>
           <img src={SettingIcon} />
         </SettingIconWrapper>
       </ProfileImg>
       <div>
-        <Username>{nickname}</Username>
-        <LogoutButton>로그아웃</LogoutButton>
+        <Username>{isLogin ? nickname : '로그인 후 이용해주세요'}</Username>
+        <LogoutButton onClick={onClickLogoutBtn}>{isLogin ? '로그아웃' : '로그인'}</LogoutButton>
       </div>
     </ProfileWrapper>
   );
@@ -66,7 +87,14 @@ const ProfileImg = styled.div<profileImageType>`
   border-radius: 50%;
   margin-right: 15px;
   cursor: pointer;
-  background: url(${(props) => props.profileImage}) center;
+  ${(props) =>
+    props.isLogin
+      ? `
+      background: url(${props.profileImage});
+      `
+      : `
+      background-color: lightgrey;
+      `}
   ${(props) => props.theme.media.tablet`
     width: 80px;
     height: 80px;
@@ -105,4 +133,5 @@ const LogoutButton = styled.span`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.lh20};
   color: ${(props) => props.theme.colors.grey1};
+  cursor: pointer;
 `;

@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
 import InputComment from './InputComment';
-import { postComments } from '../../../apis/comment';
+import { postComments } from '../../../../apis/comment';
 import InputPageButton from './InputPageButton';
-import closeIcon from '../../../assets/icons/close-bk-24.png';
-import writeIcon from '../../../assets/icons/write_br_24.png';
-import commentInputHeight from '../../../recoil/commentInputHeight';
+import closeIcon from '../../../../assets/icons/close-bk-24.png';
+import writeIcon from '../../../../assets/icons/write_br_24.png';
+import commentInputHeight from '../../../../recoil/commentInputHeight';
 
 const ToggelInputCommentMoblie = () => {
   const maxPage = '524'; //서버에서 받아올 값
@@ -18,10 +18,16 @@ const ToggelInputCommentMoblie = () => {
   const [inputIsOpen, setInputIsOpen] = useState(false);
   const [commentContent, setCommentContent] = useState<string>('');
   const [targetPage, setTargetPage] = useState('0');
+  const [isLogin, setIsLogin] = useState<boolean | null>();
 
   const queryClient = useQueryClient();
   const params = useParams();
   const isbn = params.id!;
+
+  useEffect(() => {
+    const userInfo = window.localStorage.getItem('user');
+    userInfo ? setIsLogin(true) : setIsLogin(false);
+  }, [isLogin]);
 
   // useEffect(() => {
   //   inputHeight ? setInputHeight(inputWrapperRef.current!.clientHeight) : '';
@@ -49,7 +55,7 @@ const ToggelInputCommentMoblie = () => {
   };
 
   const onClickSubmit = () => {
-    postCommentMutate.mutate();
+    isLogin ? postCommentMutate.mutate() : alert("로그인 후 이용해주세요.");
   };
 
   const onChangeTargetPage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +75,7 @@ const ToggelInputCommentMoblie = () => {
           <InputPageButton className="commentPage" value={targetPage} maxPage={maxPage} onChange={onChangeTargetPage} />
           <StyledInputComment
             className="pageInputMobile"
-            placeholder="댓글을 입력하세요"
+            placeholder={isLogin ? "댓글을 입력하세요" : "로그인 후 이용해주세요"}
             onClick={onClickSubmit}
             commentContent={commentContent}
             changeCommentContent={setCommentContent}

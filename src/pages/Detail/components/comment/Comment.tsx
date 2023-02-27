@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
-import { sortCommentAtom } from '../../../recoil/sortComment';
-import { slideRangeValueAtom } from '../../../recoil/sortComment';
-import commentInputHeight from '../../../recoil/commentInputHeight';
+import { sortCommentAtom } from '../../../../recoil/sortComment';
+import { slideRangeValueAtom } from '../../../../recoil/sortComment';
+import commentInputHeight from '../../../../recoil/commentInputHeight';
 import CommentContainer from './CommentContainer';
-import CommonButton from '../../../components/CommonButton';
+import CommonButton from '../../../../components/CommonButton';
 import { useParams } from 'react-router-dom';
-import useCommentQuery from '../../../hooks/useCommentQuery';
-import commentImg from '../../../assets/icons/comment-gr-60.png';
+import useCommentQuery from '../../../../hooks/useCommentQuery';
+import commentImg from '../../../../assets/icons/comment-gr-60.png';
 
 type Comment = {
   comment: string;
@@ -30,25 +30,26 @@ const Comment = () => {
   const curSortState = useRecoilValue(sortCommentAtom);
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
   const params = useParams();
-
   const boardId = params.id!;
   const size = 5; // 고정값
   const slideRangeValue = useRecoilValue(slideRangeValueAtom);
-  const bookPage = parseInt(slideRangeValue);
+  const [bookPage, setBookPage] = useState(parseInt(slideRangeValue));
   const searchOrder = curSortState ? 'recent' : 'page';
 
+  //댓글 fetch 
   const { fetchNextPage, status, commentsList, commentIsLast } = useCommentQuery(boardId, searchOrder, size, bookPage);
 
-  // useEffect(() => {
-  //   const setTimeountFunc = setTimeout(() => {
-  //     console.log('bookPage 설정');
-  //   }, 500);
-  //   return () => {
-  //     clearTimeout(setTimeountFunc);
-  //     console.log('bookPage ');
-  //   };
-  // }, [bookPage]);
+  //range value가 연속적이게 변할 땐 fetch 요청 보내지 않도록 하는 코드
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setBookPage(parseInt(slideRangeValue));
+    }, 500);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [slideRangeValue]);
 
+  // scroll to bottom
   const scrollToBottom = () => {
     scrollPoint.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
@@ -57,6 +58,7 @@ const Comment = () => {
     scrollToBottom();
   }, [commentsList]);
 
+  //더보기 버튼
   const onClickShowMoreCommentBtn = () => {
     fetchNextPage();
   };

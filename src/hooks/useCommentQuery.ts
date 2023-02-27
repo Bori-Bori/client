@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getComments } from '../apis/comment';
 import { useRecoilState } from 'recoil';
@@ -19,6 +20,7 @@ interface IfetchNextPage {
   items: Comment[];
 }
 
+// 댓글 fetch
 const useCommentQuery = (boardId: string, searchOrder: string, size: number, bookPage: number | undefined) => {
   const [commentsList, setCommentsList] = useRecoilState(commentsListAtom);
   const [commentIsLast, setCommentIsLast] = useRecoilState(commentIsLastAtom);
@@ -37,6 +39,7 @@ const useCommentQuery = (boardId: string, searchOrder: string, size: number, boo
       };
       setCommentIsLast(newIsLast);
     },
+
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage + 1 : undefined),
   });

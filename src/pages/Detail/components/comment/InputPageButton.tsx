@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 
-import CommonButton from '../../../components/CommonButton';
+import CommonButton from '../../../../components/CommonButton';
 
 type InputPageProps = {
   className: string;
