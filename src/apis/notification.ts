@@ -1,4 +1,4 @@
-import { authAxios } from './axiosInstance';
+import { authAxiosInstance } from './axiosInstance';
 
 export const notifications = async () => {
   const getToken = window.localStorage.getItem('user')!;
@@ -6,6 +6,6 @@ export const notifications = async () => {
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
-  const response = await authAxios.get(`/api/member/notification`, { headers });
+  const response = await authAxiosInstance.get(`/api/member/notification`, { headers });
   return response;
 };

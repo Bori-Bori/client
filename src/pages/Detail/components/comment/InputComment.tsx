@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import CommonButton from '../../../components/CommonButton';
+import CommonButton from '../../../../components/CommonButton';
 
 type InputProps = {
   className: string;

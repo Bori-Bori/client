@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-import showModal from '../../recoil/showModal';
+import showModal from '../../recoil/showLoginModal';
 
 import Notification from './Notification';
 import Search from './Search';
