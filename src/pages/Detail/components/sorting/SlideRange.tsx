@@ -29,7 +29,7 @@ const SlideRange = () => {
     const inputWidth = rangeInputRef.current?.offsetWidth;
     const thumbWidth = 20;
     if (inputWidth) {
-      const left = (+rangeValue / 270) * (inputWidth - thumbWidth) + thumbWidth / 2;
+      const left = (+rangeValue / totalBookPage) * (inputWidth - thumbWidth) + thumbWidth / 2;
       bubble!.style.left = `${left}px`;
     }
   }, [rangeValue]);
