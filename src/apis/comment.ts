@@ -20,7 +20,6 @@ export const getComments = async ({ boardId, searchOrder, size, bookPage, pagePa
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
-
   const response = await boardAxiosInstance.get(path, { params, headers });
   const { items, isLast } = response.data.content;
   return { items, isLast, nextPage: pageParam };

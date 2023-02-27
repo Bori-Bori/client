@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
-import { getReply, postReply } from '../../../apis/reply';
-import InputComment from './InputComment';
+import { getReply, postReply } from '../../../../apis/reply';
+import InputComment from '../comment/InputComment';
 import ReplyPagination from './ReplyPagination';
-import CommentItem from './CommentItem';
+import CommentItem from '../comment/CommentItem';
 
 type ReplyPropsType = {
   commentId: string;
@@ -26,10 +26,17 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
   const queryClient = useQueryClient();
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyCurPage, setReplyCurPage] = useState<number>(0);
+  const [isLogin, setIsLogin] = useState<boolean|undefined>();
+
+  //로그인 확인
+  useEffect(() => {
+    const userInfo = window.localStorage.getItem('user');
+    userInfo ? setIsLogin(true) : setIsLogin(false);
+  }, [isLogin]);
 
   //getReply
   const size = 5; //고정값
-  const { status, data, error, isFetching } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['reply', commentId, size, replyCurPage],
     queryFn: () => getReply(commentId, size, replyCurPage),
     keepPreviousData: true,
@@ -51,7 +58,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
   });
 
   const onClickSubmit = () => {
-    postReplyMutate.mutate();
+    isLogin ? postReplyMutate.mutate() : alert('로그인 후 이용해주세요.')
   };
 
   // scrollToReply
@@ -69,7 +76,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
     <ReplyInputWrapper ref={scrollPoint}>
       <ReplyInput
         className="ReplyInput"
-        placeholder="대댓글을 입력하세요"
+        placeholder={isLogin ? "대댓글을 입력하세요" : "로그인 후 이용해주세요"}
         onClick={onClickSubmit}
         commentContent={replyContent}
         changeCommentContent={setReplyContent}

@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
-import { sortCommentAtom } from '../../../recoil/sortComment';
+import { sortCommentAtom } from '../../../../recoil/sortComment';
 import BubbleBox from './BubbleBox';
-import ReplyComments from './ReplyComments';
+import ReplyComments from '../reply/ReplyComments';
 import CommentItem from './CommentItem';
-import ToggleButton from './ToggleButton';
+import ToggleButton from '../reply/ToggleButton';
 
 type Comment = {
   comment: string;

@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useSetRecoilState } from 'recoil';
 
-import comment from '../../../assets/icons/comment-wh-24.png';
-import user from '../../../assets/icons/user-wh-24.png';
-import bookmark from '../../../assets/icons/common-bookmark-default-24.png';
-import CommonButton from '../../../components/CommonButton';
-import { getBoard } from '../../../apis/board';
-import commentGrey from '../../../assets/icons/common_comment_gr_12.png';
-import userGrey from '../../../assets/icons/common_user_gr_16.png';
+import comment from '../../../../assets/icons/comment-wh-24.png'
+import user from '../../../../assets/icons/user-wh-24.png'
+import bookmark from '../../../../assets/icons/common-bookmark-default-24.png';
+import CommonButton from '../../../../components/CommonButton';
+import { getBoard } from '../../../../apis/board';
+import commentGrey from '../../../../assets/icons/common_comment_gr_12.png';
+import userGrey from '../../../../assets/icons/common_user_gr_16.png';
+import bookPageAtom from '../../../../recoil/bookPage';
+import bookImageAtom from '../../../../recoil/bookImage';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -18,18 +21,25 @@ type MoreIntro = {
 const BookInfo = () => {
   const params = useParams();
   const isbn = params.id!;
+  const setBookPage = useSetRecoilState(bookPageAtom);
+  const setBookImage = useSetRecoilState(bookImageAtom);
 
   const { isError, data } = useQuery({
     queryKey: ['bookInfo', isbn],
     queryFn: () => getBoard(isbn),
   });
-
-  const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath }: any =
+  const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath, page }: any =
     data?.data.content || '';
 
   const [moreIntro, setMoreIntro] = useState(false);
   const eidtPubDate = pubDate?.replaceAll('-', '.');
   const editImagePath = imagePath?.replace('coversum', 'cover500');
+
+  //책 페이지 저장
+  useEffect(()=>{
+    page && setBookPage(page);
+    imagePath && setBookImage(imagePath);
+  },[page, imagePath])
 
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
