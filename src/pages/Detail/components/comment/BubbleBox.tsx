@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
 type BubbleProps = {
   text: string;
   className: string;
+  ref: React.RefObject<HTMLDivElement>;
 };
 
-const BubbleBox = ({ text, className }: BubbleProps) => {
-  return <BubbleContainer className={className}>{text}</BubbleContainer>;
-};
+const BubbleBox = React.forwardRef<HTMLDivElement, BubbleProps>(({ text, className }, ref) => {
+  return (
+    <BubbleContainer ref={ref} className={className}>
+      {text}
+    </BubbleContainer>
+  );
+});
+
+BubbleBox.displayName = 'BubbleBox';
 
 export default BubbleBox;
 
