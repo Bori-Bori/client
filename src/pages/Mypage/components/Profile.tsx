@@ -29,7 +29,7 @@ const Profile = () => {
   useEffect(() => {
     refetch();
   }, [showProfileModal]);
-  
+
   return (
     // login 상태, logout 상태 다르게 보여야됨
     <ProfileWrapper>

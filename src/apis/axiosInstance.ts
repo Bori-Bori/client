@@ -19,7 +19,7 @@ authAxiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-      console.log('401')
+      console.log('401');
       try {
         originalRequest._retry = true;
         const { id, accessToken, refreshToken, nickname } = await refreshAccessToken();
@@ -44,7 +44,7 @@ boardAxiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-      console.log('401')
+      console.log('401');
       try {
         originalRequest._retry = true;
         const { id, accessToken, refreshToken, nickname } = await refreshAccessToken();

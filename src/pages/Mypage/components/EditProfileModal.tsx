@@ -66,24 +66,23 @@ const EditProfileModal = () => {
     setShowEditProfileModal(false);
   };
 
-
   //postProfile
   const getId = window.localStorage.getItem('user')!;
   const id = JSON.parse(getId).id;
   const profileData = {
     id,
-    imagePath: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`
+    imagePath: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`,
   };
 
   const postProfileMutate = useMutation(() => postProfile(profileData), {
     onSuccess: (response) => setProfile(response.content),
-    onError: (error) => console.log(error)
+    onError: (error) => console.log(error),
   });
 
   const onClickSubmit = () => {
     postProfileMutate.mutate();
     setShowEditProfileModal(false);
-  }
+  };
 
   return (
     <ModalPortal>
@@ -105,7 +104,9 @@ const EditProfileModal = () => {
             </div>
           ))}
         </ProfileImgWrapper>
-        <StyledButton className="editProfileButton" onClick={onClickSubmit}>확인</StyledButton>
+        <StyledButton className="editProfileButton" onClick={onClickSubmit}>
+          확인
+        </StyledButton>
       </ProfileModal>
     </ModalPortal>
   );
