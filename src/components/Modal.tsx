@@ -10,8 +10,8 @@ type ModalProps = {
 
 const Modal = ({ className, onClick, children }: ModalProps) => {
   const preventBubbling = (event: React.MouseEvent) => {
-    event.stopPropagation()
-  }
+    event.stopPropagation();
+  };
   return (
     <Backdrop className={className} onClick={onClick}>
       <ModalOverlay onClick={preventBubbling}>{children}</ModalOverlay>
@@ -47,7 +47,7 @@ const ModalOverlay = styled.div`
   z-index: 100;
   box-sizing: border-box;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
-  ${props => props.theme.media.tablet`
+  ${(props) => props.theme.media.tablet`
     max-width: 320px;
     padding: 60px 0 20px;
   `}

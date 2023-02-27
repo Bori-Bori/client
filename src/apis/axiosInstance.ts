@@ -19,13 +19,13 @@ authAxiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-      console.log('401')
+      console.log('401');
       try {
         originalRequest._retry = true;
         const { id, accessToken, refreshToken, nickname } = await refreshAccessToken();
         console.log(id, accessToken, refreshToken, nickname);
         window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
-        authAxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        authAxiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         return authAxiosInstance(originalRequest);
       } catch (error) {
         localStorage.clear();
@@ -44,13 +44,13 @@ boardAxiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-      console.log('401')
+      console.log('401');
       try {
         originalRequest._retry = true;
         const { id, accessToken, refreshToken, nickname } = await refreshAccessToken();
         console.log(id, accessToken, refreshToken, nickname);
         window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
-        authAxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        authAxiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         return authAxiosInstance(originalRequest);
       } catch (error) {
         localStorage.clear();

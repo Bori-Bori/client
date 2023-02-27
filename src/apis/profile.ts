@@ -15,7 +15,7 @@ export const getProfile = async () => {
     Accept: 'application/json',
   };
   const response = await authAxiosInstance.get(path, { headers });
-  return response.data.content
+  return response.data.content;
 };
 
 export const postProfile = async (data: postProfileDataType) => {
