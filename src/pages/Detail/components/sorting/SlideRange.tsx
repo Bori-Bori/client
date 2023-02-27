@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -13,30 +13,26 @@ type PassedValue = {
   passedValue: number;
 };
 
-type PageValue = {
-  offset: number;
-};
-
 const SlideRange = () => {
   const minPage = '1';
   const totalBookPage = useRecoilValue(bookPageAtom);
   const maxPage = totalBookPage.toString();
   const [rangeValue, setRangeValue] = useRecoilState(slideRangeValueAtom);
   const [passedValue, setPassedValue] = useState(0);
-
-  let rangeInputWidth;
+  const bubbleRef = useRef<HTMLDivElement>(null);
   let enteredValue = '';
-
-  const [bubbleIconOffset, setBubbleIconOffset] = useState(0);
   const rangeInputRef = useRef<HTMLInputElement>(null);
 
   // 말풍선 위치
   useEffect(() => {
-    setTimeout(() => {
-      rangeInputWidth = rangeInputRef.current!.clientWidth;
-      setBubbleIconOffset((parseInt(rangeValue) / rangeInputWidth) * 83);
-    }, 1);
-  }, [rangeInputRef, rangeInputWidth, rangeValue]);
+    const bubble = bubbleRef.current;
+    const inputWidth = rangeInputRef.current?.offsetWidth;
+    const thumbWidth = 20;
+    if (inputWidth) {
+      const left = (+rangeValue / 270) * (inputWidth - thumbWidth) + thumbWidth / 2;
+      bubble!.style.left = `${left}px`;
+    }
+  }, [rangeValue]);
 
   // range bar 변경 함수
   const onChangeRangeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,8 +45,8 @@ const SlideRange = () => {
     const computedValue =
       ((parseInt(enteredValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
 
-      setRangeValue(enteredValue);
-      setPassedValue(computedValue);
+    setRangeValue(enteredValue);
+    setPassedValue(computedValue);
   };
 
   useEffect(() => {
@@ -82,7 +78,7 @@ const SlideRange = () => {
 
   return (
     <RangeWrapper>
-      <BubbleIcon className="currentPageBubble" text={rangeValue} offset={bubbleIconOffset} />
+      <BubbleIcon className="currentPageBubble" text={rangeValue} ref={bubbleRef} />
       <RangeBar
         ref={rangeInputRef}
         type="range"
@@ -125,11 +121,9 @@ const RangeWrapper = styled.div`
   `}
 `;
 
-const BubbleIcon = styled(BubbleBox)<PageValue>`
+const BubbleIcon = styled(BubbleBox)`
   position: absolute;
   top: -70%;
-  left: ${(props) => props.offset + 1}%;
-
   &::before {
     content: '';
     position: absolute;
@@ -144,7 +138,6 @@ const BubbleIcon = styled(BubbleBox)<PageValue>`
   ${(props) => props.theme.media.tablet`
     font-size: 11px;
     top: 20px;
-    left: ${(props: any) => props.offset * 0.7}%;
   `}
 `;
 const RangeBar = styled.input<PassedValue>`
