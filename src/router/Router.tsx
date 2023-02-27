@@ -6,7 +6,7 @@ import Search from '../pages/Search';
 import Detail from '../pages/Detail/index';
 import KakaoOauth from '../pages/Login/KakaoLogin';
 import Mypage from '../pages/Mypage';
-import Header from '../components/Header';
+import Header from './../components/header';
 
 function Router() {
   return (

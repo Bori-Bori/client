@@ -1,29 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-import showModal from '../../recoil/showModal';
+import { getUserInfo } from '../../apis/userInfo';
 
 import Notification from './Notification';
 import Search from './Search';
-import { useQuery } from '@tanstack/react-query';
-import { getUserInfo } from '../../apis/userInfo';
+import showLoginModal from '../../recoil/showLoginModal';
 
 const Icons = () => {
   const navigate = useNavigate();
-  const setShowLoginModal = useSetRecoilState(showModal);
-
+  const setShowLoginModal = useSetRecoilState(showLoginModal);
+  const login = JSON.parse(localStorage.getItem('user')!);
+  const [isLogin, setIsLogin] = useState(login);
+  const { data } = useQuery(['userInfo'], getUserInfo);
+  const img = data?.data.content.profileImage;
   const onClickLogin = () => {
     setShowLoginModal(true);
   };
 
-  const { data } = useQuery(['userInfo'], getUserInfo);
-  const img = data?.data.content.profileImage;
+  useEffect(() => {
+    const login = JSON.parse(localStorage.getItem('user')!);
+    setIsLogin(login);
+  }, [localStorage.getItem('user')]);
+
   return (
     <IconWrap>
       <Search />
-      {window.localStorage.getItem('user') ? (
+      {isLogin ? (
         <>
           <Notification />
           <ProfileImg
