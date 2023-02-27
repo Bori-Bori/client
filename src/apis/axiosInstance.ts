@@ -25,7 +25,7 @@ authAxiosInstance.interceptors.response.use(
         const { id, accessToken, refreshToken, nickname } = await refreshAccessToken();
         console.log(id, accessToken, refreshToken, nickname);
         window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
-        authAxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        authAxiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         return authAxiosInstance(originalRequest);
       } catch (error) {
         localStorage.clear();
@@ -50,7 +50,7 @@ boardAxiosInstance.interceptors.response.use(
         const { id, accessToken, refreshToken, nickname } = await refreshAccessToken();
         console.log(id, accessToken, refreshToken, nickname);
         window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
-        authAxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        authAxiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         return authAxiosInstance(originalRequest);
       } catch (error) {
         localStorage.clear();
