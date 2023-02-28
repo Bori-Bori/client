@@ -64,7 +64,6 @@ const InputCommentWithPage = ({ className, placeholder, isLogin }: InputCommentP
 export default InputCommentWithPage;
 
 const InputCommentWrapper = styled(InputComment)`
-  /* display: flex; */
 `;
 
 const InputPageWrapper = styled.div`

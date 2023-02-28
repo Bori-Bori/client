@@ -14,7 +14,6 @@ type bookImageType = {
 };
 const Detail = () => {
   const bookImage = useRecoilValue(bookImageAtom);
-
   return (
     <MainWrapper bookImage={bookImage}>
       <ContentContainer>

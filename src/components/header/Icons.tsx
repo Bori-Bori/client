@@ -24,12 +24,11 @@ const Icons = () => {
   };
 
   useEffect(() => {
-    console.log(window.localStorage.getItem('user'));
     if (window.localStorage.getItem('user')) {
       setIsLogin(true);
-    } else {
-      setIsLogin(false);
+      return;
     }
+    setIsLogin(false);
   }, []);
 
   return (

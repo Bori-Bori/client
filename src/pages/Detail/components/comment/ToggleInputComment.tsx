@@ -8,7 +8,7 @@ import commentInputHeight from '../../../../recoil/commentInputHeight';
 import upIcon from '../../../../assets/icons/up-bk-24.png';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
-
+import { isLoginAtom } from '../../../../recoil/profile';
 
 type inputIsOpenType = {
   inputIsOpen: boolean;
@@ -18,16 +18,17 @@ const ToggleInputComment = () => {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState<boolean| undefined>();
+  const [isLogin, setIsLogin] =  useRecoilState(isLoginAtom);
 
-  //로그인 유무 확인
+  //초기 로그인 유무 확인
   useEffect(() => {
     const userInfo = window.localStorage.getItem('user');
     userInfo ? setIsLogin(true) : setIsLogin(false);
-  }, [isLogin]);
+  }, []);
 
+  //댓글창 열림 유무에 따른 여백 조절
   useEffect(() => {
-    inputHeight && inputWrapperRef ? setInputHeight(inputWrapperRef.current!.clientHeight) : '';
+    inputHeight && inputWrapperRef.current?.clientHeight ? setInputHeight(inputWrapperRef.current!.clientHeight) : '';
   }, [inputHeight]);
 
   const ToggleInputHandler = () => {

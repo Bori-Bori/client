@@ -11,19 +11,21 @@ import showLoginModal from '../../../recoil/showLoginModal';
 
 type profileImageType = {
   profileImage: string;
-  isLogin: string | null | undefined;
+  isLogin: boolean;
 };
 
 const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
-  const setToken = useSetRecoilState(isLoginAtom);
-  const [isLogin, setIsLogin] = useState<string | undefined | null>();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
 
+  //로그인 검증
   useEffect(() => {
     const user = window.localStorage.getItem('user');
-    setIsLogin(user);
-  }, [isLogin]);
+    setIsLogin(!!user);
+  }, []);
 
+  //get Profile
   const { data, refetch } = useQuery({
     queryKey: ['profile', isLogin],
     queryFn: () => getProfile(),
@@ -32,9 +34,7 @@ const Profile = () => {
 
   const { nickname, profileImage } = data || '';
 
-  const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
-  const fetchedProfile = useRecoilValue(profileAtom);
-
+  //edit profile modal
   const onShowEditProfile = () => {
     isLogin ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
   };
@@ -43,18 +43,17 @@ const Profile = () => {
     refetch();
   }, [showProfileModal]);
 
+  //login or logout 
   const onClickLogoutBtn = () => {
     if (isLogin) {
       window.localStorage.removeItem('user');
-      setIsLogin(null);
-      setToken(false);
+      setIsLogin(false);
       return;
     }
     setShowLoginModal(true);
   };
 
   return (
-    // login 상태, logout 상태 다르게 보여야됨
     <ProfileWrapper>
       <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={isLogin}>
         <SettingIconWrapper>
