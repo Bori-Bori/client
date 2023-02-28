@@ -7,7 +7,7 @@ import useIsLogin from '../../../hooks/useIsLogin';
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 import { getProfile } from '../../../apis/profile';
-import { isLoginAtom, profileAtom } from '../../../recoil/profile';
+import { isLoginAtom, profileImageAtom } from '../../../recoil/profile';
 import showLoginModal from '../../../recoil/showLoginModal';
 
 type profileImageType = {
@@ -19,6 +19,7 @@ const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
+  const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
 
   //로그인 검증
   useIsLogin();
@@ -27,10 +28,13 @@ const Profile = () => {
   const { data, refetch } = useQuery({
     queryKey: ['profile', isLogin],
     queryFn: () => getProfile(),
+    onSuccess: (data) => {
+      setProfileImage(data.profileImage);
+    },
     enabled: !!isLogin,
   });
 
-  const { nickname, profileImage } = data || '';
+  const { nickname } = data || '';
 
   //edit profile modal
   const onShowEditProfile = () => {
@@ -46,6 +50,7 @@ const Profile = () => {
     if (isLogin) {
       window.localStorage.removeItem('user');
       setIsLogin(false);
+      setProfileImage('');
       return;
     }
     setShowLoginModal(true);

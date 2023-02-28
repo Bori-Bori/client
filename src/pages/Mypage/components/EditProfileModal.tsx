@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import { postProfile } from '../../../apis/profile';
-import { profileAtom } from '../../../recoil/profile';
+import { profileImageAtom } from '../../../recoil/profile';
 
 import Modal from '../../../components/Modal';
 import { ModalPortal } from '../../../components/Modal';
@@ -41,8 +41,9 @@ const img_array = [
 const EditProfileModal = () => {
   const [selectImgIndex, setSelectImgIndex] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const setProfile = useSetRecoilState(profileAtom);
+  const setProfile = useSetRecoilState(profileImageAtom);
 
+  //프로필 이미지 선택 시, 선택된 이미지 중앙으로 위치
   useEffect(() => {
     selectImgIndex && handleItemClick(selectImgIndex);
   }, [selectImgIndex]);
@@ -75,7 +76,9 @@ const EditProfileModal = () => {
   };
 
   const postProfileMutate = useMutation(() => postProfile(profileData), {
-    onSuccess: (response) => setProfile(response.content),
+    onSuccess: (response) => {
+      setProfile(response.content.imagePath);
+    },
     onError: (error) => console.log(error),
   });
 
