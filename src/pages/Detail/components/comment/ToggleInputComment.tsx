@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { useRecoilState , useRecoilValue} from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import InputCommentWithPage from './InputCommentWithPage';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
@@ -8,10 +8,7 @@ import commentInputHeight from '../../../../recoil/commentInputHeight';
 import useIsLogin from '../../../../hooks/useIsLogin';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
-<<<<<<< HEAD
-=======
 import { isLoginAtom } from '../../../../recoil/profile';
->>>>>>> 9cee29aaf8df0fc1ebc888c24623af83a1f18eb5
 
 type inputIsOpenType = {
   inputIsOpen: boolean;
@@ -21,11 +18,7 @@ const ToggleInputComment = () => {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
-<<<<<<< HEAD
-  const [isLogin, setIsLogin] = useState<boolean | undefined>();
-=======
   const isLogin = useRecoilValue(isLoginAtom);
->>>>>>> 9cee29aaf8df0fc1ebc888c24623af83a1f18eb5
 
   //로그인 유무 확인
   useIsLogin();

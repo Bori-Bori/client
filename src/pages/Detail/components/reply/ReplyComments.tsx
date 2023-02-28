@@ -28,11 +28,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
   const queryClient = useQueryClient();
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyCurPage, setReplyCurPage] = useState<number>(0);
-<<<<<<< HEAD
-  const [isLogin, setIsLogin] = useState<boolean | undefined>();
-=======
   const isLogin = useRecoilValue(isLoginAtom);
->>>>>>> 9cee29aaf8df0fc1ebc888c24623af83a1f18eb5
 
   //로그인 확인
   useIsLogin();
