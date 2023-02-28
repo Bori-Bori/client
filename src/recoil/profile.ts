@@ -1,12 +1,10 @@
 import { atom } from 'recoil';
 
-type profileAtomType = {
-  imagePath: string;
-};
-export const profileAtom = atom<profileAtomType>({
-  key: 'profileAtom',
-  default: { imagePath: '' },
+export const profileImageAtom = atom({
+  key: 'profileImageAtom',
+  default: '',
 });
+
 export const isLoginAtom = atom({
   key: 'isLoginAtom',
   default: false,

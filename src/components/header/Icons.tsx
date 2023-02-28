@@ -2,35 +2,37 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { getUserInfo } from '../../apis/userInfo';
 
 import Notification from './Notification';
 import Search from './Search';
 
+import useIsLogin from '../../hooks/useIsLogin';
 import showLoginModal from '../../recoil/showLoginModal';
 import { isLoginAtom } from '../../recoil/profile';
+import { profileImageAtom } from '../../recoil/profile';
 
 const Icons = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const isLogin = useRecoilValue(isLoginAtom);
   const setShowLoginModal = useSetRecoilState(showLoginModal);
-
+  const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
+  
+  //fetch profileImage
   const { data } = useQuery(['userInfo'], getUserInfo);
   const img = data?.data.content.profileImage;
+  useEffect(() => {
+    setProfileImage(img);
+  }, [img]);
+
   const onClickLogin = () => {
     setShowLoginModal(true);
   };
 
-  useEffect(() => {
-    console.log(window.localStorage.getItem('user'));
-    if (window.localStorage.getItem('user')) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, []);
+  //로그인 확인
+  useIsLogin();
 
   return (
     <IconWrap>
@@ -43,7 +45,7 @@ const Icons = () => {
               navigate('/mypage');
             }}
           >
-            <img src={img} alt="프로필이미지" />
+            <img src={profileImage} alt="프로필이미지" />
           </ProfileImg>
         </>
       ) : (

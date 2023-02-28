@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 
+import useIsLogin from '../../../../hooks/useIsLogin';
 import { getReply, postReply } from '../../../../apis/reply';
 import InputComment from '../comment/InputComment';
 import ReplyPagination from './ReplyPagination';
 import CommentItem from '../comment/CommentItem';
+import { isLoginAtom } from '../../../../recoil/profile';
 
 type ReplyPropsType = {
   commentId: string;
@@ -21,18 +24,14 @@ type ReplyType = {
 };
 
 const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
-  // ReplyComments.displayName = 'ReplyComments';
   const scrollPoint = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyCurPage, setReplyCurPage] = useState<number>(0);
-  const [isLogin, setIsLogin] = useState<boolean|undefined>();
+  const isLogin = useRecoilValue(isLoginAtom);
 
   //로그인 확인
-  useEffect(() => {
-    const userInfo = window.localStorage.getItem('user');
-    userInfo ? setIsLogin(true) : setIsLogin(false);
-  }, [isLogin]);
+  useIsLogin();
 
   //getReply
   const size = 5; //고정값

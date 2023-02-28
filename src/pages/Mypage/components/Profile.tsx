@@ -3,38 +3,40 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
+import useIsLogin from '../../../hooks/useIsLogin';
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 import { getProfile } from '../../../apis/profile';
-import { isLoginAtom, profileAtom } from '../../../recoil/profile';
+import { isLoginAtom, profileImageAtom } from '../../../recoil/profile';
 import showLoginModal from '../../../recoil/showLoginModal';
 
 type profileImageType = {
   profileImage: string;
-  isLogin: string | null | undefined;
+  isLogin: boolean;
 };
 
 const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
-  const setToken = useSetRecoilState(isLoginAtom);
-  const [isLogin, setIsLogin] = useState<string | undefined | null>();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
+  const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
 
-  useEffect(() => {
-    const user = window.localStorage.getItem('user');
-    setIsLogin(user);
-  }, [isLogin]);
+  //로그인 검증
+  useIsLogin();
 
+  //get Profile
   const { data, refetch } = useQuery({
     queryKey: ['profile', isLogin],
     queryFn: () => getProfile(),
+    onSuccess: (data) => {
+      setProfileImage(data.profileImage);
+    },
     enabled: !!isLogin,
   });
 
-  const { nickname, profileImage } = data || '';
+  const { nickname } = data || '';
 
-  const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
-  const fetchedProfile = useRecoilValue(profileAtom);
-
+  //edit profile modal
   const onShowEditProfile = () => {
     isLogin ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
   };
@@ -43,18 +45,18 @@ const Profile = () => {
     refetch();
   }, [showProfileModal]);
 
+  //login or logout 
   const onClickLogoutBtn = () => {
     if (isLogin) {
       window.localStorage.removeItem('user');
-      setIsLogin(null);
-      setToken(false);
+      setIsLogin(false);
+      setProfileImage('');
       return;
     }
     setShowLoginModal(true);
   };
 
   return (
-    // login 상태, logout 상태 다르게 보여야됨
     <ProfileWrapper>
       <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={isLogin}>
         <SettingIconWrapper>
