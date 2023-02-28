@@ -8,9 +8,12 @@ import { notificationShowState } from '../../recoil/notification';
 import NotificationList from './NotificationList';
 import Logo from './Logo';
 import Icons from './Icons';
+import { isLoginAtom } from '../../recoil/profile';
 
 const Header = () => {
   const [isNavOn, setIsNavOn] = useState(true);
+  const isLogin = useRecoilValue(isLoginAtom);
+
   const showNotification = useRecoilValue(notificationShowState);
 
   //이전 스크롤 초기값
@@ -40,7 +43,7 @@ const Header = () => {
       <Logo />
       <IconContainer>
         <Icons />
-        {showNotification && <NotificationList />}
+        {isLogin && showNotification && <NotificationList />}
       </IconContainer>
       <Outlet />
     </Container>

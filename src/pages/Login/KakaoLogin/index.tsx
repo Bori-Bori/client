@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
 import { KakaoLogin } from '../../../apis/auth';
+import { isLoginAtom } from '../../../recoil/profile';
+import { useSetRecoilState } from 'recoil';
 
 type Code = {
   code: string;
@@ -10,12 +12,15 @@ type Code = {
 
 const KakaoOauth = () => {
   const navigate = useNavigate();
+  const setToken = useSetRecoilState(isLoginAtom);
+
   const [params, setParams] = useSearchParams();
 
   const postCodeMutate = useMutation((code: Code) => KakaoLogin(code), {
     onSuccess: (response) => {
       const { id, accessToken, refreshToken, nickname } = response.data;
       window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
+      setToken(true);
       navigate('/');
     },
     onError: (e: any) => {

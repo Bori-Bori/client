@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 import { getProfile } from '../../../apis/profile';
-import { profileAtom } from '../../../recoil/profile';
+import { isLoginAtom, profileAtom } from '../../../recoil/profile';
 import showLoginModal from '../../../recoil/showLoginModal';
 
 type profileImageType = {
@@ -16,6 +16,7 @@ type profileImageType = {
 
 const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
+  const setToken = useSetRecoilState(isLoginAtom);
   const [isLogin, setIsLogin] = useState<string | undefined | null>();
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const Profile = () => {
     if (isLogin) {
       window.localStorage.removeItem('user');
       setIsLogin(null);
+      setToken(false);
       return;
     }
     setShowLoginModal(true);
