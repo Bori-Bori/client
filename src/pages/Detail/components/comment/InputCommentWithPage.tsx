@@ -42,7 +42,7 @@ const InputCommentWithPage = ({ className, placeholder, isLogin }: InputCommentP
   });
 
   const onClickSubmit = () => {
-    isLogin ? postCommentMutate.mutate() : alert('로그인 후 이용해주세요.')
+    isLogin ? postCommentMutate.mutate() : alert('로그인 후 이용해주세요.');
   };
 
   return (

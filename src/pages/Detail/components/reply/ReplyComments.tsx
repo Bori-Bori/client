@@ -26,7 +26,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
   const queryClient = useQueryClient();
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyCurPage, setReplyCurPage] = useState<number>(0);
-  const [isLogin, setIsLogin] = useState<boolean|undefined>();
+  const [isLogin, setIsLogin] = useState<boolean | undefined>();
 
   //로그인 확인
   useEffect(() => {
@@ -58,7 +58,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
   });
 
   const onClickSubmit = () => {
-    isLogin ? postReplyMutate.mutate() : alert('로그인 후 이용해주세요.')
+    isLogin ? postReplyMutate.mutate() : alert('로그인 후 이용해주세요.');
   };
 
   // scrollToReply
@@ -76,7 +76,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
     <ReplyInputWrapper ref={scrollPoint}>
       <ReplyInput
         className="ReplyInput"
-        placeholder={isLogin ? "대댓글을 입력하세요" : "로그인 후 이용해주세요"}
+        placeholder={isLogin ? '대댓글을 입력하세요' : '로그인 후 이용해주세요'}
         onClick={onClickSubmit}
         commentContent={replyContent}
         changeCommentContent={setReplyContent}

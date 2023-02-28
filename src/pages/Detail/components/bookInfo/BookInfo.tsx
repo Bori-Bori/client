@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
-import comment from '../../../../assets/icons/comment-wh-24.png'
-import user from '../../../../assets/icons/user-wh-24.png'
+import comment from '../../../../assets/icons/comment-wh-24.png';
+import user from '../../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../../assets/icons/common-bookmark-default-24.png';
 import CommonButton from '../../../../components/CommonButton';
 import { getBoard } from '../../../../apis/board';
@@ -36,10 +36,10 @@ const BookInfo = () => {
   const editImagePath = imagePath?.replace('coversum', 'cover500');
 
   //책 페이지 저장
-  useEffect(()=>{
+  useEffect(() => {
     page && setBookPage(page);
     imagePath && setBookImage(imagePath);
-  },[page, imagePath])
+  }, [page, imagePath]);
 
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);

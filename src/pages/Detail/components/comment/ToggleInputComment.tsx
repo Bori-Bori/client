@@ -9,7 +9,6 @@ import upIcon from '../../../../assets/icons/up-bk-24.png';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
 
-
 type inputIsOpenType = {
   inputIsOpen: boolean;
 };
@@ -18,7 +17,7 @@ const ToggleInputComment = () => {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState<boolean| undefined>();
+  const [isLogin, setIsLogin] = useState<boolean | undefined>();
 
   //로그인 유무 확인
   useEffect(() => {
@@ -52,7 +51,11 @@ const ToggleInputComment = () => {
             <span>댓글쓰기</span>
             <img src={closeIcon} onClick={ToggleInputHandler} />
           </InputTitle>
-          <InputCommentWithPage className="input" placeholder={isLogin ? "댓글을 입력하세요" : "로그인 후 이용해주세요"} isLogin={isLogin} />
+          <InputCommentWithPage
+            className="input"
+            placeholder={isLogin ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
+            isLogin={isLogin}
+          />
         </InputWrapper>
       )}
     </CommnetInputContainer>

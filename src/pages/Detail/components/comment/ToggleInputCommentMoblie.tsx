@@ -55,7 +55,7 @@ const ToggelInputCommentMoblie = () => {
   };
 
   const onClickSubmit = () => {
-    isLogin ? postCommentMutate.mutate() : alert("로그인 후 이용해주세요.");
+    isLogin ? postCommentMutate.mutate() : alert('로그인 후 이용해주세요.');
   };
 
   const onChangeTargetPage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +75,7 @@ const ToggelInputCommentMoblie = () => {
           <InputPageButton className="commentPage" value={targetPage} maxPage={maxPage} onChange={onChangeTargetPage} />
           <StyledInputComment
             className="pageInputMobile"
-            placeholder={isLogin ? "댓글을 입력하세요" : "로그인 후 이용해주세요"}
+            placeholder={isLogin ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
             onClick={onClickSubmit}
             commentContent={commentContent}
             changeCommentContent={setCommentContent}
