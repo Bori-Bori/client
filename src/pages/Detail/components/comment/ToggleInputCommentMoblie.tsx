@@ -2,37 +2,32 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
+import useIsLogin from '../../../../hooks/useIsLogin';
 import InputComment from './InputComment';
 import { postComments } from '../../../../apis/comment';
 import InputPageButton from './InputPageButton';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
-import commentInputHeight from '../../../../recoil/commentInputHeight';
+import bookPageAtom from '../../../../recoil/bookPage';
+import { isLoginAtom } from '../../../../recoil/profile';
 
 const ToggelInputCommentMoblie = () => {
-  const maxPage = '524'; //서버에서 받아올 값
+  const bookTotalPage = useRecoilValue(bookPageAtom);
+  const maxPage = bookTotalPage.toString();
   const inputWrapperRef = useRef<HTMLDivElement>(null);
-  const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
   const [commentContent, setCommentContent] = useState<string>('');
   const [targetPage, setTargetPage] = useState('0');
-  const [isLogin, setIsLogin] = useState<boolean | null>();
+  const isLogin = useRecoilValue(isLoginAtom);
 
   const queryClient = useQueryClient();
   const params = useParams();
   const isbn = params.id!;
 
-  useEffect(() => {
-    const userInfo = window.localStorage.getItem('user');
-    userInfo ? setIsLogin(true) : setIsLogin(false);
-  }, [isLogin]);
-
-  // useEffect(() => {
-  //   inputHeight ? setInputHeight(inputWrapperRef.current!.clientHeight) : '';
-  //   // console.log(inputWrapperRef.current?.clientHeight);
-  // }, [inputHeight]);
+  //로그인 유무 확인
+  useIsLogin();
 
   const data = {
     content: commentContent,
@@ -48,10 +43,6 @@ const ToggelInputCommentMoblie = () => {
 
   const ToggleInputHandler = () => {
     setInputIsOpen((prev) => !prev);
-    // setTimeout(() => {
-    //   const inputHeight = inputWrapperRef.current?.clientHeight || 1;
-    //   setInputHeight(inputHeight);
-    // }, 1);
   };
 
   const onClickSubmit = () => {

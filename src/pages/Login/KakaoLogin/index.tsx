@@ -12,7 +12,7 @@ type Code = {
 
 const KakaoOauth = () => {
   const navigate = useNavigate();
-  const setToken = useSetRecoilState(isLoginAtom);
+  const setIsLogin = useSetRecoilState(isLoginAtom);
 
   const [params, setParams] = useSearchParams();
 
@@ -20,7 +20,7 @@ const KakaoOauth = () => {
     onSuccess: (response) => {
       const { id, accessToken, refreshToken, nickname } = response.data;
       window.localStorage.setItem('user', JSON.stringify({ id, accessToken, refreshToken, nickname }));
-      setToken(true);
+      setIsLogin(true);
       navigate('/');
     },
     onError: (e: any) => {

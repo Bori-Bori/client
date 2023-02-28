@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState , useRecoilValue} from 'recoil';
 
 import InputCommentWithPage from './InputCommentWithPage';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
 
-import upIcon from '../../../../assets/icons/up-bk-24.png';
+import useIsLogin from '../../../../hooks/useIsLogin';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
+<<<<<<< HEAD
+=======
+import { isLoginAtom } from '../../../../recoil/profile';
+>>>>>>> 9cee29aaf8df0fc1ebc888c24623af83a1f18eb5
 
 type inputIsOpenType = {
   inputIsOpen: boolean;
@@ -17,16 +21,18 @@ const ToggleInputComment = () => {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
+<<<<<<< HEAD
   const [isLogin, setIsLogin] = useState<boolean | undefined>();
+=======
+  const isLogin = useRecoilValue(isLoginAtom);
+>>>>>>> 9cee29aaf8df0fc1ebc888c24623af83a1f18eb5
 
   //로그인 유무 확인
-  useEffect(() => {
-    const userInfo = window.localStorage.getItem('user');
-    userInfo ? setIsLogin(true) : setIsLogin(false);
-  }, [isLogin]);
+  useIsLogin();
 
+  //댓글창 열림 유무에 따른 여백 조절
   useEffect(() => {
-    inputHeight && inputWrapperRef ? setInputHeight(inputWrapperRef.current!.clientHeight) : '';
+    inputHeight && inputWrapperRef.current?.clientHeight ? setInputHeight(inputWrapperRef.current!.clientHeight) : '';
   }, [inputHeight]);
 
   const ToggleInputHandler = () => {
@@ -85,9 +91,7 @@ const CommnetInputContainer = styled.article<inputIsOpenType>`
   bottom: ${(props) => (props.inputIsOpen ? '0px' : '-100px')};
   left: 50%;
   transform: translateX(-50%);
-  /* bottom: 0; */
   width: inherit;
-  /* height: 64px; */
   max-width: 1024px;
   z-index: 100;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.08);
