@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
+import useIsLogin from '../../../hooks/useIsLogin';
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 import { getProfile } from '../../../apis/profile';
@@ -20,10 +21,7 @@ const Profile = () => {
   const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
 
   //로그인 검증
-  useEffect(() => {
-    const user = window.localStorage.getItem('user');
-    setIsLogin(!!user);
-  }, []);
+  useIsLogin();
 
   //get Profile
   const { data, refetch } = useQuery({

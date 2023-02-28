@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
+import useIsLogin from '../../../../hooks/useIsLogin';
 import InputComment from './InputComment';
 import { postComments } from '../../../../apis/comment';
 import InputPageButton from './InputPageButton';
@@ -19,18 +20,14 @@ const ToggelInputCommentMoblie = () => {
   const [inputIsOpen, setInputIsOpen] = useState(false);
   const [commentContent, setCommentContent] = useState<string>('');
   const [targetPage, setTargetPage] = useState('0');
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-
+  const isLogin = useRecoilValue(isLoginAtom);
 
   const queryClient = useQueryClient();
   const params = useParams();
   const isbn = params.id!;
 
   //로그인 유무 확인
-  useEffect(() => {
-    const userInfo = window.localStorage.getItem('user');
-    userInfo ? setIsLogin(true) : setIsLogin(false);
-  }, []);
+  useIsLogin();
 
   const data = {
     content: commentContent,

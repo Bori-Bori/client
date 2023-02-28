@@ -2,19 +2,20 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { getUserInfo } from '../../apis/userInfo';
 
 import Notification from './Notification';
 import Search from './Search';
 
+import useIsLogin from '../../hooks/useIsLogin';
 import showLoginModal from '../../recoil/showLoginModal';
 import { isLoginAtom } from '../../recoil/profile';
 
 const Icons = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const isLogin = useRecoilValue(isLoginAtom);
   const setShowLoginModal = useSetRecoilState(showLoginModal);
 
   const { data } = useQuery(['userInfo'], getUserInfo);
@@ -23,13 +24,8 @@ const Icons = () => {
     setShowLoginModal(true);
   };
 
-  useEffect(() => {
-    if (window.localStorage.getItem('user')) {
-      setIsLogin(true);
-      return;
-    }
-    setIsLogin(false);
-  }, []);
+  //로그인 확인
+  useIsLogin();
 
   return (
     <IconWrap>
