@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
 
 import Modal from '../../components/Modal';
 import { ModalPortal } from '../../components/Modal';
 import kakaoIcon from '../../assets/icons/kakaoIcon.png';
 import googleIcon from '../../assets/icons//googleIcon.png';
+import showLoginModal from '../../recoil/showLoginModal';
+
 const Login = () => {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
   const REDIRECT_URI = 'http://localhost:3000/login/kakao/oauth';
@@ -12,9 +15,14 @@ const Login = () => {
   const KakaoRedirectHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
+  const setShowLoginModal = useSetRecoilState(showLoginModal);
+
+  const onHideLoginModal = () => {
+    setShowLoginModal(false);
+  };
   return (
     <ModalPortal>
-      <LoginModal className="LoginModal">
+      <LoginModal className="LoginModal" onClick={onHideLoginModal}>
         <h2>환영합니다!</h2>
         <span>회원이 되면 모든 서비스를 이용하실 수 있습니다.</span>
         <KakaoLoginButton className="kakaoLogin" type="button" onClick={KakaoRedirectHandler}>
@@ -25,7 +33,7 @@ const Login = () => {
           <img src={googleIcon} />
           구글로 시작하기
         </GoggleLoginButton>
-        <CloseModal>다음에 할래요</CloseModal>
+        <CloseModal onClick={onHideLoginModal}>다음에 할래요</CloseModal>
       </LoginModal>
     </ModalPortal>
   );

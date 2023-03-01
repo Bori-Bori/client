@@ -1,0 +1,203 @@
+import { categoryType } from '../../types/category';
+
+export const CATEGORIES: categoryType = [
+  {
+    id: 1,
+    name: '국내',
+    middlecategories: [
+      {
+        id: 1,
+        name: '소설/시/희곡',
+        subcategories: [
+          { subCategoryId: 1, name: '🎎한국' },
+          { subCategoryId: 2, name: '🏯일본' },
+          { subCategoryId: 3, name: '🗽영미' },
+          { subCategoryId: 4, name: '🥋판타지' },
+          { subCategoryId: 5, name: '👻호러' },
+          { subCategoryId: 6, name: '💓로맨스' },
+          { subCategoryId: 7, name: '📃시' },
+          { subCategoryId: 8, name: '📖희곡' },
+        ],
+      },
+      {
+        id: 2,
+        name: '여행',
+        subcategories: [
+          {
+            subCategoryId: 1,
+            name: '✈️여행 가이드',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: '에세이',
+        subcategories: [
+          { subCategoryId: 1, name: '🎎한국' },
+          { subCategoryId: 2, name: '✈️외국' },
+          { subCategoryId: 3, name: '🐢동물' },
+          { subCategoryId: 4, name: '🍕음식' },
+          { subCategoryId: 5, name: '🎨예술' },
+          { subCategoryId: 6, name: '📚독서' },
+          { subCategoryId: 7, name: '🌿자연' },
+        ],
+      },
+      {
+        id: 4,
+        name: '요리/살림',
+        subcategories: [
+          { subCategoryId: 1, name: '🥦건강요리' },
+          { subCategoryId: 2, name: '🥗다이어트' },
+          { subCategoryId: 3, name: '🍙도시락' },
+          { subCategoryId: 4, name: '🍰디저트' },
+          { subCategoryId: 5, name: '🧵뜨개질' },
+          { subCategoryId: 6, name: '👨‍🍳생활요리' },
+          { subCategoryId: 7, name: '🌿원예' },
+          { subCategoryId: 8, name: '🥖제과제빵' },
+        ],
+      },
+      {
+        id: 5,
+        name: '과학',
+        subcategories: [
+          { subCategoryId: 1, name: '🔴기초과학' },
+          { subCategoryId: 2, name: '🟠생명과학' },
+          { subCategoryId: 3, name: '🟡의학' },
+          { subCategoryId: 4, name: '🟢법의학' },
+          { subCategoryId: 5, name: '🔵뇌과학' },
+          { subCategoryId: 6, name: '🟣물리학' },
+          { subCategoryId: 7, name: '🟤천문학' },
+          { subCategoryId: 8, name: '⚫지구과학' },
+          { subCategoryId: 9, name: '⚪수학' },
+        ],
+      },
+      {
+        id: 6,
+        name: '잡지',
+        subcategories: [
+          { subCategoryId: 1, name: '🟥건강' },
+          { subCategoryId: 2, name: '🟧의학' },
+          { subCategoryId: 3, name: '🟨경제' },
+          { subCategoryId: 4, name: '🟩경영' },
+          { subCategoryId: 5, name: '🟦교양' },
+          { subCategoryId: 6, name: '🟪교육' },
+          { subCategoryId: 7, name: '🟫대중문화' },
+          { subCategoryId: 8, name: '⬛독립' },
+          { subCategoryId: 9, name: '⬜육아' },
+        ],
+      },
+      {
+        id: 7,
+        name: '만화',
+        subcategories: [
+          { subCategoryId: 1, name: '❤️교양' },
+          { subCategoryId: 2, name: '🧡대하' },
+          { subCategoryId: 3, name: '💛소년' },
+          { subCategoryId: 4, name: '💚순정' },
+          { subCategoryId: 5, name: '💙동물' },
+          { subCategoryId: 6, name: '💜스포츠' },
+          { subCategoryId: 7, name: '🤎가족' },
+          { subCategoryId: 8, name: '🖤요리' },
+          { subCategoryId: 9, name: '🤍코믹' },
+        ],
+      },
+      {
+        id: 8,
+        name: '건강',
+        subcategories: [
+          { subCategoryId: 1, name: '🏃‍♂️운동' },
+          { subCategoryId: 2, name: '🏌️‍♂️골프' },
+          { subCategoryId: 4, name: '🎣낚시' },
+          { subCategoryId: 5, name: '🏀구기' },
+          { subCategoryId: 6, name: '🚵‍♀️등산' },
+          { subCategoryId: 7, name: '🥋무예' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: '국외',
+    middlecategories: [
+      {
+        id: 1,
+        name: '소설/시/희곡',
+        subcategories: [
+          { subCategoryId: 1, name: '🎠문학' },
+          { subCategoryId: 2, name: '📚소설' },
+          { subCategoryId: 3, name: '📃시' },
+          { subCategoryId: 4, name: '📖희곡' },
+        ],
+      },
+      {
+        id: 2,
+        name: '인문/사회',
+        subcategories: [
+          { subCategoryId: 1, name: '📂사회과학' },
+          { subCategoryId: 2, name: '📂심리학' },
+          { subCategoryId: 3, name: '📂정치학' },
+          { subCategoryId: 4, name: '📂철학' },
+        ],
+      },
+      {
+        id: 3,
+        name: '자연과학',
+        subcategories: [
+          { subCategoryId: 1, name: '📂과학' },
+          { subCategoryId: 2, name: '📂수학' },
+          { subCategoryId: 3, name: '📂자연생태' },
+        ],
+      },
+      {
+        id: 4,
+        name: '컴퓨터',
+        subcategories: [
+          { subCategoryId: 1, name: '👩‍💻가상세계' },
+          { subCategoryId: 2, name: '🔧네트워킹' },
+          { subCategoryId: 3, name: '⚙️기계이론' },
+          { subCategoryId: 4, name: '⌨️로직' },
+        ],
+      },
+      {
+        id: 5,
+        name: '잡지',
+        subcategories: [
+          { subCategoryId: 1, name: '💰경제' },
+          { subCategoryId: 2, name: '👧어린이' },
+          { subCategoryId: 3, name: '👩‍🏫자격' },
+          { subCategoryId: 4, name: '📆캘린더' },
+          { subCategoryId: 5, name: '🤖코믹' },
+        ],
+      },
+      {
+        id: 6,
+        name: '자기계발',
+        subcategories: [
+          { subCategoryId: 1, name: '🟥감정' },
+          { subCategoryId: 2, name: '🟧동기부여' },
+          { subCategoryId: 3, name: '🟨꿈' },
+          { subCategoryId: 4, name: '🟩고령화' },
+          { subCategoryId: 5, name: '🟦강박행동' },
+          { subCategoryId: 6, name: '🟪상호의존' },
+          { subCategoryId: 7, name: '🟫일반' },
+          { subCategoryId: 8, name: '⬛자기관리' },
+        ],
+      },
+      {
+        id: 7,
+        name: '경제/경영',
+        subcategories: [
+          { subCategoryId: 1, name: '🔴경력관리' },
+          { subCategoryId: 2, name: '🟠경영기술' },
+          { subCategoryId: 3, name: '🟡경제발전' },
+          { subCategoryId: 4, name: '🟢경제상법' },
+          { subCategoryId: 5, name: '🔵경제수학' },
+          { subCategoryId: 6, name: '🟣경제학' },
+          { subCategoryId: 7, name: '🟤고객관리' },
+          { subCategoryId: 8, name: '⚫공공재정' },
+          { subCategoryId: 9, name: '⚪관리' },
+        ],
+      },
+    ],
+  },
+];

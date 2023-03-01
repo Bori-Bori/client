@@ -1,26 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 
-import BookInfo from './components/BookInfo';
-import SlideButton from './components/SlideButton';
-import Comment from './components/Comment';
-import InputComment from './components/InputComment';
-import InputCommentWithPage from './components/InputCommentWithPage';
-import Login from '../Login';
+import BookInfo from './components/bookInfo/BookInfo';
+import SortingComment from './components/sorting/SortingComment';
+import Comment from './components/comment/Comment';
+import ToggleInputComment from './components/comment/ToggleInputComment';
+import ToggelInputCommentMoblie from './components/comment/ToggleInputCommentMoblie';
+import bookImageAtom from '../../recoil/bookImage';
 
+type bookImageType = {
+  bookImage: string;
+};
 const Detail = () => {
-  const onClick = () => {
-    console.log('test');
-  };
+  const bookImage = useRecoilValue(bookImageAtom);
   return (
-    <MainWrapper>
+    <MainWrapper bookImage={bookImage}>
       <ContentContainer>
         <BookInfo />
-        <SlideButton />
+        <SortingComment />
         <Comment />
-        <InputComment className="대댓글" onClick={onClick} placeholder="대댓글을 입력하세요" />
-        <InputCommentWithPage className="댓글" onClick={onClick} placeholder="댓글을 입력하세요" />
-        <Login />
+        <ToggleInputComment />
+        <ToggelInputCommentMoblie />
       </ContentContainer>
     </MainWrapper>
   );
@@ -28,20 +29,19 @@ const Detail = () => {
 
 export default Detail;
 
-const MainWrapper = styled.div`
-  /* width: 100%; */
-  overflow: hidden;
-  min-height: 100vh;
+const MainWrapper = styled.div<bookImageType>`
+  width: 100%;
   position: relative;
+  overflow: hidden;
   &::before {
     content: '';
     position: absolute;
-    height: 445px;
+    height: 435px;
     top: -10px;
     left: -10px;
     right: -10px;
     bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(http://image.yes24.com/goods/113737324/XL);
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${(props) => props.bookImage});
     background-position: center;
     background-size: 100% 300%;
     -webkit-filter: blur(10px);
@@ -49,22 +49,36 @@ const MainWrapper = styled.div`
     -o-filter: blur(10px);
     -ms-filter: blur(10px);
     filter: blur(10px);
-    z-index: -10;
+    z-index: -1;
   }
   &::after {
     content: '';
     position: absolute;
-    top: 430px;
+    top: 420px;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: ${(props) => props.theme.colors.white};
     z-index: -1;
   }
+  ${(props) => props.theme.media.tablet`
+    
+    &::before {
+      top: -50px;
+    }
+    &:after {
+      top: 370px;
+    }
+  `}
 `;
 
 const ContentContainer = styled.div`
-  width: 1024px;
-  margin: 0 auto;
-  padding: 24px;
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  margin: 70px auto;
+  /* padding: 24px; */
+  ${(props) => props.theme.media.tablet`
+  // padding: 0 20px;
+  `}
 `;
