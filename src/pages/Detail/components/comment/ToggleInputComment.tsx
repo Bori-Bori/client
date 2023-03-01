@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { useRecoilState , useRecoilValue} from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import InputCommentWithPage from './InputCommentWithPage';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
@@ -50,7 +50,11 @@ const ToggleInputComment = () => {
             <span>댓글쓰기</span>
             <img src={closeIcon} onClick={ToggleInputHandler} />
           </InputTitle>
-          <InputCommentWithPage className="input" placeholder={isLogin ? "댓글을 입력하세요" : "로그인 후 이용해주세요"} isLogin={isLogin} />
+          <InputCommentWithPage
+            className="input"
+            placeholder={isLogin ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
+            isLogin={isLogin}
+          />
         </InputWrapper>
       )}
     </CommnetInputContainer>

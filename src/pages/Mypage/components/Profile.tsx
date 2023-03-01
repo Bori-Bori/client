@@ -17,7 +17,7 @@ type profileImageType = {
 
 const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
 
@@ -45,7 +45,7 @@ const Profile = () => {
     refetch();
   }, [showProfileModal]);
 
-  //login or logout 
+  //login or logout
   const onClickLogoutBtn = () => {
     if (isLogin) {
       window.localStorage.removeItem('user');

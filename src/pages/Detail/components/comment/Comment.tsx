@@ -36,7 +36,7 @@ const Comment = () => {
   const [bookPage, setBookPage] = useState(parseInt(slideRangeValue));
   const searchOrder = curSortState ? 'recent' : 'page';
 
-  //댓글 fetch 
+  //댓글 fetch
   const { fetchNextPage, status, commentsList, commentIsLast } = useCommentQuery(boardId, searchOrder, size, bookPage);
 
   //range value가 연속적이게 변할 땐 fetch 요청 보내지 않도록 하는 코드

@@ -19,9 +19,12 @@ const Icons = () => {
   const isLogin = useRecoilValue(isLoginAtom);
   const setShowLoginModal = useSetRecoilState(showLoginModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
-  
+
   //fetch profileImage
-  const { data } = useQuery(['userInfo'], getUserInfo);
+  const { data } = useQuery(['userInfo'], getUserInfo, {
+    enabled: !!isLogin,
+  });
+
   const img = data?.data.content.profileImage;
   useEffect(() => {
     setProfileImage(img);
