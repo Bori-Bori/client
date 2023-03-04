@@ -51,32 +51,34 @@ const CategoryBookList = () => {
   if (status === 'error') return <Error />;
 
   return (
-    <CategoryWrap>
-      {data?.pages.map((page, index) => (
-        <React.Fragment key={index}>
-          {page.items.map((value: IbookList) => (
-            <li key={value?.title}>
-              <Link to={`/detail/${value?.isbn}`}>
-                <BookImgWrap>
-                  <BookImg src={value?.imagePath} alt={value?.title} />
-                </BookImgWrap>
-                <BookWrap>
-                  <BookTitle>{value?.title}</BookTitle>
-                  <BookAuthor>{value?.author}</BookAuthor>
-                  <BookContent>
-                    <li>
-                      <img src={comment} alt="댓글아이콘" />
-                      <span> {value?.commentCount}</span>
-                    </li>
-                  </BookContent>
-                </BookWrap>
-              </Link>
-            </li>
-          ))}
-        </React.Fragment>
-      ))}
+    <>
+      <CategoryWrap>
+        {data?.pages.map((page, index) => (
+          <React.Fragment key={index}>
+            {page.items.map((value: IbookList) => (
+              <li key={value?.title}>
+                <Link to={`/detail/${value?.isbn}`}>
+                  <BookImgWrap>
+                    <BookImg src={value?.imagePath} alt={value?.title} />
+                  </BookImgWrap>
+                  <BookWrap>
+                    <BookTitle>{value?.title}</BookTitle>
+                    <BookAuthor>{value?.author}</BookAuthor>
+                    <BookContent>
+                      <li>
+                        <img src={comment} alt="댓글아이콘" />
+                        <span> {value?.commentCount}</span>
+                      </li>
+                    </BookContent>
+                  </BookWrap>
+                </Link>
+              </li>
+            ))}
+          </React.Fragment>
+        ))}
+      </CategoryWrap>
       {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
-    </CategoryWrap>
+    </>
   );
 };
 
