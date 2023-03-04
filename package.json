@@ -33,7 +33,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --cache \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint --fix --cache \"src/**/*.{ts,tsx}\"",
-    "format": "prettier --write --cache \"src/**/*.{ts,tsx}\""
+    "format": "prettier --write --cache \"src/**/*.{ts,tsx}\"",
+    "deploy": "aws s3 sync ./build s3://boribori.store --profile=boribori"
   },
   "eslintConfig": {
     "extends": [
@@ -63,5 +64,6 @@
     "eslint-plugin-react": "^7.31.10",
     "husky": "^8.0.1",
     "prettier": "2.7.1"
-  }
+  },
+  "homepage": "."
 }

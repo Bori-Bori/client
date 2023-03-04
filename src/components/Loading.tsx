@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Loading = () => {
   return (
-    <>
+    <CategoryWrap>
       {[0, 0, 0, 0, 0].map((value, index) => {
         return (
           <ListItem key={index}>
@@ -16,13 +16,12 @@ const Loading = () => {
           </ListItem>
         );
       })}
-    </>
+    </CategoryWrap>
   );
 };
 
 export default Loading;
-
-const LoadingWrap = styled.div`
+const CategoryWrap = styled.ul`
   width: 61rem;
   margin-left: 5.4%;
   display: grid;
