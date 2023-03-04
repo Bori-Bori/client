@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
+import Error from '../../../../components/Error';
 import comment from '../../../../assets/icons/comment-wh-24.png';
 import user from '../../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../../assets/icons/common-bookmark-default-24.png';
@@ -24,7 +25,7 @@ const BookInfo = () => {
   const setBookPage = useSetRecoilState(bookPageAtom);
   const setBookImage = useSetRecoilState(bookImageAtom);
 
-  const { isError, data } = useQuery({
+  const { isError, isLoading, data } = useQuery({
     queryKey: ['bookInfo', isbn],
     queryFn: () => getBoard(isbn),
   });
@@ -45,6 +46,8 @@ const BookInfo = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
   };
 
+  if (isError) return <Error />;
+
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
@@ -53,14 +56,22 @@ const BookInfo = () => {
           <BookInfoRow1>
             <h2>{title}</h2>
             <BookInfoCountsRow>
-              <span>
-                <img src={commentGrey} />
-                12
-              </span>
-              <span>
-                <img src={userGrey} />
-                12
-              </span>
+              {isLoading ? (
+                ''
+              ) : (
+                <span>
+                  <img src={commentGrey} />
+                  12
+                </span>
+              )}
+              {isLoading ? (
+                ''
+              ) : (
+                <span>
+                  <img src={userGrey} />
+                  12
+                </span>
+              )}
             </BookInfoCountsRow>
             {category1 && <span>#{category1} </span>}
             {category2 && <span>#{category2} </span>}
@@ -85,7 +96,7 @@ const BookInfo = () => {
           </BookInfoRow3>
         </BookInfoContent>
       </BookInfoContainer>
-      <BookIntro moreIntro={moreIntro}>{description}</BookIntro>
+      {description && <BookIntro moreIntro={moreIntro}>{description}</BookIntro>}
       <ToggleIntroButton className="moreIntroButton" onClick={toggleIntro}>
         {moreIntro ? '숨기기' : '더보기'}{' '}
       </ToggleIntroButton>
@@ -102,9 +113,7 @@ const BookInfoWrapper = styled.section`
 
 const BookInfoContainer = styled.div`
   display: flex;
-  /* width: 100vw; */
   ${(props) => props.theme.media.tablet`
-    // width: 100vw;
     flex-direction: column;
   `}
   & > img {
@@ -126,10 +135,19 @@ const BookInfoContainer = styled.div`
 `;
 
 const LoadingImg = styled.div`
+  position: relative;
   width: 266px;
   height: 396px;
+  margin-right: 40px;
+  top: 10px;
   background-color: ${(props) => props.theme.colors.grey1};
   border-radius: 8px;
+  ${(props) => props.theme.media.tablet`
+    width: 216px;
+    height: 320px;
+    margin: 0 auto;
+    top: 20px;
+  `}
 `;
 
 const BookInfoContent = styled.div`

@@ -21,7 +21,7 @@ const Icons = () => {
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
 
   //fetch profileImage
-  const { data } = useQuery(['userInfo'], getUserInfo, {
+  const { isLoading, data } = useQuery(['userInfo'], getUserInfo, {
     enabled: !!isLogin,
   });
 
@@ -48,7 +48,7 @@ const Icons = () => {
               navigate('/mypage');
             }}
           >
-            <img src={profileImage} alt="프로필이미지" />
+            {isLoading ? <LoadingProfileImg></LoadingProfileImg> : <img src={profileImage} alt="프로필이미지" />}
           </ProfileImg>
         </>
       ) : (
@@ -67,6 +67,13 @@ const IconWrap = styled.div`
   align-items: center;
   gap: 24px;
 `;
+
+const LoadingProfileImg = styled.div`
+  width: 28px;
+  height: 28px;
+  background-color: lightgrey;
+`
+
 const ProfileImg = styled.button`
   cursor: pointer;
   display: block;

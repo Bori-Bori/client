@@ -13,6 +13,8 @@ import showLoginModal from '../../../recoil/showLoginModal';
 type profileImageType = {
   profileImage: string;
   isLogin: boolean;
+  isLoading: boolean;
+  isError: boolean;
 };
 
 const Profile = () => {
@@ -25,7 +27,7 @@ const Profile = () => {
   useIsLogin();
 
   //get Profile
-  const { data, refetch } = useQuery({
+  const { isError, isLoading, data, refetch } = useQuery({
     queryKey: ['profile', isLogin],
     queryFn: () => getProfile(),
     onSuccess: (data) => {
@@ -58,14 +60,26 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={isLogin}>
+      <ProfileImg
+        onClick={onShowEditProfile}
+        profileImage={profileImage}
+        isLogin={isLogin}
+        isLoading={isLoading}
+        isError={isError}
+      >
         <SettingIconWrapper>
           <img src={SettingIcon} />
         </SettingIconWrapper>
       </ProfileImg>
       <div>
-        <Username>{isLogin ? nickname : '로그인 후 이용해주세요'}</Username>
-        <LogoutButton onClick={onClickLogoutBtn}>{isLogin ? '로그아웃' : '로그인'}</LogoutButton>
+        {isError ? (
+          <span>사용자 정보를 불러오지 못했습니다.</span>
+        ) : isLoading ? (
+          ''
+        ) : (
+          <Username>{isLogin ? nickname : '로그인 후 이용해주세요'}</Username>
+        )}
+        {isLoading ? '' : <LogoutButton onClick={onClickLogoutBtn}>{isLogin ? '로그아웃' : '로그인'}</LogoutButton>}
       </div>
     </ProfileWrapper>
   );
@@ -92,7 +106,7 @@ const ProfileImg = styled.div<profileImageType>`
   margin-right: 15px;
   cursor: pointer;
   ${(props) =>
-    props.isLogin
+    props.isLogin && !props.isError && !props.isLoading
       ? `
       background: url(${props.profileImage});
       `
