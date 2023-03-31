@@ -9,10 +9,11 @@ import NotificationList from './NotificationList';
 import Logo from './Logo';
 import Icons from './Icons';
 import { isLoginAtom } from '../../recoil/profile';
+import { useAuthContext } from '../../context/useAuthContext';
 
 const Header = () => {
   const [isNavOn, setIsNavOn] = useState(true);
-  const isLogin = useRecoilValue(isLoginAtom);
+  const { user }: any = useAuthContext();
 
   const showNotification = useRecoilValue(notificationShowState);
 
@@ -43,7 +44,7 @@ const Header = () => {
       <Logo />
       <IconContainer>
         <Icons />
-        {isLogin && showNotification && <NotificationList />}
+        {user && showNotification && <NotificationList />}
       </IconContainer>
       <Outlet />
     </Container>
