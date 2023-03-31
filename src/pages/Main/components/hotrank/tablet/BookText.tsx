@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { countState } from './../../../../../recoil/slide';
-import { bookData } from './../../bookData';
 
-// 이미지
 import comment from '../../../../../assets/icons/common_comment_gr_24.png';
-import { useQuery } from '@tanstack/react-query';
-import { getBookItem } from '../../../../../apis/category';
+
+import { useRecoilValue } from 'recoil';
+import { bookData } from '../../bookData';
+import { countState } from '../../../../../recoil/slide';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { appFireStore } from '../../../../../firebase/config';
 
 const BookText = () => {
   const count = useRecoilValue(countState);
 
-  const category1 = bookData[count]?.category1;
-  const category2 = bookData[count]?.category2;
-  const category3 = bookData[count]?.category3;
-  const keyword = bookData[count]?.TITLE;
+  const [commentList, setCommentList] = useState([]);
 
-  const { data: bookItem } = useQuery(['bookItem', category1, category2, category3, keyword], () =>
-    getBookItem(category1, category2, category3, keyword),
-  );
+  useEffect(() => {
+    const collectionRef = collection(appFireStore, 'comments');
+    const documentRef = doc(collectionRef, bookData[count]?.TITLE_URL);
+    const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const commentList = doc.data()?.commentList || [];
+      setCommentList(commentList);
+    });
+
+    return () => unsubscribe();
+  }, [count]);
   return (
     <BookTextWrap>
       <Title>🔥 이번주 HOT 도서</Title>
@@ -33,7 +37,7 @@ const BookText = () => {
       <BookContent>
         <BooKInfo>
           <img src={comment} alt="댓글아이콘" />
-          {/* <span>{bookItem?.content?.items[0]?.commentCount}</span> */}
+          <span>{commentList.length}</span>
         </BooKInfo>
       </BookContent>
     </BookTextWrap>

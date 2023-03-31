@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { bookData } from '../../bookData';
+import comment from '../../../../../assets/icons/common_comment_gr_24.png';
+
 import { useRecoilValue } from 'recoil';
+import { bookData } from '../../bookData';
 import { countState } from '../../../../../recoil/slide';
-
-import { useQuery } from '@tanstack/react-query';
-import { getBookItem } from './../../../../../apis/category';
-
-// 이미지
-import comment from '../../../../../assets/icons/comment-gr-16.png';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { appFireStore } from '../../../../../firebase/config';
 
 const BookText = () => {
   const count = useRecoilValue(countState);
-  const category1 = bookData[count]?.category1;
-  const category2 = bookData[count]?.category2;
-  const category3 = bookData[count]?.category3;
-  const keyword = bookData[count]?.TITLE;
-  const { data: bookItem } = useQuery(['bookItem', category1, category2, category3, keyword], () =>
-    getBookItem(category1, category2, category3, keyword),
-  );
+
+  const [commentList, setCommentList] = useState([]);
+
+  useEffect(() => {
+    const collectionRef = collection(appFireStore, 'comments');
+    const documentRef = doc(collectionRef, bookData[count]?.TITLE_URL);
+    const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const commentList = doc.data()?.commentList || [];
+      setCommentList(commentList);
+    });
+
+    return () => unsubscribe();
+  }, [count]);
 
   return (
     <BookTextWrap>
-      {/* <div>
+      <div>
         <TitleWrap>
           <Title>🔥이번주 HOT 도서</Title>
           <div>
@@ -40,10 +44,10 @@ const BookText = () => {
         <BookContent>
           <li>
             <img src={comment} alt="댓글아이콘" />
-            <span>{bookItem?.content?.items[0]?.commentCount}</span>
+            <span>{commentList.length}</span>
           </li>
         </BookContent>
-      </div> */}
+      </div>
     </BookTextWrap>
   );
 };
