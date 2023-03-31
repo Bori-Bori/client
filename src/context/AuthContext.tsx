@@ -19,7 +19,6 @@ const AuthContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
   });
-  console.log('user state:', state);
   return (
     // { ...state, dispatch } 이 두 가지 값이 context객체를 통해 접근할 수 있는 값이 됩니다.
     <AuthContext.Provider value={{ ...state, dispatch }}>{children}</AuthContext.Provider>
