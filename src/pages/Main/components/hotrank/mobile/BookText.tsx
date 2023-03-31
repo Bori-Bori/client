@@ -23,7 +23,7 @@ const BookText = () => {
 
   return (
     <BookTextWrap>
-      <div>
+      {/* <div>
         <TitleWrap>
           <Title>🔥이번주 HOT 도서</Title>
           <div>
@@ -43,7 +43,7 @@ const BookText = () => {
             <span>{bookItem?.content?.items[0]?.commentCount}</span>
           </li>
         </BookContent>
-      </div>
+      </div> */}
     </BookTextWrap>
   );
 };

@@ -37,7 +37,7 @@ const BookText = () => {
       </Subject>
       <BookContent>
         <img src={comment} alt="댓글아이콘" />
-        <span>{bookItem?.content?.items[0]?.commentCount}</span>
+        {/* <span>{bookItem?.content?.items[0]?.commentCount}</span> */}
       </BookContent>
     </BookTextWrap>
   );
