@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { useQuery } from '@tanstack/react-query';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import useIsLogin from '../../../hooks/useIsLogin';
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
-import { getProfile } from '../../../apis/profile';
-import { isLoginAtom, profileImageAtom } from '../../../recoil/profile';
+import { profileImageAtom } from '../../../recoil/profile';
 import showLoginModal from '../../../recoil/showLoginModal';
+import { auth } from '../../../firebase/config';
+import { useAuthContext } from '../../../context/useAuthContext';
 
 type profileImageType = {
   profileImage: string;
@@ -17,39 +17,25 @@ type profileImageType = {
 
 const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  const [showProfileModal, setShowEditProfileModal] = useRecoilState(showEditProfileModal);
+  const setShowEditProfileModal = useSetRecoilState(showEditProfileModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
-
+  const { dispatch, user }: any = useAuthContext();
   //로그인 검증
   useIsLogin();
 
   //get Profile
-  const { data, refetch } = useQuery({
-    queryKey: ['profile', isLogin],
-    queryFn: () => getProfile(),
-    onSuccess: (data) => {
-      setProfileImage(data.profileImage);
-    },
-    enabled: !!isLogin,
-  });
-
-  const { nickname } = data || '';
+  const nickname = user?.displayName;
 
   //edit profile modal
   const onShowEditProfile = () => {
-    isLogin ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
+    user ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
   };
-
-  useEffect(() => {
-    refetch();
-  }, [showProfileModal]);
 
   //login or logout
   const onClickLogoutBtn = () => {
-    if (isLogin) {
-      window.localStorage.removeItem('user');
-      setIsLogin(false);
+    if (user) {
+      auth.signOut();
+      dispatch({ type: 'logout' });
       setProfileImage('');
       return;
     }
@@ -58,14 +44,14 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={isLogin}>
+      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={user}>
         <SettingIconWrapper>
           <img src={SettingIcon} />
         </SettingIconWrapper>
       </ProfileImg>
       <div>
-        <Username>{isLogin ? nickname : '로그인 후 이용해주세요'}</Username>
-        <LogoutButton onClick={onClickLogoutBtn}>{isLogin ? '로그아웃' : '로그인'}</LogoutButton>
+        <Username>{user ? nickname : '로그인 후 이용해주세요'}</Username>
+        <LogoutButton onClick={onClickLogoutBtn}>{user ? '로그아웃' : '로그인'}</LogoutButton>
       </div>
     </ProfileWrapper>
   );

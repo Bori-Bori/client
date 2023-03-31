@@ -69,7 +69,7 @@ const EditProfileModal = () => {
 
   //postProfile
   const getId = window.localStorage.getItem('user')!;
-  const id = JSON.parse(getId).id;
+  const id = JSON.parse(getId).email;
   const profileData = {
     id,
     imagePath: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`,
