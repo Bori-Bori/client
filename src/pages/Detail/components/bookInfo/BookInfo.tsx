@@ -15,6 +15,8 @@ import bookImageAtom from '../../../../recoil/bookImage';
 
 import CommonButton from '../../../../components/CommonButton';
 import { getBoard } from '../../../../apis/board';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { appFireStore } from '../../../../firebase/config';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -36,6 +38,7 @@ const BookInfo = () => {
   const category2 = String(categoryName).split('>')[1];
   const category3 = String(categoryName).split('>')[2];
   const [moreIntro, setMoreIntro] = useState(false);
+  const [commentListLength, setCommentListLength] = useState();
   const eidtPubDate = pubDate?.replaceAll('-', '.');
 
   //책 페이지 저장
@@ -47,7 +50,16 @@ const BookInfo = () => {
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
   };
+  useEffect(() => {
+    const collectionRef = collection(appFireStore, 'comments');
+    const documentRef = doc(collectionRef, isbn);
+    const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const commentList = doc.data()?.commentList?.length || 0;
+      setCommentListLength(commentList);
+    });
 
+    return () => unsubscribe();
+  }, [isbn]);
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
@@ -77,10 +89,10 @@ const BookInfo = () => {
           <BookInfoRow3>
             <span>
               <img src={comment} alt="댓글 개수" />
-              12
+              {commentListLength}
             </span>
             <span>
-              <img src={user} alt="댓글 쓴 사람" />3
+              <img src={user} alt="댓글 쓴 사람" /> {commentListLength}
             </span>
             <span>
               <img src={bookmark} alt="북마크" />
