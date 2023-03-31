@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 // 이미지
 import comment from '../../../../assets/icons/comment-gr-16.png';
@@ -14,6 +14,8 @@ import { mainCategoryState, subCategoryState, middleCategoryState } from './../.
 import Loading from '../../../../components/Loading';
 import Error from '../../../../components/Error';
 import { useInView } from 'react-intersection-observer';
+import { countState } from '../../../../recoil/slide';
+import CommentListLength from './CommentListLength';
 
 const CategoryBookList = () => {
   const category1 = useRecoilValue(mainCategoryState)?.name;
@@ -37,6 +39,9 @@ const CategoryBookList = () => {
       },
     },
   );
+  const count = useRecoilValue(countState);
+
+  const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
     if (inView) fetchNextPage();
@@ -62,7 +67,7 @@ const CategoryBookList = () => {
                   <BookContent>
                     <li>
                       <img src={comment} alt="댓글아이콘" />
-                      <span> {value?.commentCount}</span>
+                      <CommentListLength isbn={value?.isbn13} />
                     </li>
                   </BookContent>
                 </BookWrap>
