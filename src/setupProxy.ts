@@ -5,8 +5,7 @@ export default function configureProxy(app: Application) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'https://boribori-nine.vercel.app',
-      changeOrigin: true,
+      target: 'http://www.aladin.co.kr/ttb',
       pathRewrite: {
         '^/api': '',
       },
