@@ -72,9 +72,6 @@ const ProfileImg = styled.button`
   }
 `;
 const LoginBtn = styled.button`
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
   font-weight: ${(props) => props.theme.fontWeight.regular};
   font-size: ${(props) => props.theme.fontSize.body02};
   color: ${(props) => props.theme.colors.white};
