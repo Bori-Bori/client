@@ -1,5 +1,9 @@
 import { atom } from 'recoil';
+import { CATEGORIES } from '../pages/shared/categoryList';
 
-export const mainCategoryState = atom({ key: 'mainCategory', default: '국내' });
-export const middleCategoryState = atom({ key: 'middleCategory', default: '소설/시/희곡' });
-export const subCategoryState = atom({ key: 'subCategory', default: '한국' });
+export const mainCategoryState = atom({ key: 'mainCategory', default: CATEGORIES[0] });
+export const middleCategoryState = atom({ key: 'middleCategory', default: CATEGORIES[0].middlecategories[0] });
+export const subCategoryState = atom({
+  key: 'subCategory',
+  default: CATEGORIES[0].middlecategories[0].subcategories[0],
+});

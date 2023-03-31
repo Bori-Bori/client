@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 // 이미지
 import comment from '../../../../assets/icons/comment-gr-16.png';
@@ -14,32 +13,28 @@ import { mainCategoryState, subCategoryState, middleCategoryState } from './../.
 // 컴포넌트
 import Loading from '../../../../components/Loading';
 import Error from '../../../../components/Error';
+import { useInView } from 'react-intersection-observer';
 
 const CategoryBookList = () => {
-  const category1 = useRecoilValue(mainCategoryState);
-  const category2 = useRecoilValue(middleCategoryState);
-  const category3 = useRecoilValue(subCategoryState).substr(2);
-
-  interface IbookList {
-    isbn: number;
-    title: string;
-    imagePath: string;
-    author: string;
-    commentCount: number;
-  }
-
-  interface IfetchNextPage {
-    isLast: boolean;
-    nextPage: number;
-    items: IbookList[];
-  }
+  const category1 = useRecoilValue(mainCategoryState)?.name;
+  const category2 = useRecoilValue(middleCategoryState)?.name;
+  const category3 = useRecoilValue(subCategoryState)?.name;
 
   const { ref, inView } = useInView();
-  const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery(
     [category1, category2, category3],
-    ({ pageParam = 0 }) => getBooklist(category1, category2, category3, pageParam),
+    async ({ pageParam = 1 }) => await getBooklist(category1, category2, category3, pageParam),
     {
-      getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),
+      getNextPageParam: (lastPage: any, allPages: any) => {
+        if (lastPage?.item?.length === 10) {
+          return allPages.length + 1;
+        }
+      },
+      retry: 0,
+      keepPreviousData: true,
+      onSuccess: (data: any) => {
+        return data;
+      },
     },
   );
 
@@ -51,34 +46,33 @@ const CategoryBookList = () => {
   if (status === 'error') return <Error />;
 
   return (
-    <>
-      <CategoryWrap>
-        {data?.pages.map((page, index) => (
-          <React.Fragment key={index}>
-            {page.items.map((value: IbookList) => (
-              <li key={value?.title}>
-                <Link to={`/detail/${value?.isbn}`}>
-                  <BookImgWrap>
-                    <BookImg src={value?.imagePath} alt={value?.title} />
-                  </BookImgWrap>
-                  <BookWrap>
-                    <BookTitle>{value?.title}</BookTitle>
-                    <BookAuthor>{value?.author}</BookAuthor>
-                    <BookContent>
-                      <li>
-                        <img src={comment} alt="댓글아이콘" />
-                        <span> {value?.commentCount}</span>
-                      </li>
-                    </BookContent>
-                  </BookWrap>
-                </Link>
-              </li>
-            ))}
-          </React.Fragment>
-        ))}
-      </CategoryWrap>
+    <CategoryWrap>
+      {data.pages[0].item.length === 0 && <div>검색 결과가 없습니다.</div>}
+      {data?.pages?.map((page: any, index: number) => (
+        <React.Fragment key={index}>
+          {page?.item.map((value: any, index: number) => (
+            <li key={value?.title}>
+              <Link to={`/detail/${value?.isbn13}`}>
+                <BookImgWrap>
+                  <BookImg src={value?.cover} alt={value?.title} />
+                </BookImgWrap>
+                <BookWrap>
+                  <BookTitle>{value?.title}</BookTitle>
+                  <BookAuthor>{value?.author}</BookAuthor>
+                  <BookContent>
+                    <li>
+                      <img src={comment} alt="댓글아이콘" />
+                      <span> {value?.commentCount}</span>
+                    </li>
+                  </BookContent>
+                </BookWrap>
+              </Link>
+            </li>
+          ))}
+        </React.Fragment>
+      ))}
       {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
-    </>
+    </CategoryWrap>
   );
 };
 

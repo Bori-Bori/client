@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 리코일
@@ -6,130 +6,79 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { mainCategoryState, subCategoryState, middleCategoryState } from '../../../../recoil/category';
 
 // 카테고리목록
-import { CATEGORIES } from '../../../shared/categoryList';
 import { middlecategory, subcategory } from '../../../../types/category';
 import CategoryBookList from './CategoryBookList';
+import { CATEGORIES } from '../../../shared/categoryList';
 
 const Category = () => {
-  const [mainCategory, setMainCategory] = useRecoilState(mainCategoryState);
-  const [middleCategory, setMiddleCategory] = useRecoilState(middleCategoryState);
-  const setSubCategory = useSetRecoilState(subCategoryState);
+  const [selectedCategory, setSelectedCategory] = useRecoilState(mainCategoryState);
+  const [selectedMiddleCategory, setSelectedMiddleCategory] = useRecoilState(middleCategoryState);
+  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState(subCategoryState);
 
-  const middleCategoryList = CATEGORIES.find((main) => main.name === mainCategory)?.middlecategories;
-  const subCategorylist = middleCategoryList?.find((middle) => middle.name === middleCategory)?.subcategories;
+  const handleCategoryChange = (category: any) => {
+    setSelectedCategory(category);
+    setSelectedMiddleCategory(category.middlecategories[0]);
+    setSelectedSubCategory(category.middlecategories[0].subcategories[0]);
+  };
+
+  const handleMiddleCategoryChange = (middleCategory: any) => {
+    setSelectedMiddleCategory(middleCategory);
+    setSelectedSubCategory(middleCategory.subcategories[0]);
+  };
+
+  const handleSubCategoryChange = (subCategory: any) => {
+    setSelectedSubCategory(subCategory);
+  };
   return (
     <Container>
       <CategoryTitle>
         <MainSelect>
-          <>
-            {CATEGORIES.map((mainSelect) => {
-              return (
-                mainSelect.id === 1 && (
-                  <li key={mainSelect.id}>
-                    <MainInput
-                      type="radio"
-                      name="mainselect"
-                      id={mainSelect.name}
-                      defaultChecked
-                      onChange={() => setMainCategory(mainSelect.name)}
-                    />
-                    <MainLabel htmlFor={mainSelect.name}>{mainSelect.name}</MainLabel>
-                  </li>
-                )
-              );
-            })}
-
-            <li>
-              <Line />
+          {CATEGORIES.map((category, index) => (
+            <li key={category.id}>
+              <MainInput
+                type="radio"
+                id={category.name}
+                value={category.id}
+                checked={selectedCategory?.id === category.id}
+                onChange={() => handleCategoryChange(category)}
+              />
+              <MainLabel htmlFor={category.name}>{category.name}</MainLabel>
             </li>
-            {CATEGORIES.map((mainSelect) => {
-              return (
-                mainSelect.id === 2 && (
-                  <li key={mainSelect.id}>
-                    <MainInput
-                      type="radio"
-                      name="mainselect"
-                      id={mainSelect.name}
-                      onChange={() => setMainCategory(mainSelect.name)}
-                    />
-                    <MainLabel htmlFor={mainSelect.name}>{mainSelect.name}</MainLabel>
-                  </li>
-                )
-              );
-            })}
-          </>
+          ))}
         </MainSelect>
-        <MiddleSelect>
-          <>
-            {(middleCategoryList as middlecategory[]).map((middleSelect) => {
-              return (
-                middleSelect.id === 1 && (
-                  <li key={middleSelect.id}>
-                    <MiddleInput
-                      type="radio"
-                      name="middleselect"
-                      id={middleSelect.name}
-                      defaultChecked
-                      onChange={() => setMiddleCategory(middleSelect.name)}
-                    />
-                    <MiddleLabel htmlFor={middleSelect.name}>{middleSelect.name}</MiddleLabel>
-                  </li>
-                )
-              );
-            })}
-            {(middleCategoryList as middlecategory[]).map((middleSelect) => {
-              return (
-                middleSelect.id > 1 && (
-                  <li key={middleSelect.id}>
-                    <MiddleInput
-                      type="radio"
-                      name="middleselect"
-                      id={middleSelect.name}
-                      onChange={() => setMiddleCategory(middleSelect.name)}
-                    />
-                    <MiddleLabel htmlFor={middleSelect.name}>{middleSelect.name}</MiddleLabel>
-                  </li>
-                )
-              );
-            })}
-          </>
-        </MiddleSelect>
 
-        <SubSelect>
-          <>
-            {(subCategorylist as subcategory[]).map((subSelect) => {
-              return (
-                subSelect.subCategoryId === 1 && (
-                  <li key={subSelect.subCategoryId}>
-                    <SubInput
-                      type="radio"
-                      name="subselect"
-                      id={subSelect.name}
-                      defaultChecked
-                      onChange={() => setSubCategory(subSelect.name)}
-                    />
-                    <SubLabel htmlFor={subSelect.name}>{subSelect.name}</SubLabel>
-                  </li>
-                )
-              );
-            })}
-            {(subCategorylist as subcategory[]).map((subSelect) => {
-              return (
-                subSelect.subCategoryId > 1 && (
-                  <li key={subSelect.subCategoryId}>
-                    <SubInput
-                      type="radio"
-                      name="subselect"
-                      id={subSelect.name}
-                      onChange={() => setSubCategory(subSelect.name)}
-                    />
-                    <SubLabel htmlFor={subSelect.name}>{subSelect.name}</SubLabel>
-                  </li>
-                )
-              );
-            })}
-          </>
-        </SubSelect>
+        {selectedCategory && (
+          <MiddleSelect>
+            {selectedCategory.middlecategories.map((middleCategory: any, index) => (
+              <li key={middleCategory.id}>
+                <MiddleInput
+                  type="radio"
+                  id={middleCategory.name}
+                  value={middleCategory.id}
+                  checked={selectedMiddleCategory?.id === middleCategory.id}
+                  onChange={() => handleMiddleCategoryChange(middleCategory)}
+                />
+                <MiddleLabel htmlFor={middleCategory.name}>{middleCategory.name}</MiddleLabel>
+              </li>
+            ))}
+          </MiddleSelect>
+        )}
+        {selectedMiddleCategory && (
+          <SubSelect>
+            {selectedMiddleCategory.subcategories.map((subCategory: any, index) => (
+              <li key={subCategory.subCategoryId}>
+                <SubInput
+                  type="radio"
+                  id={subCategory.name}
+                  value={subCategory.subCategoryId}
+                  checked={selectedSubCategory?.subCategoryId === subCategory.subCategoryId}
+                  onChange={() => handleSubCategoryChange(subCategory)}
+                />
+                <SubLabel htmlFor={subCategory.name}>{subCategory.name}</SubLabel>
+              </li>
+            ))}
+          </SubSelect>
+        )}
       </CategoryTitle>
       <CategoryBookList />
     </Container>
