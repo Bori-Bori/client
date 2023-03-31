@@ -50,7 +50,7 @@ const CategoryBookList = () => {
       {data?.pages[0]?.item?.length === 0 && <div>검색 결과가 없습니다.</div>}
       {data?.pages?.map((page: any, index: number) => (
         <React.Fragment key={index}>
-          {page?.item.map((value: any, index: number) => (
+          {page?.item?.map((value: any, index: number) => (
             <li key={value?.title}>
               <Link to={`/detail/${value?.isbn13}`}>
                 <BookImgWrap>
