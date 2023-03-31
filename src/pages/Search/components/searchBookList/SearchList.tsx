@@ -22,16 +22,26 @@ import { IfetchNextPage, IbookList } from '../../../../types/search';
 const SearchList = () => {
   const category = useRecoilValue(categoryState); // 카테고리1/2/3 저장
   const { category1, category2 } = category; // 카테고리1/2/3 꺼내기
-  const category3 = category.category3.substr(2);
+  const category3 = category.category3;
   const contentType = useRecoilValue(contentTypeState); // 검색분류
   const keyword = useRecoilValue(keywordState); // 검색어
 
   const { ref, inView } = useInView();
   const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [contentType, category1, category2, category3, keyword],
-    ({ pageParam = 0 }) => getSearchBooklist(contentType, pageParam, category1, category2, category3, keyword),
+    async ({ pageParam = 1 }) =>
+      await getSearchBooklist(contentType, category1, category2, category3, keyword, pageParam),
     {
-      getNextPageParam: (lastPage: IfetchNextPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),
+      getNextPageParam: (lastPage: any, allPages: any) => {
+        if (lastPage?.item?.length === 10) {
+          return allPages.length + 1;
+        }
+      },
+      retry: 0,
+      keepPreviousData: true,
+      onSuccess: (data: any) => {
+        return data;
+      },
     },
   );
 
@@ -44,13 +54,14 @@ const SearchList = () => {
 
   return (
     <SearchListContainer>
-      {data?.pages.map((page, index) => (
+      {data.pages[0].item.length === 0 && <div>검색 결과가 없습니다.</div>}
+      {data?.pages?.map((page: any, index: number) => (
         <ul key={index}>
-          {page.items.map((value: IbookList) => (
+          {page?.item.map((value: any, index: number) => (
             <li key={value?.title}>
-              <Link to={`/detail/${value?.isbn}`}>
+              <Link to={`/detail/${value?.isbn13}`}>
                 <BookImgWrap>
-                  <BookImg src={value?.imagePath} alt={value?.title} />
+                  <BookImg src={value?.cover} alt={value?.title} />
                 </BookImgWrap>
                 <BookWrap>
                   <BookTitle>{value?.title}</BookTitle>
