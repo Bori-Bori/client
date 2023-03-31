@@ -1,63 +1,45 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-
-import useIsLogin from '../../../../hooks/useIsLogin';
-import { getReply, postReply } from '../../../../apis/reply';
 import InputComment from '../comment/InputComment';
-import ReplyPagination from './ReplyPagination';
-import CommentItem from '../comment/CommentItem';
-import { isLoginAtom } from '../../../../recoil/profile';
+import { useAuthContext } from '../../../../context/useAuthContext';
+import { useFirestore } from '../../../../hooks/useFireStore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { appFireStore } from '../../../../firebase/config';
+import ReplyItem from './ReplyItem';
 
-type ReplyPropsType = {
-  commentId: string;
-  setReplyCount: React.Dispatch<React.SetStateAction<string>>;
-};
-
-type ReplyType = {
-  reply: string;
-  createdAt: string;
-  userId: string;
-  userNickname: string;
-  userProfileImagePath: string;
-};
-
-const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
+const ReplyComments = ({ commentId }: any) => {
   const scrollPoint = useRef<HTMLDivElement>(null);
-  const queryClient = useQueryClient();
   const [replyContent, setReplyContent] = useState<string>('');
-  const [replyCurPage, setReplyCurPage] = useState<number>(0);
-  const isLogin = useRecoilValue(isLoginAtom);
+  const [replyList, setReplyList] = useState([]);
 
-  //로그인 확인
-  useIsLogin();
+  const { user }: any = useAuthContext();
 
   //getReply
-  const size = 5; //고정값
-  const { data, isFetching } = useQuery({
-    queryKey: ['reply', commentId, size, replyCurPage],
-    queryFn: () => getReply(commentId, size, replyCurPage),
-    keepPreviousData: true,
-    staleTime: 5000,
-  });
+  useEffect(() => {
+    const collectionRef = collection(appFireStore, 'reply');
+    const documentRef = doc(collectionRef, commentId);
+
+    // 리스너 등록
+    const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const replyList = doc.data()?.commentList || [];
+      setReplyList(replyList);
+    });
+
+    // 컴포넌트 언마운트시 리스너 제거
+    return () => unsubscribe();
+  }, [commentId]);
 
   //postReply
-  const replyList: ReplyType[] = data?.data.content.items;
-  const totalPageNum = data?.data.content.totalPage;
-  const commentData = {
-    content: replyContent,
-  };
-  const postReplyMutate = useMutation(() => postReply(commentId, commentData), {
-    onSuccess: (response) => {
-      queryClient.invalidateQueries(['reply']);
-      setReplyCount((prev) => (parseInt(prev) + 1).toString());
-      setReplyContent('');
-    },
-  });
+  const uid = user?.uid;
+  const { addOrUpdateDocument } = useFirestore('reply', commentId);
 
-  const onClickSubmit = () => {
-    isLogin ? postReplyMutate.mutate() : alert('로그인 후 이용해주세요.');
+  const onClickSubmit = (): void => {
+    if (user) {
+      addOrUpdateDocument({ uid, replyContent, commentId });
+      setReplyContent('');
+    } else {
+      alert('로그인이 필요합니다.');
+    }
   };
 
   // scrollToReply
@@ -66,7 +48,7 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
       scrollPoint.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   };
-
+  console.log(replyList);
   useEffect(() => {
     scrollDown();
   }, [replyList]);
@@ -75,27 +57,14 @@ const ReplyComments = ({ commentId, setReplyCount }: ReplyPropsType) => {
     <ReplyInputWrapper ref={scrollPoint}>
       <ReplyInput
         className="ReplyInput"
-        placeholder={isLogin ? '대댓글을 입력하세요' : '로그인 후 이용해주세요'}
+        placeholder={user ? '대댓글을 입력하세요' : '로그인 후 이용해주세요'}
         onClick={onClickSubmit}
         commentContent={replyContent}
         changeCommentContent={setReplyContent}
       />
-      {isFetching
-        ? 'Loading...'
-        : replyList &&
-          replyList.map((item: ReplyType) => (
-            <CommentItem
-              key={Math.random()}
-              text={item.reply}
-              publishDate={item.createdAt}
-              writer={item.userNickname}
-              userProfileImagePath={item.userProfileImagePath}
-              isReply={true}
-            />
-          ))}
-      {replyList?.length > 0 && (
-        <ReplyPagination pageLength={totalPageNum} curPage={replyCurPage} setCurPage={setReplyCurPage} />
-      )}
+      {replyList.map((item: any) => (
+        <ReplyItem key={Math.random()} item={item} />
+      ))}
     </ReplyInputWrapper>
   );
 };
