@@ -44,7 +44,7 @@ const BookText = () => {
         <BookContent>
           <li>
             <img src={comment} alt="댓글아이콘" />
-            <span>{commentList.length}</span>
+            <span>{commentList?.length}</span>
           </li>
         </BookContent>
       </div>
