@@ -47,7 +47,7 @@ const CategoryBookList = () => {
 
   return (
     <CategoryWrap>
-      {data.pages[0].item.length === 0 && <div>검색 결과가 없습니다.</div>}
+      {data?.pages[0]?.item?.length === 0 && <div>검색 결과가 없습니다.</div>}
       {data?.pages?.map((page: any, index: number) => (
         <React.Fragment key={index}>
           {page?.item.map((value: any, index: number) => (
