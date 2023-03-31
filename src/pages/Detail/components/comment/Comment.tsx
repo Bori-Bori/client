@@ -1,27 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { onSnapshot, collection, doc } from 'firebase/firestore';
 import { useRecoilValue } from 'recoil';
 
-import { sortCommentAtom } from '../../../../recoil/sortComment';
-import { slideRangeValueAtom } from '../../../../recoil/sortComment';
+import { sortCommentAtom, slideRangeValueAtom } from '../../../../recoil/sortComment';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
 import CommentContainer from './CommentContainer';
 import CommonButton from '../../../../components/CommonButton';
-import { useParams } from 'react-router-dom';
-import useCommentQuery from '../../../../hooks/useCommentQuery';
 import commentImg from '../../../../assets/icons/comment-gr-60.png';
-
-type Comment = {
-  comment: string;
-  createdAt: string;
-  id: string;
-  page: string;
-  replyNum: string;
-  userProfileImagePath: string;
-  writer: string;
-};
-
-type marginProps = {
+import { appFireStore } from '../../../../firebase/config';
+import 'firebase/compat/firestore';
+type MarginProps = {
   margin: number;
 };
 
@@ -29,17 +19,26 @@ const Comment = () => {
   const scrollPoint = useRef<HTMLDivElement>(null);
   const curSortState = useRecoilValue(sortCommentAtom);
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
-  const params = useParams();
-  const boardId = params.id!;
-  const size = 5; // 고정값
+  const params = useParams<{ id: string }>(); // 변수 선언과 분리
+  const boardId: any = params.id; // 변수 선언과 분리
+
+  const [commentList, setCommentList] = useState([]);
+
   const slideRangeValue = useRecoilValue(slideRangeValueAtom);
   const [bookPage, setBookPage] = useState(parseInt(slideRangeValue));
-  const searchOrder = curSortState ? 'recent' : 'page';
 
-  //댓글 fetch
-  const { fetchNextPage, status, commentsList, commentIsLast } = useCommentQuery(boardId, searchOrder, size, bookPage);
+  useEffect(() => {
+    const collectionRef = collection(appFireStore, 'comments');
+    const documentRef = doc(collectionRef, boardId);
+    const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const commentList = doc.data()?.commentList || [];
+      setCommentList(commentList);
+    });
 
-  //range value가 연속적이게 변할 땐 fetch 요청 보내지 않도록 하는 코드
+    return () => unsubscribe();
+  }, []);
+
+  // range value가 연속적이게 변할 때 fetch 요청 보내지 않도록 하는 코드
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setBookPage(parseInt(slideRangeValue));
@@ -55,13 +54,11 @@ const Comment = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [commentsList]);
-
-  //더보기 버튼
-  const onClickShowMoreCommentBtn = () => {
-    fetchNextPage();
-  };
+    if (commentList) {
+      // commentList가 있을 때만 스크롤 이동
+      scrollToBottom();
+    }
+  }, [commentList]);
 
   if (status === 'loading') {
     return <p>loading...</p>;
@@ -70,30 +67,24 @@ const Comment = () => {
     <CommentWrapper margin={inputWrapperHeight}>
       {curSortState || (
         <CommentNumberAlert>
-          해당 페이지 댓글 <Strong>{commentsList.length}</Strong>건
+          해당 페이지 댓글 <Strong>{commentList?.length}</Strong>건
         </CommentNumberAlert>
       )}
-      {commentsList.length ? (
-        commentsList.map((item: Comment) => (
-          <CommentContainer
-            key={Math.random()}
-            id={item.id}
-            comment={item.comment}
-            writer={item.writer}
-            createdAt={item.createdAt}
-            replyNum={item.replyNum}
-            userProfileImagePath={item.userProfileImagePath}
-            page={item.page}
-          />
-        ))
+      {commentList?.length ? (
+        commentList?.map((targetPage: any) => <CommentContainer key={targetPage.commentId} item={targetPage} />)
       ) : (
         <NoCommentAlertWrapper>
-          <img src={commentImg} />
+          <img src={commentImg} alt="comment" />
           <span>첫번째 댓글을 남겨주세요!</span>
         </NoCommentAlertWrapper>
       )}
-      {!commentIsLast.isLast && (
-        <ShowMoreCommentBtn className="showMoreCommentBtn" onClick={onClickShowMoreCommentBtn}>
+      {commentList && (
+        <ShowMoreCommentBtn
+          className="showMoreCommentBtn"
+          onClick={() => {
+            console.log('');
+          }}
+        >
           댓글 더보기
         </ShowMoreCommentBtn>
       )}
@@ -104,7 +95,7 @@ const Comment = () => {
 
 export default Comment;
 
-const CommentWrapper = styled.article<marginProps>`
+const CommentWrapper = styled.article<MarginProps>`
   width: 100%;
   padding: 0 20px;
   margin-bottom: ${(props) => props.margin + 30}px;

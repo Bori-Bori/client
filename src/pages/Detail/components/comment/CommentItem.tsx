@@ -1,45 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { appFireStore } from '../../../../firebase/config';
 
-type CommentItemProps = {
-  id?: string;
-  text: string;
-  writer: string;
-  publishDate?: string;
-  userProfileImagePath: string;
-  replyNum?: string;
-  isReply: boolean;
-};
-
-const CommentItem = ({ id, text, writer, publishDate, userProfileImagePath, replyNum, isReply }: CommentItemProps) => {
+const CommentItem = ({ item }: any) => {
+  const [data, setData]: any = useState(null);
   const [commentIsNew, setCommentIsNew] = useState(false);
-  const KR_TIME_DIFF = 18 * 60 * 60 * 1000;
-  const publishDate_millisecond = publishDate ? new Date(publishDate).getTime() : null;
-  const publishDate_KST = publishDate_millisecond ? new Date(publishDate_millisecond + KR_TIME_DIFF) : null;
-  const formattedPublishDate =
-    publishDate_KST && publishDate_KST.toISOString().slice(2, 16).split('T').join(' ').replaceAll('-', '.');
   const nowDate = new Date();
   useEffect(() => {
-    publishDate_KST && (nowDate.getTime() - publishDate_KST.getTime()) / (1000 * 60 * 60) <= 24
+    item?.date && (nowDate.getTime() - new Date(item.date).getTime()) / (1000 * 60 * 60) <= 24
       ? setCommentIsNew(true)
       : setCommentIsNew(false);
   }, []);
 
+  useEffect(() => {
+    // 문서를 참조합니다.
+    const docRef = doc(appFireStore, 'userInfo', item?.uid);
+
+    // onSnapshot 함수는 가장 최신의 문서 데이터를 반환하는 함수입니다. 함수는 데이터 수신을 중단하기 위한 unsubscribe 함수를 반환합니다. 더 이상 데이터를 수신 대기할 필요가 없을 때 사용합니다.
+    onSnapshot(
+      docRef,
+      // 응답받은 문서가 snapshot에 저장됩니다.
+      (snapshot) => {
+        if (snapshot.exists()) {
+          // 문서 데이터를 가져와 state를 업데이트합니다.
+          setData({ ...snapshot.data() });
+        } else {
+          // 문서가 없을 때는 null로 설정합니다.
+          setData(null);
+        }
+      },
+      (error: any) => {
+        console.error(error);
+      },
+    );
+  }, []);
   return (
-    <CommentTextWrapper>
+    <CommentTextWrapper key={item.id}>
       <CommentInfo>
         <UserImageWrapper>
-          <UserImage src={userProfileImagePath} />
+          <UserImage src={data?.photoURL} />
         </UserImageWrapper>
         <div>
-          <Writer>{writer}</Writer>
+          <Writer>{data?.displayName}</Writer>
           <PublishDate>
-            <span>{formattedPublishDate}</span>
+            <span>{item?.date}</span>
             {commentIsNew && <NewCommentBadge>N</NewCommentBadge>}
           </PublishDate>
         </div>
       </CommentInfo>
-      <CommentText>{text}</CommentText>
+      <CommentText>{item?.commentContent}</CommentText>
     </CommentTextWrapper>
   );
 };

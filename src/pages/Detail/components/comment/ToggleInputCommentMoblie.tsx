@@ -1,52 +1,46 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import useIsLogin from '../../../../hooks/useIsLogin';
-import InputComment from './InputComment';
-import { postComments } from '../../../../apis/comment';
 import InputPageButton from './InputPageButton';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
 import bookPageAtom from '../../../../recoil/bookPage';
-import { isLoginAtom } from '../../../../recoil/profile';
+import { useFirestore } from '../../../../hooks/useFireStore';
+import { useAuthContext } from '../../../../context/useAuthContext';
+import InputComment from './InputComment';
 
 const ToggelInputCommentMoblie = () => {
   const bookTotalPage = useRecoilValue(bookPageAtom);
+  const [targetPage, setTargetPage] = useState('0');
+  const params = useParams();
+  const isbn = params.id!;
+  const { user }: any = useAuthContext();
   const maxPage = bookTotalPage.toString();
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputIsOpen, setInputIsOpen] = useState(false);
   const [commentContent, setCommentContent] = useState<string>('');
-  const [targetPage, setTargetPage] = useState('0');
-  const isLogin = useRecoilValue(isLoginAtom);
 
-  const queryClient = useQueryClient();
-  const params = useParams();
-  const isbn = params.id!;
-
-  //로그인 유무 확인
-  useIsLogin();
-
-  const data = {
-    content: commentContent,
-    page: targetPage,
+  const getRandomString = (length: number): string => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   };
 
-  const postCommentMutate = useMutation(() => postComments(isbn, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
-      setCommentContent('');
-    },
-  });
-
+  const uid = user?.uid;
+  const commentId = getRandomString(8);
+  const { addOrUpdateDocument } = useFirestore('comments', isbn);
   const ToggleInputHandler = () => {
     setInputIsOpen((prev) => !prev);
   };
 
   const onClickSubmit = () => {
-    isLogin ? postCommentMutate.mutate() : alert('로그인 후 이용해주세요.');
+    user ? addOrUpdateDocument({ uid, commentContent, commentId, targetPage }) : alert('로그인 후 이용해주세요.');
   };
 
   const onChangeTargetPage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +60,7 @@ const ToggelInputCommentMoblie = () => {
           <InputPageButton className="commentPage" value={targetPage} maxPage={maxPage} onChange={onChangeTargetPage} />
           <StyledInputComment
             className="pageInputMobile"
-            placeholder={isLogin ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
+            placeholder={user ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
             onClick={onClickSubmit}
             commentContent={commentContent}
             changeCommentContent={setCommentContent}

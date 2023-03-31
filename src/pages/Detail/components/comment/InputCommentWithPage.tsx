@@ -1,71 +1,80 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-
+import { useRecoilValue } from 'recoil';
+import bookPageAtom from '../../../../recoil/bookPage';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
-import { postComments } from '../../../../apis/comment';
-import bookPageAtom from '../../../../recoil/bookPage';
+import { useFirestore } from '../../../../hooks/useFireStore';
+import { useAuthContext } from '../../../../context/useAuthContext';
 
-type InputCommentProps = {
+type Props = {
   className: string;
   placeholder: string;
-  isLogin: boolean | undefined;
 };
 
-const InputCommentWithPage = ({ className, placeholder, isLogin }: InputCommentProps) => {
-  const queryClient = useQueryClient();
-  const bookTotalPage = useRecoilValue(bookPageAtom);
-  const maxPage = bookTotalPage.toString();
+const InputCommentWithPage: React.FC<Props> = ({ className, placeholder }) => {
+  const bookTotalPage = useRecoilValue(bookPageAtom).toString();
   const [targetPage, setTargetPage] = useState('0');
   const params = useParams();
   const isbn = params.id!;
+  const { user }: any = useAuthContext();
+  const [commentContent, setCommentContent] = useState('');
 
-  const onChangeTargetPage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enteredValue = e.target.value.replace(/[^0-9.]/g, '');
+  const getRandomString = (length: number): string => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  const uid = user?.uid;
+  const commentId = getRandomString(8);
+  const { addOrUpdateDocument } = useFirestore('comments', isbn);
+
+  const onChangeTargetPage = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const enteredValue = event.target.value.replace(/[^0-9.]/g, '');
     setTargetPage(enteredValue);
   };
-  const [commentContent, setCommentContent] = useState<string>('');
 
-  const data = {
-    content: commentContent,
-    page: targetPage,
-  };
-
-  const postCommentMutate = useMutation(() => postComments(isbn, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
+  const onClickSubmit = (): void => {
+    if (user) {
+      addOrUpdateDocument({ uid, commentContent, commentId, targetPage });
       setCommentContent('');
-    },
-  });
-
-  const onClickSubmit = () => {
-    isLogin ? postCommentMutate.mutate() : alert('로그인 후 이용해주세요.');
+    } else {
+      alert('로그인이 필요합니다.');
+    }
   };
 
   return (
-    <InputCommentWrapper
+    <Wrapper
       className={className}
       placeholder={placeholder}
       onClick={onClickSubmit}
       commentContent={commentContent}
       changeCommentContent={setCommentContent}
     >
-      <InputPageWrapper>
+      <PageWrapper>
         <span>책 페이지</span>
-        <InputPageButton value={targetPage} className="pageInput" onChange={onChangeTargetPage} maxPage={maxPage} />
-      </InputPageWrapper>
-    </InputCommentWrapper>
+        <InputPageButton
+          value={targetPage}
+          className="pageInput"
+          onChange={onChangeTargetPage}
+          maxPage={bookTotalPage}
+        />
+      </PageWrapper>
+    </Wrapper>
   );
 };
 
 export default InputCommentWithPage;
 
-const InputCommentWrapper = styled(InputComment)``;
+const Wrapper = styled(InputComment)``;
 
-const InputPageWrapper = styled.div`
+const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;

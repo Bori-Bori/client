@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import InputCommentWithPage from './InputCommentWithPage';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
@@ -8,7 +8,7 @@ import commentInputHeight from '../../../../recoil/commentInputHeight';
 import useIsLogin from '../../../../hooks/useIsLogin';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
-import { isLoginAtom } from '../../../../recoil/profile';
+import { useAuthContext } from '../../../../context/useAuthContext';
 
 type inputIsOpenType = {
   inputIsOpen: boolean;
@@ -18,7 +18,7 @@ const ToggleInputComment = () => {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
-  const isLogin = useRecoilValue(isLoginAtom);
+  const { user }: any = useAuthContext();
 
   //로그인 유무 확인
   useIsLogin();
@@ -50,11 +50,7 @@ const ToggleInputComment = () => {
             <span>댓글쓰기</span>
             <img src={closeIcon} onClick={ToggleInputHandler} />
           </InputTitle>
-          <InputCommentWithPage
-            className="input"
-            placeholder={isLogin ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
-            isLogin={isLogin}
-          />
+          <InputCommentWithPage className="input" placeholder={user ? '댓글을 입력하세요' : '로그인 후 이용해주세요'} />
         </InputWrapper>
       )}
     </CommnetInputContainer>

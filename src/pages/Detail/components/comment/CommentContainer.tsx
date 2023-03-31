@@ -8,20 +8,10 @@ import ReplyComments from '../reply/ReplyComments';
 import CommentItem from './CommentItem';
 import ToggleButton from '../reply/ToggleButton';
 
-type Comment = {
-  comment: string;
-  createdAt: string;
-  id: string;
-  page: string;
-  replyNum: string;
-  userProfileImagePath: string;
-  writer: string;
-};
-
-const CommentContainer = ({ id, comment, writer, createdAt, replyNum, userProfileImagePath, page }: Comment) => {
+const CommentContainer = ({ item }: any) => {
   const curSortState = useRecoilValue(sortCommentAtom);
   const [replyIsOpen, setReplyIsOpen] = useState(false);
-  const [replyCount, setReplyCount] = useState(replyNum);
+  const [replyCount, setReplyCount] = useState(item.data?.uid);
   const replyOpenHandler = () => {
     setReplyIsOpen((prev) => !prev);
   };
@@ -30,21 +20,12 @@ const CommentContainer = ({ id, comment, writer, createdAt, replyNum, userProfil
     <CommentItemContainer>
       {curSortState && (
         <BubbleWrapper>
-          <BubbleIcon className="commentPageBubble" text={page} />
+          <BubbleIcon key={item.commentId} className="commentPageBubble" text={item?.targetPage} />
         </BubbleWrapper>
       )}
       <CommentItemWrapper>
         <CommentRow>
-          <CommentItem
-            key={Math.random()}
-            id={id}
-            text={comment}
-            writer={writer}
-            publishDate={createdAt}
-            userProfileImagePath={userProfileImagePath}
-            replyNum={replyCount}
-            isReply={false}
-          />
+          <CommentItem item={item} />
           <ButtonBox>
             <ToggleButton
               className="toggleButton"
@@ -54,7 +35,9 @@ const CommentContainer = ({ id, comment, writer, createdAt, replyNum, userProfil
             />
           </ButtonBox>
         </CommentRow>
-        {replyIsOpen && <ReplyComments commentId={id} setReplyCount={setReplyCount} />}
+        {replyIsOpen && (
+          <ReplyComments key={item.commentId} commentId={item?.commentId} setReplyCount={setReplyCount} />
+        )}
       </CommentItemWrapper>
     </CommentItemContainer>
   );
