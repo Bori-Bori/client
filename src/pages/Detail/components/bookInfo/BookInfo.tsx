@@ -7,12 +7,14 @@ import { useSetRecoilState } from 'recoil';
 import comment from '../../../../assets/icons/comment-wh-24.png';
 import user from '../../../../assets/icons/user-wh-24.png';
 import bookmark from '../../../../assets/icons/common-bookmark-default-24.png';
-import CommonButton from '../../../../components/CommonButton';
-import { getBoard } from '../../../../apis/board';
 import commentGrey from '../../../../assets/icons/common_comment_gr_12.png';
 import userGrey from '../../../../assets/icons/common_user_gr_16.png';
+
 import bookPageAtom from '../../../../recoil/bookPage';
 import bookImageAtom from '../../../../recoil/bookImage';
+
+import CommonButton from '../../../../components/CommonButton';
+import { getBoard } from '../../../../apis/board';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -24,22 +26,23 @@ const BookInfo = () => {
   const setBookPage = useSetRecoilState(bookPageAtom);
   const setBookImage = useSetRecoilState(bookImageAtom);
 
-  const { isError, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ['bookInfo', isbn],
-    queryFn: () => getBoard(isbn),
+    queryFn: async () => await getBoard(isbn),
+    onSuccess: (data) => data,
   });
-  const { title, author, pubDate, category1, category2, category3, description, publisher, imagePath, page }: any =
-    data?.data.content || '';
-
+  const { title, author, categoryName, pubDate, description, publisher, cover, page }: any = data?.item[0] || [];
+  const category1 = String(categoryName).split('>')[0];
+  const category2 = String(categoryName).split('>')[1];
+  const category3 = String(categoryName).split('>')[2];
   const [moreIntro, setMoreIntro] = useState(false);
   const eidtPubDate = pubDate?.replaceAll('-', '.');
-  const editImagePath = imagePath?.replace('coversum', 'cover500');
 
   //책 페이지 저장
   useEffect(() => {
     page && setBookPage(page);
-    imagePath && setBookImage(imagePath);
-  }, [page, imagePath]);
+    cover && setBookImage(cover);
+  }, [page, cover]);
 
   const toggleIntro = () => {
     moreIntro ? setMoreIntro(false) : setMoreIntro(true);
@@ -48,7 +51,7 @@ const BookInfo = () => {
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
-        {imagePath ? <img src={editImagePath} alt={title} /> : <LoadingImg />}
+        {cover ? <img src={cover} alt={title} /> : <LoadingImg />}
         <BookInfoContent>
           <BookInfoRow1>
             <h2>{title}</h2>
@@ -85,7 +88,7 @@ const BookInfo = () => {
           </BookInfoRow3>
         </BookInfoContent>
       </BookInfoContainer>
-      <BookIntro moreIntro={moreIntro}>{description}</BookIntro>
+      <BookIntro moreIntro={moreIntro} dangerouslySetInnerHTML={{ __html: description }} />
       <ToggleIntroButton className="moreIntroButton" onClick={toggleIntro}>
         {moreIntro ? '숨기기' : '더보기'}{' '}
       </ToggleIntroButton>
