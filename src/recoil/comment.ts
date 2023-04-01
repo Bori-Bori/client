@@ -10,16 +10,12 @@ export type commentsListAtomType = {
   writer: string;
 };
 
-const commentsListAtom = atom<commentsListAtomType[]>({
-  key: 'commentsListAtom',
+export const commentListAtom = atom<commentsListAtomType[]>({
+  key: 'commentListAtom',
   default: [],
 });
 
-export const commentIsLastAtom = atom({
-  key: 'commentIsLastAtom',
-  default: {
-    isLast: false,
-  },
+export const nextCommentListAtom = atom({
+  key: 'nextCommentListAtom',
+  default: [],
 });
-
-export default commentsListAtom;

@@ -7,6 +7,8 @@ import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { useFirestore } from '../../../../hooks/useFireStore';
 import { useAuthContext } from '../../../../context/useAuthContext';
+import { useQuery } from '@tanstack/react-query';
+import { getBoard } from '../../../../apis/board';
 
 type Props = {
   className: string;
@@ -14,13 +16,17 @@ type Props = {
 };
 
 const InputCommentWithPage: React.FC<Props> = ({ className, placeholder }) => {
-  const bookTotalPage = useRecoilValue(bookPageAtom).toString();
   const [targetPage, setTargetPage] = useState('0');
   const params = useParams();
   const isbn = params.id!;
   const { user }: any = useAuthContext();
   const [commentContent, setCommentContent] = useState('');
-
+  const { data } = useQuery({
+    queryKey: ['bookInfo', isbn],
+    queryFn: async () => await getBoard(isbn),
+    onSuccess: (data) => data,
+  });
+  const bookTotalPage = data?.item[0].subInfo.itemPage;
   const getRandomString = (length: number): string => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

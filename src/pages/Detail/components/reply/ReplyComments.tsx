@@ -6,30 +6,30 @@ import { useFirestore } from '../../../../hooks/useFireStore';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { appFireStore } from '../../../../firebase/config';
 import ReplyItem from './ReplyItem';
+import ReplyPagination from './ReplyPagination';
 
 const ReplyComments = ({ commentId }: any) => {
   const scrollPoint = useRef<HTMLDivElement>(null);
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyList, setReplyList] = useState([]);
-
   const { user }: any = useAuthContext();
+  const PAGE_SIZE = 10; // the number of items per page
+  const [replyCurPage, setReplyCurPage] = useState<number>(0);
+  const [totalPageNum, setTotalPageNum] = useState<number>(1);
 
-  //getReply
   useEffect(() => {
     const collectionRef = collection(appFireStore, 'reply');
     const documentRef = doc(collectionRef, commentId);
 
-    // 리스너 등록
     const unsubscribe = onSnapshot(documentRef, (doc) => {
       const replyList = doc.data()?.commentList || [];
       setReplyList(replyList);
+      setTotalPageNum(Math.ceil(replyList.length / PAGE_SIZE));
     });
 
-    // 컴포넌트 언마운트시 리스너 제거
     return () => unsubscribe();
   }, [commentId]);
 
-  //postReply
   const uid = user?.uid;
   const { addOrUpdateDocument } = useFirestore('reply', commentId);
 
@@ -42,16 +42,20 @@ const ReplyComments = ({ commentId }: any) => {
     }
   };
 
-  // scrollToReply
   const scrollDown = () => {
     if (scrollPoint.current) {
       scrollPoint.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   };
-  console.log(replyList);
+
   useEffect(() => {
     scrollDown();
   }, [replyList]);
+
+  // Slicing replyList based on current page and page size
+  const startIndex = replyCurPage * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const currentReplyList = replyList.slice(startIndex, endIndex);
 
   return (
     <ReplyInputWrapper ref={scrollPoint}>
@@ -62,9 +66,12 @@ const ReplyComments = ({ commentId }: any) => {
         commentContent={replyContent}
         changeCommentContent={setReplyContent}
       />
-      {replyList.map((item: any) => (
+      {currentReplyList.map((item: any) => (
         <ReplyItem key={Math.random()} item={item} />
       ))}
+      {replyList?.length > 0 && (
+        <ReplyPagination pageLength={totalPageNum} curPage={replyCurPage} setCurPage={setReplyCurPage} />
+      )}
     </ReplyInputWrapper>
   );
 };

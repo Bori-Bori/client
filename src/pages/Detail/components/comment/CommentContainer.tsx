@@ -10,10 +10,9 @@ import ToggleButton from '../reply/ToggleButton';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { appFireStore } from '../../../../firebase/config';
 
-const CommentContainer = ({ item }: any) => {
+const CommentContainer = ({ comment }: any) => {
   const curSortState = useRecoilValue(sortCommentAtom);
   const [replyIsOpen, setReplyIsOpen] = useState(false);
-  const [replyCount, setReplyCount] = useState(item?.length);
   const [replyList, setReplyList] = useState([]);
   const replyOpenHandler = () => {
     setReplyIsOpen((prev) => !prev);
@@ -21,7 +20,7 @@ const CommentContainer = ({ item }: any) => {
   //getReply
   useEffect(() => {
     const collectionRef = collection(appFireStore, 'reply');
-    const documentRef = doc(collectionRef, item?.commentId);
+    const documentRef = doc(collectionRef, comment?.commentId);
 
     // 리스너 등록
     const unsubscribe = onSnapshot(documentRef, (doc) => {
@@ -31,18 +30,16 @@ const CommentContainer = ({ item }: any) => {
 
     // 컴포넌트 언마운트시 리스너 제거
     return () => unsubscribe();
-  }, [item?.commentId]);
+  }, [comment?.commentId]);
 
   return (
     <CommentItemContainer>
-      {curSortState && (
-        <BubbleWrapper>
-          <BubbleIcon key={item.commentId} className="commentPageBubble" text={item?.targetPage} />
-        </BubbleWrapper>
-      )}
+      <BubbleWrapper>
+        <BubbleIcon key={comment.commentId} className="commentPageBubble" text={comment?.targetPage} />
+      </BubbleWrapper>
       <CommentItemWrapper>
         <CommentRow>
-          <CommentItem item={item} />
+          <CommentItem comment={comment} />
           <ButtonBox>
             <ToggleButton
               className="toggleButton"
@@ -52,7 +49,7 @@ const CommentContainer = ({ item }: any) => {
             />
           </ButtonBox>
         </CommentRow>
-        {replyIsOpen && <ReplyComments key={item.commentId} commentId={item?.commentId} />}
+        {replyIsOpen && <ReplyComments key={comment.commentId} commentId={comment?.commentId} />}
       </CommentItemWrapper>
     </CommentItemContainer>
   );

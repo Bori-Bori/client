@@ -1,4 +1,6 @@
+import { appFireStore } from '../firebase/config';
 import { boardAxiosInstance } from './axiosInstance';
+import { collection, doc, getDoc } from 'firebase/firestore';
 
 type postCommentDataType = {
   content: string;
@@ -13,16 +15,14 @@ type getCommentDataType = {
   pageParam: number;
 };
 
-export const getComments = async ({ boardId, searchOrder, size, bookPage, pageParam }: getCommentDataType) => {
-  const path = `/api/board/${boardId}/comment`;
-  const params = { order: searchOrder, page: pageParam, size, bookPage };
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  };
-  const response = await boardAxiosInstance.get(path, { params, headers });
-  const { items, isLast } = response.data.content;
-  return { items, isLast, nextPage: pageParam };
+export const getComments = async (boardId: string) => {
+  const collectionRef = collection(appFireStore, 'comments');
+  const documentRef = doc(collectionRef, boardId);
+  const docSnapshot = await getDoc(documentRef);
+  const commentList = docSnapshot.data()?.commentList || [];
+  const initialComments = commentList.slice(0, 10);
+  const nextComments = commentList.slice(10);
+  return { initialComments, nextComments };
 };
 
 export const postComments = async (boardId: string, data: postCommentDataType) => {

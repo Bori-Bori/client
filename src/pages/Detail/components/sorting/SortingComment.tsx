@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { sortCommentAtom } from '../../../../recoil/sortComment';
 import SlideButton from './SlideButton';
 import SlideRange from './SlideRange';
 
 const SortingComment = () => {
-  const [sortIsLatest, setSortIsLatest] = useRecoilState(sortCommentAtom);
+  const sortIsLatest = useRecoilValue(sortCommentAtom);
   return (
     <SortingCommentContainer>
-      <SlideButton state={sortIsLatest} setState={setSortIsLatest} />
-      {sortIsLatest ? null : <SlideRange />}
+      <SlideButton />
+      {!sortIsLatest && <SlideRange />}
     </SortingCommentContainer>
   );
 };

@@ -3,20 +3,21 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 
-import comment from '../../../../assets/icons/comment-wh-24.png';
-import user from '../../../../assets/icons/user-wh-24.png';
-import bookmark from '../../../../assets/icons/common-bookmark-default-24.png';
-import commentGrey from '../../../../assets/icons/common_comment_gr_12.png';
-import userGrey from '../../../../assets/icons/common_user_gr_16.png';
+import commentIcon from '../../../../assets/icons/comment-wh-24.png';
+import userIcon from '../../../../assets/icons/user-wh-24.png';
+import bookmarkIcon from '../../../../assets/icons/common-bookmark-default-24.png';
+import commentGreyIcon from '../../../../assets/icons/common_comment_gr_12.png';
+import userGreyIcon from '../../../../assets/icons/common_user_gr_16.png';
 
 import bookPageAtom from '../../../../recoil/bookPage';
 import bookImageAtom from '../../../../recoil/bookImage';
 
 import CommonButton from '../../../../components/CommonButton';
 import { getBoard } from '../../../../apis/board';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { appFireStore } from '../../../../firebase/config';
+import { getComments } from '../../../../apis/comment';
 
 type MoreIntro = {
   moreIntro: boolean;
@@ -33,37 +34,35 @@ const BookInfo = () => {
     queryFn: async () => await getBoard(isbn),
     onSuccess: (data) => data,
   });
-  const { title, author, categoryName, pubDate, description, publisher, cover, page }: any = data?.item[0] || [];
-  const category1 = String(categoryName).split('>')[0];
-  const category2 = String(categoryName).split('>')[1];
-  const category3 = String(categoryName).split('>')[2];
-  const [moreIntro, setMoreIntro] = useState(false);
-  const [commentListLength, setCommentListLength] = useState();
-  const eidtPubDate = pubDate?.replaceAll('-', '.');
-  const [uniqueUidCount, setUniqueUidCount] = useState(0);
 
-  //책 페이지 저장
+  const { title, author, categoryName, pubDate, description, publisher, cover } = data?.item[0] || {};
+  const bookTotalPage = data?.item[0].subInfo.itemPage;
+  const category1 = categoryName?.split('>')[0];
+  const category2 = categoryName?.split('>')[1];
+  const category3 = categoryName?.split('>')[2];
+  const [moreIntro, setMoreIntro] = useState(false);
+  const eidtPubDate = pubDate?.replaceAll('-', '.');
+
   useEffect(() => {
-    page && setBookPage(page);
-    cover && setBookImage(cover);
-  }, [page, cover]);
+    if (bookTotalPage) {
+      setBookPage(bookTotalPage);
+    }
+    if (cover) {
+      setBookImage(cover);
+    }
+  }, [bookTotalPage, cover]);
 
   const toggleIntro = () => {
-    moreIntro ? setMoreIntro(false) : setMoreIntro(true);
+    setMoreIntro(!moreIntro);
   };
-  useEffect(() => {
-    const collectionRef = collection(appFireStore, 'comments');
-    const documentRef = doc(collectionRef, isbn);
-    const unsubscribe = onSnapshot(documentRef, (doc) => {
-      const comments = doc.data()?.commentList;
-      const uniqueUids = new Set(comments.map((comment: any) => comment.uid));
-      setUniqueUidCount(uniqueUids.size);
-      const commentList = doc.data()?.commentList?.length || 0;
-      setCommentListLength(commentList);
-    });
 
-    return () => unsubscribe();
-  }, [isbn]);
+  const { data: commentList } = useQuery(['comments', isbn], () => getComments(isbn));
+
+  const uniqueUids = new Set(
+    commentList?.initialComments.concat(commentList.nextComments).map((comment: any) => comment.uid),
+  );
+  const numUniqueUids = uniqueUids.size;
+  const totalCommentCount = commentList?.initialComments.length + commentList?.nextComments.length;
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
@@ -73,11 +72,11 @@ const BookInfo = () => {
             <h2>{title}</h2>
             <BookInfoCountsRow>
               <span>
-                <img src={commentGrey} />
+                <img src={commentGreyIcon} />
                 12
               </span>
               <span>
-                <img src={userGrey} />
+                <img src={userGreyIcon} />
                 12
               </span>
             </BookInfoCountsRow>
@@ -92,14 +91,14 @@ const BookInfo = () => {
           </BookInfoRow2>
           <BookInfoRow3>
             <span>
-              <img src={comment} alt="댓글 개수" />
-              {commentListLength}
+              <img src={commentIcon} alt="댓글 개수" />
+              {totalCommentCount}
             </span>
             <span>
-              <img src={user} alt="댓글 쓴 사람" /> {uniqueUidCount}
+              <img src={userIcon} alt="댓글 쓴 사람" /> {numUniqueUids}
             </span>
             <span>
-              <img src={bookmark} alt="북마크" />
+              <img src={bookmarkIcon} alt="북마크" />
             </span>
           </BookInfoRow3>
         </BookInfoContent>

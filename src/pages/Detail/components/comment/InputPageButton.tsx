@@ -1,8 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 
-import CommonButton from '../../../../components/CommonButton';
-
 type InputPageProps = {
   className: string;
   value: string;
@@ -21,7 +19,11 @@ const InputPageButton = ({ className, value, maxPage, onChange }: InputPageProps
 
 export default InputPageButton;
 
-const InputPage = styled(CommonButton)`
+const InputPage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
   padding: 12px 16px;
   border: 1px solid ${(props) => props.theme.colors.grey4};
   background-color: ${(props) => props.theme.colors.white};

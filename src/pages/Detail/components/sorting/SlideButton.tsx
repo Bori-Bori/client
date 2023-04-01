@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { sortCommentAtom } from '../../../../recoil/sortComment';
+import { useRecoilState } from 'recoil';
+import { commentListAtom, nextCommentListAtom } from '../../../../recoil/comment';
 
 type SlideType = {
   latestSort: boolean;
 };
-type SlideButtonProps = {
-  state: boolean;
-  setState: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
-const SlideButton = ({ state, setState }: SlideButtonProps) => {
-  const [latestSort, setLatestSort] = useState(true);
+const SlideButton = () => {
+  const [commentList, setCommentList] = useRecoilState(commentListAtom);
+  const [nextCommentList, setNextCommentList] = useRecoilState(nextCommentListAtom);
+  const [sortIsLatest, setSortIsLatest] = useRecoilState(sortCommentAtom);
 
   const slideHandler = () => {
-    setState((prev) => !prev);
+    setSortIsLatest((prev) => !prev);
+
+    if (sortIsLatest) {
+      setCommentList(commentList.sort((a: any, b: any) => (a.date > b.date ? -1 : 1)));
+      setNextCommentList(nextCommentList.sort((a: any, b: any) => (a.date > b.date ? -1 : 1)));
+    } else {
+      setCommentList(commentList.sort((a: any, b: any) => (a.targetPage < b.targetPage ? -1 : 1)));
+      setNextCommentList(nextCommentList.sort((a: any, b: any) => (a.targetPage < b.targetPage ? -1 : 1)));
+    }
   };
 
   return (
     <BtnWrapper>
       <CheckBox type="checkbox" id="toggleBtn" onChange={slideHandler} />
-      <ButtonLabel htmlFor="toggleBtn" latestSort={state} />
+      <ButtonLabel htmlFor="toggleBtn" latestSort={sortIsLatest} />
     </BtnWrapper>
   );
 };
@@ -36,6 +45,7 @@ const CheckBox = styled.input`
 `;
 
 const ButtonLabel = styled.label<SlideType>`
+  cursor: pointer;
   position: relative;
   z-index: 10;
   width: 11rem;

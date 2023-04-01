@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { onSnapshot, collection, doc } from 'firebase/firestore';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 import { sortCommentAtom, slideRangeValueAtom } from '../../../../recoil/sortComment';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
@@ -11,6 +11,9 @@ import CommonButton from '../../../../components/CommonButton';
 import commentImg from '../../../../assets/icons/comment-gr-60.png';
 import { appFireStore } from '../../../../firebase/config';
 import 'firebase/compat/firestore';
+import { useQuery } from '@tanstack/react-query';
+import { getComments } from '../../../../apis/comment';
+import { commentListAtom, nextCommentListAtom } from '../../../../recoil/comment';
 type MarginProps = {
   margin: number;
 };
@@ -22,31 +25,22 @@ const Comment = () => {
   const params = useParams<{ id: string }>(); // 변수 선언과 분리
   const boardId: any = params.id; // 변수 선언과 분리
 
-  const [commentList, setCommentList] = useState([]);
-
-  const slideRangeValue = useRecoilValue(slideRangeValueAtom);
-  const [bookPage, setBookPage] = useState(parseInt(slideRangeValue));
+  const { data } = useQuery(['comments', boardId], () => getComments(boardId));
+  console.log(data);
+  const [commentList, setCommentList] = useRecoilState(commentListAtom);
+  const [nextCommentList, setNextCommentList] = useRecoilState(nextCommentListAtom);
 
   useEffect(() => {
-    const collectionRef = collection(appFireStore, 'comments');
-    const documentRef = doc(collectionRef, boardId);
-    const unsubscribe = onSnapshot(documentRef, (doc) => {
-      const commentList = doc.data()?.commentList || [];
-      setCommentList(commentList);
-    });
+    if (data) {
+      setCommentList(data.initialComments);
+      setNextCommentList(data.nextComments);
+    }
+  }, [data]);
 
-    return () => unsubscribe();
-  }, []);
-
-  // range value가 연속적이게 변할 때 fetch 요청 보내지 않도록 하는 코드
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setBookPage(parseInt(slideRangeValue));
-    }, 500);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [slideRangeValue]);
+  const onClickShowMoreCommentBtn = () => {
+    setCommentList((prevList) => [...prevList, ...nextCommentList.slice(0, 10)]);
+    setNextCommentList((prevList) => prevList.slice(10));
+  };
 
   // scroll to bottom
   const scrollToBottom = () => {
@@ -60,9 +54,6 @@ const Comment = () => {
     }
   }, [commentList]);
 
-  if (status === 'loading') {
-    return <p>loading...</p>;
-  }
   return (
     <CommentWrapper margin={inputWrapperHeight}>
       {curSortState || (
@@ -71,20 +62,15 @@ const Comment = () => {
         </CommentNumberAlert>
       )}
       {commentList?.length ? (
-        commentList?.map((data: any) => <CommentContainer key={data.commentId} item={data} />)
+        commentList?.map((comment: any) => <CommentContainer key={comment.commentId} comment={comment} />)
       ) : (
         <NoCommentAlertWrapper>
           <img src={commentImg} alt="comment" />
           <span>첫번째 댓글을 남겨주세요!</span>
         </NoCommentAlertWrapper>
       )}
-      {commentList && (
-        <ShowMoreCommentBtn
-          className="showMoreCommentBtn"
-          onClick={() => {
-            console.log('');
-          }}
-        >
+      {!!nextCommentList.length && (
+        <ShowMoreCommentBtn className="showMoreCommentBtn" onClick={onClickShowMoreCommentBtn}>
           댓글 더보기
         </ShowMoreCommentBtn>
       )}

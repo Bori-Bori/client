@@ -2,55 +2,35 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { appFireStore } from '../../../../firebase/config';
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from '../../../../apis/profile';
 
-const CommentItem = ({ item }: any) => {
-  const [data, setData]: any = useState(null);
+const CommentItem = ({ comment }: any) => {
   const [commentIsNew, setCommentIsNew] = useState(false);
   const nowDate = new Date();
 
   useEffect(() => {
-    item?.date && (nowDate.getTime() - new Date(item?.date).getTime()) / (1000 * 60 * 60) <= 24
+    comment?.date && (nowDate.getTime() - new Date(comment?.date).getTime()) / (1000 * 60 * 60) <= 24
       ? setCommentIsNew(true)
       : setCommentIsNew(false);
   }, []);
+  const { data: userInfo } = useQuery(['userInfo', comment.uid], () => getProfile(comment.uid));
 
-  useEffect(() => {
-    // 문서를 참조합니다.
-    const docRef = doc(appFireStore, 'userInfo', item?.uid);
-
-    // onSnapshot 함수는 가장 최신의 문서 데이터를 반환하는 함수입니다. 함수는 데이터 수신을 중단하기 위한 unsubscribe 함수를 반환합니다. 더 이상 데이터를 수신 대기할 필요가 없을 때 사용합니다.
-    onSnapshot(
-      docRef,
-      // 응답받은 문서가 snapshot에 저장됩니다.
-      (snapshot) => {
-        if (snapshot.exists()) {
-          // 문서 데이터를 가져와 state를 업데이트합니다.
-          setData({ ...snapshot.data() });
-        } else {
-          // 문서가 없을 때는 null로 설정합니다.
-          setData(null);
-        }
-      },
-      (error: any) => {
-        console.error(error);
-      },
-    );
-  }, []);
   return (
-    <CommentTextWrapper key={item.id}>
+    <CommentTextWrapper key={comment.id}>
       <CommentInfo>
         <UserImageWrapper>
-          <UserImage src={data?.photoURL} />
+          <UserImage src={userInfo?.photoURL} />
         </UserImageWrapper>
         <div>
-          <Writer>{data?.displayName}</Writer>
+          <Writer>{userInfo?.displayName}</Writer>
           <PublishDate>
-            <span>{item?.date}</span>
+            <span>{comment?.date}</span>
             {commentIsNew && <NewCommentBadge>N</NewCommentBadge>}
           </PublishDate>
         </div>
       </CommentInfo>
-      <CommentText>{item?.commentContent}</CommentText>
+      <CommentText>{comment?.commentContent}</CommentText>
     </CommentTextWrapper>
   );
 };
