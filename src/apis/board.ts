@@ -1,5 +1,5 @@
 import { boardAxiosInstance } from './axiosInstance';
-const ttbkey = 'ttbandn36091701004';
+const ttbkey = 'ttbandn36091701005';
 
 export const getBoard = async (boardId: string) => {
   const response = await boardAxiosInstance.get(

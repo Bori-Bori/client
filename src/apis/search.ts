@@ -1,7 +1,7 @@
 import { ALADINLIST } from '../pages/shared/aladinList';
 import { boardAxiosInstance } from './axiosInstance';
 
-const ttbkey = 'ttbandn36091701004';
+const ttbkey = 'ttbandn36091701005';
 
 interface ResponseData {
   // 응답 데이터의 타입을 정의합니다.
