@@ -40,6 +40,7 @@ const BookInfo = () => {
   const [moreIntro, setMoreIntro] = useState(false);
   const [commentListLength, setCommentListLength] = useState();
   const eidtPubDate = pubDate?.replaceAll('-', '.');
+  const [uniqueUidCount, setUniqueUidCount] = useState(0);
 
   //책 페이지 저장
   useEffect(() => {
@@ -54,6 +55,9 @@ const BookInfo = () => {
     const collectionRef = collection(appFireStore, 'comments');
     const documentRef = doc(collectionRef, isbn);
     const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const comments = doc.data()?.commentList;
+      const uniqueUids = new Set(comments.map((comment: any) => comment.uid));
+      setUniqueUidCount(uniqueUids.size);
       const commentList = doc.data()?.commentList?.length || 0;
       setCommentListLength(commentList);
     });
@@ -92,7 +96,7 @@ const BookInfo = () => {
               {commentListLength}
             </span>
             <span>
-              <img src={user} alt="댓글 쓴 사람" /> {commentListLength}
+              <img src={user} alt="댓글 쓴 사람" /> {uniqueUidCount}
             </span>
             <span>
               <img src={bookmark} alt="북마크" />
