@@ -1,5 +1,5 @@
 import { ALADINLIST } from '../pages/shared/aladinList';
-import { boardAxiosInstance } from './axiosInstance';
+import axios from 'axios';
 
 const ttbkey = 'ttbandn36091701005';
 
@@ -21,11 +21,20 @@ export const getSearchBooklist = async (
       category1 === category.category1 && category2 === category.category2 && category3 === category.category3,
   );
 
-  const response: ResponseData = await boardAxiosInstance.get(
-    `/ItemSearch.aspx?ttbkey=${ttbkey}&Query=${keyword}&QueryType=${contentType}&CategoryId=${
-      foundCategory?.CID || 0
-    }&MaxResults=10&start=${(page - 1) * 10}&Cover=Big&output=JS&Version=20131101`,
-  );
-
-  return response.data;
+  try {
+    const response: ResponseData = await axios.get(
+      `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ttbkey}&Query=${keyword}&QueryType=${contentType}&CategoryId=${
+        foundCategory?.CID || 0
+      }&MaxResults=10&start=${(page - 1) * 10}&Cover=Big&output=JS&Version=20131101`,
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
