@@ -7,6 +7,7 @@ export default function configureProxy(app: Application) {
     createProxyMiddleware({
       target: 'http://www.aladin.co.kr/ttb',
       changeOrigin: true,
+      secure: false,
       pathRewrite: {
         '^/api': '',
       },
