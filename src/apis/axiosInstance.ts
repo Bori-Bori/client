@@ -9,7 +9,7 @@ export const authAxiosInstance = axios.create({
 });
 
 export const boardAxiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BOARD_BASE_URL,
+  baseURL: 'http://www.aladin.co.kr/ttb/api',
 });
 
 authAxiosInstance.interceptors.response.use(
