@@ -7,8 +7,9 @@ const CommentItem = ({ item }: any) => {
   const [data, setData]: any = useState(null);
   const [commentIsNew, setCommentIsNew] = useState(false);
   const nowDate = new Date();
+
   useEffect(() => {
-    item?.date && (nowDate.getTime() - new Date(item.date).getTime()) / (1000 * 60 * 60) <= 24
+    item?.date && (nowDate.getTime() - new Date(item?.date).getTime()) / (1000 * 60 * 60) <= 24
       ? setCommentIsNew(true)
       : setCommentIsNew(false);
   }, []);

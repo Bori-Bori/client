@@ -10,7 +10,7 @@ type BubbleProps = {
 const BubbleBox = React.forwardRef<HTMLDivElement, BubbleProps>(({ text, className }, ref) => {
   return (
     <BubbleContainer ref={ref} className={className}>
-      {text}
+      {text}p.
     </BubbleContainer>
   );
 });

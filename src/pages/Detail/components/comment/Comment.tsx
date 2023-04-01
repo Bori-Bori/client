@@ -71,7 +71,7 @@ const Comment = () => {
         </CommentNumberAlert>
       )}
       {commentList?.length ? (
-        commentList?.map((targetPage: any) => <CommentContainer key={targetPage.commentId} item={targetPage} />)
+        commentList?.map((data: any) => <CommentContainer key={data.commentId} item={data} />)
       ) : (
         <NoCommentAlertWrapper>
           <img src={commentImg} alt="comment" />
