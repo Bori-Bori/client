@@ -7,14 +7,31 @@ import BubbleBox from './BubbleBox';
 import ReplyComments from '../reply/ReplyComments';
 import CommentItem from './CommentItem';
 import ToggleButton from '../reply/ToggleButton';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { appFireStore } from '../../../../firebase/config';
 
 const CommentContainer = ({ item }: any) => {
   const curSortState = useRecoilValue(sortCommentAtom);
   const [replyIsOpen, setReplyIsOpen] = useState(false);
-  const [replyCount, setReplyCount] = useState(item.data?.uid);
+  const [replyCount, setReplyCount] = useState(item?.length);
+  const [replyList, setReplyList] = useState([]);
   const replyOpenHandler = () => {
     setReplyIsOpen((prev) => !prev);
   };
+  //getReply
+  useEffect(() => {
+    const collectionRef = collection(appFireStore, 'reply');
+    const documentRef = doc(collectionRef, item?.commentId);
+
+    // 리스너 등록
+    const unsubscribe = onSnapshot(documentRef, (doc) => {
+      const replyList = doc.data()?.commentList || [];
+      setReplyList(replyList);
+    });
+
+    // 컴포넌트 언마운트시 리스너 제거
+    return () => unsubscribe();
+  }, [item?.commentId]);
 
   return (
     <CommentItemContainer>
@@ -31,13 +48,11 @@ const CommentContainer = ({ item }: any) => {
               className="toggleButton"
               onClick={replyOpenHandler}
               isOpened={replyIsOpen}
-              replyNumber={replyCount}
+              replyNumber={replyList.length}
             />
           </ButtonBox>
         </CommentRow>
-        {replyIsOpen && (
-          <ReplyComments key={item.commentId} commentId={item?.commentId} setReplyCount={setReplyCount} />
-        )}
+        {replyIsOpen && <ReplyComments key={item.commentId} commentId={item?.commentId} />}
       </CommentItemWrapper>
     </CommentItemContainer>
   );

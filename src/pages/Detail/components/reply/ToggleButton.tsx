@@ -9,7 +9,7 @@ type ToggleProps = {
   className: string;
   onClick: () => void;
   isOpened: boolean;
-  replyNumber?: string;
+  replyNumber?: number;
 };
 const ToggleButton = ({ className, onClick, isOpened, replyNumber }: ToggleProps) => {
   return (
