@@ -6,11 +6,7 @@ import EditProfileModal from '../pages/Mypage/components/EditProfileModal';
 import showLoginModal from '../recoil/showLoginModal';
 import showEditProfileModal from '../recoil/showEditProfileModal';
 
-type LayoutProps = {
-  children: ReactNode;
-};
-
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children }: any) => {
   const showMoadal = useRecoilValue(showLoginModal);
   const showProfileModal = useRecoilValue(showEditProfileModal);
   return (

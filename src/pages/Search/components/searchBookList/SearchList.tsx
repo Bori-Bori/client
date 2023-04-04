@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from 'react-query';
 import { useInView } from 'react-intersection-observer';
 
 import { useRecoilValue } from 'recoil';
-import { getSearchBooklist } from '../../../../apis/search';
 import { categoryState, contentTypeState, keywordState } from '../../../../recoil/search';
 
 // 이미지
@@ -18,6 +17,7 @@ import Error from '../../../../components/Error';
 
 // 타입
 import { IfetchNextPage, IbookList } from '../../../../types/search';
+import { getSearchBooklist } from 'apis/book';
 
 const SearchList = () => {
   const category = useRecoilValue(categoryState); // 카테고리1/2/3 저장
@@ -54,7 +54,7 @@ const SearchList = () => {
 
   return (
     <SearchListContainer>
-      {data.pages[0].item.length === 0 && <div>검색 결과가 없습니다.</div>}
+      {data?.pages?.length === 0 && <div>검색 결과가 없습니다.</div>}
       {data?.pages?.map((page: any, index: number) => (
         <ul key={index}>
           {page?.item.map((value: any, index: number) => (

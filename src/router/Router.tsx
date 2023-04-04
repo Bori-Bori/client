@@ -7,10 +7,11 @@ import Detail from '../pages/Detail/index';
 import KakaoOauth from '../pages/Login/KakaoLogin';
 import Mypage from '../pages/Mypage';
 import Header from './../components/header';
+import Layout from './../components/layout';
 
 function Router() {
   return (
-    <>
+    <Layout>
       <Routes>
         <Route path="/*" element={<Header />} />
       </Routes>
@@ -21,7 +22,7 @@ function Router() {
         <Route path="/login/kakao/oauth" element={<KakaoOauth />} />
         <Route path="/mypage" element={<Mypage />} />
       </Routes>
-    </>
+    </Layout>
   );
 }
 export default Router;

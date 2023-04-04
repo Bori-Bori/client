@@ -7,9 +7,10 @@ import prevButton from '../../../../assets/icons/prv-bk-20.png';
 import nextButton from '../../../../assets/icons/nxt-bk-20.png';
 import BubbleBox from '../comment/BubbleBox';
 import { slideRangeValueAtom } from '../../../../recoil/sortComment';
-import { useQuery } from '@tanstack/react-query';
-import { getBoard } from '../../../../apis/board';
+import { useQuery } from 'react-query';
+
 import { useParams } from 'react-router-dom';
+import { getBookInfo } from 'apis/book';
 
 type PassedValue = {
   passedValue: number;
@@ -24,11 +25,8 @@ const SlideRange = () => {
   const rangeInputRef = useRef<HTMLInputElement>(null); // 슬라이드바의 위치
   const params = useParams();
   const isbn = params.id!;
-  const { data } = useQuery({
-    queryKey: ['bookInfo', isbn],
-    queryFn: async () => await getBoard(isbn),
-    onSuccess: (data) => data,
-  });
+  const contentType = '';
+  const { data } = useQuery(['bookinfo', isbn], async () => await getBookInfo(1, contentType, isbn));
   const totalBookPage = data?.item[0].subInfo.itemPage;
   // 말풍선 위치
   useEffect(() => {

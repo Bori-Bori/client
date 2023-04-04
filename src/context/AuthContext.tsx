@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 
 // context를 객체를 생성합니다.
-const AuthContext: any = createContext({});
+const AuthContext = createContext({});
 
 const authReducer = (state: any, action: any) => {
   switch (action.type) {

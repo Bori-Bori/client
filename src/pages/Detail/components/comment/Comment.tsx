@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { onSnapshot, collection, doc } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { sortCommentAtom, slideRangeValueAtom } from '../../../../recoil/sortComment';
+import { sortCommentAtom } from '../../../../recoil/sortComment';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
 import CommentContainer from './CommentContainer';
 import CommonButton from '../../../../components/CommonButton';
 import commentImg from '../../../../assets/icons/comment-gr-60.png';
-import { appFireStore } from '../../../../firebase/config';
-import 'firebase/compat/firestore';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'react-query';
+
 import { getComments } from '../../../../apis/comment';
 import { commentListAtom, nextCommentListAtom } from '../../../../recoil/comment';
 type MarginProps = {
@@ -25,15 +23,14 @@ const Comment = () => {
   const params = useParams<{ id: string }>(); // 변수 선언과 분리
   const boardId: any = params.id; // 변수 선언과 분리
 
-  const { data } = useQuery(['comments', boardId], () => getComments(boardId));
-  console.log(data);
+  const { data } = useQuery([boardId], () => getComments(boardId));
   const [commentList, setCommentList] = useRecoilState(commentListAtom);
   const [nextCommentList, setNextCommentList] = useRecoilState(nextCommentListAtom);
 
   useEffect(() => {
     if (data) {
-      setCommentList(data.initialComments);
-      setNextCommentList(data.nextComments);
+      setCommentList(data?.initialComments);
+      setNextCommentList(data?.nextComments);
     }
   }, [data]);
 

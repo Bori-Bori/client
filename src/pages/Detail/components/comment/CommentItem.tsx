@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { appFireStore } from '../../../../firebase/config';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'react-query';
+
 import { getProfile } from '../../../../apis/profile';
 
 const CommentItem = ({ comment }: any) => {

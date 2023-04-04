@@ -19,6 +19,7 @@ const Slide = () => {
       }, 3000);
       return () => clearInterval(id);
     }
+    return;
   }, [count, hover]);
 
   return (

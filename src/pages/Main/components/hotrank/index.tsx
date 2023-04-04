@@ -5,7 +5,6 @@ import { countState, hoverState } from './../../../../recoil/slide';
 import Tablet from './tablet';
 import Mobile from './mobile';
 import Slide from './Slide';
-
 const Home = () => {
   const [count, setCount] = useRecoilState(countState);
   const hover = useRecoilValue(hoverState);
@@ -20,6 +19,7 @@ const Home = () => {
       }, 2000);
       return () => clearInterval(id);
     }
+    return;
   }, [count, hover]);
 
   return (

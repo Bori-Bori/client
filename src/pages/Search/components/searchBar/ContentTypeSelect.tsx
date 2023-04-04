@@ -21,6 +21,7 @@ const ContentTypeSelect = () => {
     if (contentType === '') {
       return '카테고리';
     }
+    return;
   }
 
   return (

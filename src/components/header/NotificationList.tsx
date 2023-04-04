@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'react-query';
+
 import { notifications } from './../../apis/notification';
 import { Link } from 'react-router-dom';
 import ReplyDate from './ReplyDate';
@@ -19,42 +20,43 @@ const NotificationList = () => {
     page: string;
     createdAt: string;
   }
-  const { data } = useQuery(['notification'], notifications, {
-    refetchOnWindowFocus: false,
-    retry: 0,
-  });
-  const notificationData: notificationList[] = data?.data;
-  if (notificationData?.length > 0) {
-    setIsNotification(true);
-  }
+  // const { data } = useQuery(['notification'], notifications, {
+  //   refetchOnWindowFocus: false,
+  //   retry: 0,
+  // });
+  // const notificationData: notificationList[] = data?.data;
+  // if (notificationData?.length > 0) {
+  //   setIsNotification(true);
+  // }
   return (
-    <NotificationContainer>
-      <NotificationNum>알림 ({notificationData?.length})</NotificationNum>
-      {notificationData?.length !== 0 && (
-        <NotificationListWrap>
-          {notificationData?.map((value, index) => {
-            return (
-              <NotificationItemWrap key={index}>
-                <Link to={`/detail/${value.boardId}`}>
-                  <CommentInfo>
-                    <PageNum>{value.page}p.</PageNum>
-                    <BookName>
-                      <CommentText>“{value.commentContent}”에 달린 답글</CommentText>
-                    </BookName>
-                  </CommentInfo>
-                  <ReplyText>{value.replyContent}</ReplyText>
-                  <ReplyInfo>
-                    <ReplyWriter>{value.replyUserNickname}</ReplyWriter>
-                    <ReplyDate date={value.createdAt} />
-                    {index < 3 && <NewIcon>N</NewIcon>}
-                  </ReplyInfo>
-                </Link>
-              </NotificationItemWrap>
-            );
-          })}
-        </NotificationListWrap>
-      )}
-    </NotificationContainer>
+    <div></div>
+    // <NotificationContainer>
+    //   <NotificationNum>알림 ({notificationData?.length})</NotificationNum>
+    //   {notificationData?.length !== 0 && (
+    //     <NotificationListWrap>
+    //       {notificationData?.map((value, index) => {
+    //         return (
+    //           <NotificationItemWrap key={index}>
+    //             <Link to={`/detail/${value.boardId}`}>
+    //               <CommentInfo>
+    //                 <PageNum>{value.page}p.</PageNum>
+    //                 <BookName>
+    //                   <CommentText>“{value.commentContent}”에 달린 답글</CommentText>
+    //                 </BookName>
+    //               </CommentInfo>
+    //               <ReplyText>{value.replyContent}</ReplyText>
+    //               <ReplyInfo>
+    //                 <ReplyWriter>{value.replyUserNickname}</ReplyWriter>
+    //                 <ReplyDate date={value.createdAt} />
+    //                 {index < 3 && <NewIcon>N</NewIcon>}
+    //               </ReplyInfo>
+    //             </Link>
+    //           </NotificationItemWrap>
+    //         );
+    //       })}
+    //     </NotificationListWrap>
+    //   )}
+    // </NotificationContainer>
   );
 };
 

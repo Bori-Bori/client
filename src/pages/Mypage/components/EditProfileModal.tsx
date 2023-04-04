@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation } from 'react-query';
 
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
-import { postProfile } from '../../../apis/profile';
 import { profileImageAtom } from '../../../recoil/profile';
 
 import Modal from '../../../components/Modal';
@@ -75,15 +74,15 @@ const EditProfileModal = () => {
     imagePath: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`,
   };
 
-  const postProfileMutate = useMutation(() => postProfile(profileData), {
-    onSuccess: (response) => {
-      setProfile(response.content.imagePath);
-    },
-    onError: (error) => console.log(error),
-  });
+  // const postProfileMutate = useMutation(() => postProfile(profileData), {
+  //   onSuccess: (response) => {
+  //     setProfile(response?.content.imagePath);
+  //   },
+  //   onError: (error) => console.log(error),
+  // });
 
   const onClickSubmit = () => {
-    postProfileMutate.mutate();
+    // postProfileMutate.mutate();
     setShowEditProfileModal(false);
   };
 

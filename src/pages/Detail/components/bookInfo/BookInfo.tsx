@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
 
 import commentIcon from '../../../../assets/icons/comment-wh-24.png';
 import userIcon from '../../../../assets/icons/user-wh-24.png';
@@ -15,28 +14,25 @@ import bookPageAtom from '../../../../recoil/bookPage';
 import bookImageAtom from '../../../../recoil/bookImage';
 
 import CommonButton from '../../../../components/CommonButton';
-import { getBoard } from '../../../../apis/board';
-import { appFireStore } from '../../../../firebase/config';
 import { getComments } from '../../../../apis/comment';
+import { getBookInfo } from 'apis/book';
 
 type MoreIntro = {
   moreIntro: boolean;
 };
 
 const BookInfo = () => {
-  const params = useParams();
-  const isbn = params.id!;
   const setBookPage = useSetRecoilState(bookPageAtom);
   const setBookImage = useSetRecoilState(bookImageAtom);
 
-  const { data } = useQuery({
-    queryKey: ['bookInfo', isbn],
-    queryFn: async () => await getBoard(isbn),
-    onSuccess: (data) => data,
-  });
+  const param = useParams();
+  const isbn = param.id!;
+  const contentType = '';
 
-  const { title, author, categoryName, pubDate, description, publisher, cover } = data?.item[0] || {};
-  const bookTotalPage = data?.item[0].subInfo.itemPage;
+  const { data } = useQuery(['bookinfo', isbn], async () => await getBookInfo(1, contentType, isbn));
+
+  const { title, author, categoryName, pubDate, description, publisher, cover } = data?.[0] || {};
+  const bookTotalPage = data?.[0]?.subInfo?.itemPage;
   const category1 = categoryName?.split('>')[0];
   const category2 = categoryName?.split('>')[1];
   const category3 = categoryName?.split('>')[2];
@@ -56,7 +52,7 @@ const BookInfo = () => {
     setMoreIntro(!moreIntro);
   };
 
-  const { data: commentList } = useQuery(['comments', isbn], () => getComments(isbn));
+  const { data: commentList } = useQuery(['commentList', isbn], async () => await getComments(isbn));
 
   const uniqueUids = new Set(
     commentList?.initialComments.concat(commentList.nextComments).map((comment: any) => comment.uid),
@@ -181,18 +177,18 @@ const BookInfoRow1 = styled.div`
 
   ${(props) => props.theme.media.tablet`
   margin-bottom: 0px;
-    color: ${(props: any) => props.theme.colors.black};
+    color: ${props.theme.colors.black};
     & > h2 {
-      font-size: ${(props: any) => props.theme.fontSize.header01};
+      font-size: ${props.theme.fontSize.header01};
       margin-top: 28px;
-      line-height: ${(props: any) => props.theme.lineHeight.lh26};
+      line-height: ${props.theme.lineHeight.lh26};
     }
     & > span {
       position: relative;
       top: 39px;
-      color: ${(props: any) => props.theme.colors.secondary1};
-      font-size: ${(props: any) => props.theme.fontSize.badge01};
-      line-height: ${(props: any) => props.theme.lineHeight.lh20}l;
+      color: ${props.theme.colors.secondary1};
+      font-size: ${props.theme.fontSize.badge01};
+      line-height: ${props.theme.lineHeight.lh20}l;
       margin-right: 5px;
     }
   `}
@@ -207,9 +203,9 @@ const BookInfoCountsRow = styled.div`
     right: 0;
     & > span {
       margin-left: 12px;
-      color: ${(props: any) => props.theme.colors.grey1};
-      font-size: ${(props: any) => props.theme.fontSize.badge01};
-      line-height: ${(props: any) => props.theme.lineHeight.lh20}l;
+      color: ${props.theme.colors.grey1};
+      font-size: ${props.theme.fontSize.badge01};
+      line-height: ${props.theme.lineHeight.lh20}l;
       > img {
         margin-right: 3px;
       }
@@ -230,8 +226,8 @@ const BookInfoRow2 = styled.div`
   height: 0px;
   margin-bottom: 0px;
   h3{
-    color: ${(props: any) => props.theme.colors.grey1};
-    font-size: ${(props: any) => props.theme.fontSize.body02};
+    color: ${props.theme.colors.grey1};
+    font-size: ${props.theme.fontSize.body02};
     position: relative;
     top: -25px;
   }
@@ -277,12 +273,13 @@ const BookIntro = styled.p<MoreIntro>`
   ${(props) => props.theme.media.tablet`
     padding-top: 0;
     margin-top: 70px;
-    ${(props: any) =>
+    ${
       props.moreIntro
         ? null
         : `
         height: 77px;
-    `}
+    `
+    }
   `}
 `;
 const ToggleIntroButton = styled(CommonButton)`
@@ -302,7 +299,7 @@ const ToggleIntroButton = styled(CommonButton)`
   border-radius: 24px;
   outline: none;
   ${(props) => props.theme.media.tablet`
-    font-size: ${(props: any) => props.theme.fontSize.body02};
+    font-size: ${props.theme.fontSize.body02};
     padding: 8px 14px;
   `}
 `;
