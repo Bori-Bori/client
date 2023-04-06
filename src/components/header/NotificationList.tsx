@@ -29,7 +29,7 @@ const NotificationList = () => {
   //   setIsNotification(true);
   // }
   return (
-    <div></div>
+    <div />
     // <NotificationContainer>
     //   <NotificationNum>알림 ({notificationData?.length})</NotificationNum>
     //   {notificationData?.length !== 0 && (
