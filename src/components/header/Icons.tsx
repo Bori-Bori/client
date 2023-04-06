@@ -16,16 +16,18 @@ const Icons = () => {
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
   const { user }: any = useAuthContext();
 
-  //fetch profileImage
   useEffect(() => {
     if (user) {
-      const profile = user.photoURL;
-      setProfileImage(profile);
+      setProfileImage(user.photoURL);
     }
   }, [user]);
 
-  const onClickLogin = () => {
+  const handleLoginClick = () => {
     setShowLoginModal(true);
+  };
+
+  const handleProfileClick = () => {
+    navigate('/mypage');
   };
 
   return (
@@ -34,16 +36,12 @@ const Icons = () => {
       {user ? (
         <>
           <Notification />
-          <ProfileImg
-            onClick={() => {
-              navigate('/mypage');
-            }}
-          >
+          <ProfileImg onClick={handleProfileClick}>
             <img src={profileImage} alt="프로필이미지" />
           </ProfileImg>
         </>
       ) : (
-        <LoginBtn onClick={onClickLogin}>로그인</LoginBtn>
+        <LoginBtn onClick={handleLoginClick}>로그인</LoginBtn>
       )}
     </IconWrap>
   );
@@ -58,6 +56,7 @@ const IconWrap = styled.div`
   align-items: center;
   gap: 24px;
 `;
+
 const ProfileImg = styled.button`
   cursor: pointer;
   display: block;
@@ -66,11 +65,12 @@ const ProfileImg = styled.button`
   border-radius: 100%;
   overflow: hidden;
   img {
-    width: 28px;
-    height: 28px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 `;
+
 const LoginBtn = styled.button`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   font-size: ${(props) => props.theme.fontSize.body02};

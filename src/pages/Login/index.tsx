@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import { useAuthContext } from './../../context/useAuthContext';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { appFireStore, auth } from '../../firebase/config';
-import { addDoc, collection, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 import Modal from '../../components/Modal';
 import { ModalPortal } from '../../components/Modal';
@@ -18,27 +18,20 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const navigate = useNavigate();
   const { dispatch }: any = useAuthContext();
-  const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
-  const REDIRECT_URI = 'http://localhost:3000/login/kakao/oauth';
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-  const KakaoRedirectHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
 
   const setShowLoginModal = useSetRecoilState(showLoginModal);
 
   const handleGoogleLogin = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then(async (data: any) => {
-        await dispatch({ type: 'login', payload: data.user });
+      .then((data: any) => {
+        dispatch({ type: 'login', payload: data.user });
         const { uid, displayName, photoURL } = data.user;
         const collectionRef = collection(appFireStore, 'userInfo');
         const documentRef = doc(collectionRef, uid); // 문서 이름을 uid로 지정
         const newData = { displayName, photoURL } as any;
-        await setDoc(documentRef, newData); // setDoc() 함수를 사용하여 문서를 설정
-        setShowLoginModal(false);
+        setDoc(documentRef, newData); // setDoc() 함수를 사용하여 문서를 설정
+        setShowLoginModal(false); // updated line
         navigate('/');
       })
       .catch((err) => {
