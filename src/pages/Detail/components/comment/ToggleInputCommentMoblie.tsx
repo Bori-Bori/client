@@ -8,7 +8,6 @@ import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
 import bookPageAtom from '../../../../recoil/bookPage';
 import { useFirestore } from '../../../../hooks/useFireStore';
-import { useAuthContext } from '../../../../context/useAuthContext';
 import InputComment from './InputComment';
 
 const ToggelInputCommentMoblie = () => {
@@ -16,7 +15,8 @@ const ToggelInputCommentMoblie = () => {
   const [targetPage, setTargetPage] = useState('0');
   const params = useParams();
   const isbn = params.id!;
-  const { user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
+
   const maxPage = bookTotalPage.toString();
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputIsOpen, setInputIsOpen] = useState(false);

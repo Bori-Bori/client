@@ -8,7 +8,6 @@ import commentInputHeight from '../../../../recoil/commentInputHeight';
 import useIsLogin from '../../../../hooks/useIsLogin';
 import closeIcon from '../../../../assets/icons/close-bk-24.png';
 import writeIcon from '../../../../assets/icons/write_br_24.png';
-import { useAuthContext } from '../../../../context/useAuthContext';
 
 type inputIsOpenType = {
   inputIsOpen: boolean;
@@ -18,7 +17,7 @@ const ToggleInputComment = () => {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputHeight, setInputHeight] = useRecoilState(commentInputHeight);
   const [inputIsOpen, setInputIsOpen] = useState(false);
-  const { user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
 
   //로그인 유무 확인
   useIsLogin();

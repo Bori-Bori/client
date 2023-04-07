@@ -15,7 +15,6 @@ const SlideButton = () => {
     setSortIsLatest((prev) => !prev);
   };
 
-  console.log(sortIsLatest, 'sortIsLatest');
   return (
     <BtnWrapper>
       <CheckBox type="checkbox" id="toggleBtn" onChange={slideHandler} />

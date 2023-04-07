@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { useAuthContext } from '../context/useAuthContext';
 
 import { isLoginAtom } from '../recoil/profile';
 
 const useIsLogin = () => {
-  const { user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
+
   const setIsLogin = useSetRecoilState(isLoginAtom);
 
   useEffect(() => {

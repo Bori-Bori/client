@@ -8,14 +8,12 @@ import Search from './Search';
 
 import showLoginModal from '../../recoil/showLoginModal';
 import { profileImageAtom } from '../../recoil/profile';
-import { useAuthContext } from '../../context/useAuthContext';
 
 const Icons = () => {
   const navigate = useNavigate();
   const setShowLoginModal = useSetRecoilState(showLoginModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
-  const { user }: any = useAuthContext();
-
+  const user = JSON.parse(localStorage.getItem('user')!);
   useEffect(() => {
     if (user) {
       setProfileImage(user.photoURL);

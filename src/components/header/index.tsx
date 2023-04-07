@@ -8,12 +8,10 @@ import { notificationShowState } from '../../recoil/notification';
 import NotificationList from './NotificationList';
 import Logo from './Logo';
 import Icons from './Icons';
-import { isLoginAtom } from '../../recoil/profile';
-import { useAuthContext } from '../../context/useAuthContext';
 
 const Header = () => {
   const [isNavOn, setIsNavOn] = useState(true);
-  const { user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
 
   const showNotification = useRecoilValue(notificationShowState);
 

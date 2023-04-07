@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import InputComment from '../comment/InputComment';
-import { useAuthContext } from '../../../../context/useAuthContext';
 import { useFirestore } from '../../../../hooks/useFireStore';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { appFireStore } from '../../../../firebase/config';
@@ -12,7 +11,8 @@ const ReplyComments = ({ commentId }: any) => {
   const scrollPoint = useRef<HTMLDivElement>(null);
   const [replyContent, setReplyContent] = useState<string>('');
   const [replyList, setReplyList] = useState([]);
-  const { user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
+
   const PAGE_SIZE = 10; // the number of items per page
   const [replyCurPage, setReplyCurPage] = useState<number>(0);
   const [totalPageNum, setTotalPageNum] = useState<number>(1);

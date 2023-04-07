@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import bookPageAtom from '../../../../recoil/bookPage';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { useFirestore } from '../../../../hooks/useFireStore';
-import { useAuthContext } from '../../../../context/useAuthContext';
 import { useQuery } from 'react-query';
 import { getBookInfo } from 'apis/book';
 
@@ -18,7 +15,8 @@ type Props = {
 const InputCommentWithPage: React.FC<Props> = ({ className, placeholder }) => {
   const [targetPage, setTargetPage] = useState('0');
   const params = useParams();
-  const { user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
+
   const [commentContent, setCommentContent] = useState('');
   const param = useParams();
   const isbn = param.id!;

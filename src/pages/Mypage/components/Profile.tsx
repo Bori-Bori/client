@@ -8,7 +8,6 @@ import SettingIcon from '../../../assets/icons/common_setting_gr_16.png';
 import { profileImageAtom } from '../../../recoil/profile';
 import showLoginModal from '../../../recoil/showLoginModal';
 import { auth } from '../../../firebase/config';
-import { useAuthContext } from '../../../context/useAuthContext';
 
 type profileImageType = {
   profileImage: string;
@@ -19,7 +18,7 @@ const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
   const setShowEditProfileModal = useSetRecoilState(showEditProfileModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
-  const { dispatch, user }: any = useAuthContext();
+  const user = JSON.parse(localStorage.getItem('user')!);
   //로그인 검증
   useIsLogin();
 
@@ -35,8 +34,8 @@ const Profile = () => {
   const onClickLogoutBtn = () => {
     if (user) {
       auth.signOut();
-      dispatch({ type: 'logout' });
       setProfileImage('');
+      localStorage.clear();
       return;
     }
     setShowLoginModal(true);

@@ -5,16 +5,13 @@ import DefaultTheme from './styles/Theme';
 import GlobalStyle from './styles/GlobalStyle';
 
 import { RecoilRoot } from 'recoil';
-import { AuthContextProvider } from 'context/AuthContext';
 
 function App() {
   return (
     <ThemeProvider theme={DefaultTheme}>
       <GlobalStyle />
       <RecoilRoot>
-        <AuthContextProvider>
-          <Router />
-        </AuthContextProvider>
+        <Router />
       </RecoilRoot>
     </ThemeProvider>
   );

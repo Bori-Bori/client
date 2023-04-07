@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 
-import { useAuthContext } from './../../context/useAuthContext';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { appFireStore, auth } from '../../firebase/config';
 import { collection, doc, setDoc } from 'firebase/firestore';
@@ -17,7 +16,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { dispatch }: any = useAuthContext();
 
   const setShowLoginModal = useSetRecoilState(showLoginModal);
 
@@ -25,8 +23,8 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((data: any) => {
-        dispatch({ type: 'login', payload: data.user });
         const { uid, displayName, photoURL } = data.user;
+        localStorage.setItem('user', JSON.stringify({ uid, displayName, photoURL }));
         const collectionRef = collection(appFireStore, 'userInfo');
         const documentRef = doc(collectionRef, uid); // 문서 이름을 uid로 지정
         const newData = { displayName, photoURL } as any;
