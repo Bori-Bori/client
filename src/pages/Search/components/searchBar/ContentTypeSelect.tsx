@@ -9,13 +9,13 @@ const ContentTypeSelect = () => {
   const [showContentList, setShowContentList] = useRecoilState(showContentTypeState);
 
   function contentTypeSelect() {
-    if (contentType === 'keyword') {
+    if (contentType === 'Keyword') {
       return '제목+글쓴이';
     }
-    if (contentType === 'title') {
+    if (contentType === 'Title') {
       return '제목';
     }
-    if (contentType === 'author') {
+    if (contentType === 'Author') {
       return '글쓴이';
     }
     if (contentType === '') {

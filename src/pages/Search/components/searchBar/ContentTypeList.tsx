@@ -21,7 +21,7 @@ const ContentTypeList = () => {
             id="제목+글쓴이"
             onClick={isContentList}
             onChange={() => {
-              setContentType('keyword');
+              setContentType('Keyword');
             }}
           />
           <ContentTypeLabel htmlFor="제목+글쓴이">제목+글쓴이</ContentTypeLabel>
@@ -33,7 +33,7 @@ const ContentTypeList = () => {
             id="제목"
             onClick={isContentList}
             onChange={() => {
-              setContentType('title');
+              setContentType('Title');
             }}
           />
           <ContentTypeLabel htmlFor="제목">제목</ContentTypeLabel>
@@ -45,7 +45,7 @@ const ContentTypeList = () => {
             id="글쓴이"
             onClick={isContentList}
             onChange={() => {
-              setContentType('author');
+              setContentType('Author');
             }}
           />
           <ContentTypeLabel htmlFor="글쓴이">글쓴이</ContentTypeLabel>

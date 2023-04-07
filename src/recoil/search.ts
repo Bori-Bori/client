@@ -11,7 +11,7 @@ export const categoryState = atom({
 
 export const contentTypeState = atom({
   key: 'contentType',
-  default: 'keyword',
+  default: 'Keyword',
 });
 
 export const keywordState = atom({

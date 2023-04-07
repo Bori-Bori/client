@@ -104,7 +104,11 @@ app.get("/booksearchlist", async (req: Request, res: Response) => {
       );
       const responseData: BookListResponseData = BestsellerResponse.data;
       res.status(200).send(responseData.item);
-    } else if (contentType === "Title") {
+    } else if (
+      contentType === "Keyword" ||
+      contentType === "Title" ||
+      contentType === "Author"
+    ) {
       const TitleResponse = await axios.get(
         `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ttbkey}&Query=${keyword}&QueryType=${contentType}&CategoryId=${
           foundCategory?.CID || 0

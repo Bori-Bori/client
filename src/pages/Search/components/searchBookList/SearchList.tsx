@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useInfiniteQuery } from 'react-query';
-import { useInView } from 'react-intersection-observer';
+import { useQuery } from 'react-query';
 
 import { useRecoilValue } from 'recoil';
 import { categoryState, contentTypeState, keywordState } from '../../../../recoil/search';
@@ -15,9 +13,9 @@ import comment from '../../../../assets/icons/comment-gr-16.png';
 import Loading from '../../../../components/Loading';
 import Error from '../../../../components/Error';
 
-// 타입
-import { IfetchNextPage, IbookList } from '../../../../types/search';
-import { getSearchBooklist } from 'apis/book';
+// api
+import { getBooklist } from 'apis/book';
+import CommentListLength from 'pages/Main/components/category/CommentListLength';
 
 const SearchList = () => {
   const category = useRecoilValue(categoryState); // 카테고리1/2/3 저장
@@ -26,60 +24,42 @@ const SearchList = () => {
   const contentType = useRecoilValue(contentTypeState); // 검색분류
   const keyword = useRecoilValue(keywordState); // 검색어
 
-  const { ref, inView } = useInView();
-  const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [contentType, category1, category2, category3, keyword],
-    async ({ pageParam = 1 }) =>
-      await getSearchBooklist(contentType, category1, category2, category3, keyword, pageParam),
-    {
-      getNextPageParam: (lastPage: any, allPages: any) => {
-        if (lastPage?.item?.length === 10) {
-          return allPages.length + 1;
-        }
-      },
-      retry: 0,
-      keepPreviousData: true,
-      onSuccess: (data: any) => {
-        return data;
-      },
-    },
-  );
-
-  useEffect(() => {
-    if (inView) fetchNextPage();
-  }, [inView]);
-
-  if (status === 'loading') return <Loading />;
-  if (status === 'error') return <Error />;
+  const { data, status } = useQuery(['categoryList', category1, category2, category3], async () => {
+    if (category1 && category2 && category3) {
+      return await getBooklist(category1, category2, category3, 1, contentType, keyword);
+    } else {
+      return await getBooklist(undefined, undefined, undefined, 1, contentType, keyword);
+    }
+  });
 
   return (
-    <SearchListContainer>
-      {data?.pages?.length === 0 && <div>검색 결과가 없습니다.</div>}
-      {data?.pages?.map((page: any, index: number) => (
-        <ul key={index}>
-          {page?.item.map((value: any, index: number) => (
-            <li key={value?.title}>
-              <Link to={`/detail/${value?.isbn13}`}>
+    <div>
+      {status === 'loading' && <Loading />}
+      {status === 'error' && <Error />}
+      {data?.length === 0 && <div>검색 결과가 없습니다.</div>}
+      <SearchListContainer>
+        {status === 'success' &&
+          data?.map((page: any) => (
+            <li key={page?.title}>
+              <Link to={`/detail/${page?.isbn13}`}>
                 <BookImgWrap>
-                  <BookImg src={value?.cover} alt={value?.title} />
+                  <BookImg src={page?.cover} alt={page?.title} />
                 </BookImgWrap>
                 <BookWrap>
-                  <BookTitle>{value?.title}</BookTitle>
-                  <BookAuthor>{value?.author}</BookAuthor>
+                  <BookTitle>{page?.title}</BookTitle>
+                  <BookAuthor>{page?.author}</BookAuthor>
                   <BookContent>
                     <li>
                       <img src={comment} alt="댓글아이콘" />
-                      <span> {value?.commentCount}</span>
+                      <CommentListLength isbn={page?.isbn13} />
                     </li>
                   </BookContent>
                 </BookWrap>
               </Link>
             </li>
           ))}
-        </ul>
-      ))}
-      {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
-    </SearchListContainer>
+      </SearchListContainer>
+    </div>
   );
 };
 
@@ -116,7 +96,7 @@ const BookBg = styled.div`
 `;
 
 const BookImgWrap = styled.div`
-  max-height: 264px;
+  max-height: 229px;
   @media screen and (max-width: 768px) {
     max-height: 302px;
   }
