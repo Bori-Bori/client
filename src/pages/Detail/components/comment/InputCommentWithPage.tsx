@@ -25,7 +25,7 @@ const InputCommentWithPage: React.FC<Props> = ({ className, placeholder }) => {
   const contentType = '';
 
   const { data } = useQuery(['bookinfo', isbn], async () => await getBookInfo(1, contentType, isbn));
-  const bookTotalPage = data?.item[0].subInfo.itemPage;
+  const bookTotalPage = data?.[0].subInfo.itemPage;
   const getRandomString = (length: number): string => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

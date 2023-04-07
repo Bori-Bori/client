@@ -7,27 +7,22 @@ import prevButton from '../../../../assets/icons/prv-bk-20.png';
 import nextButton from '../../../../assets/icons/nxt-bk-20.png';
 import BubbleBox from '../comment/BubbleBox';
 import { slideRangeValueAtom } from '../../../../recoil/sortComment';
-import { useQuery } from 'react-query';
-
-import { useParams } from 'react-router-dom';
-import { getBookInfo } from 'apis/book';
+import bookPageAtom from '../../../../recoil/bookPage';
 
 type PassedValue = {
   passedValue: number;
 };
 
 const SlideRange = () => {
-  const minPage = '1'; // 슬라이드바의 최소값을 1로 지정함
+  const minPage = '1';
+  const totalBookPage = useRecoilValue(bookPageAtom);
+  const maxPage = totalBookPage.toString();
   const [rangeValue, setRangeValue] = useRecoilState(slideRangeValueAtom);
-  const [passedValue, setPassedValue] = useState(0); // 슬라이드바의 현재 값
-  const bubbleRef = useRef<HTMLDivElement>(null); // 말풍선의 위치
-  let enteredValue = ''; // 사용자가 입력한 값이 담길 변수를 선언함
-  const rangeInputRef = useRef<HTMLInputElement>(null); // 슬라이드바의 위치
-  const params = useParams();
-  const isbn = params.id!;
-  const contentType = '';
-  const { data } = useQuery(['bookinfo', isbn], async () => await getBookInfo(1, contentType, isbn));
-  const totalBookPage = data?.item[0].subInfo.itemPage;
+  const [passedValue, setPassedValue] = useState(0);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  let enteredValue = '';
+  const rangeInputRef = useRef<HTMLInputElement>(null);
+
   // 말풍선 위치
   useEffect(() => {
     const bubble = bubbleRef.current;
@@ -48,7 +43,7 @@ const SlideRange = () => {
       return;
     }
     const computedValue =
-      ((parseInt(enteredValue) - parseInt(minPage)) / (parseInt(totalBookPage) - parseInt(minPage))) * 100;
+      ((parseInt(enteredValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
 
     setRangeValue(enteredValue);
     setPassedValue(computedValue);
@@ -67,19 +62,17 @@ const SlideRange = () => {
       return;
     }
     setRangeValue((prev) => (parseInt(prev) - 1).toString());
-    const computedValue =
-      ((parseInt(rangeValue) - parseInt(minPage)) / (parseInt(totalBookPage) - parseInt(minPage))) * 100;
+    const computedValue = ((parseInt(rangeValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
     setPassedValue(computedValue);
   };
 
   //NextButton
   const onClickNextButton = () => {
-    if (parseInt(rangeValue) >= parseInt(totalBookPage)) {
+    if (parseInt(rangeValue) >= parseInt(maxPage)) {
       return;
     }
     setRangeValue((prev) => (parseInt(prev) + 1).toString());
-    const computedValue =
-      ((parseInt(rangeValue) - parseInt(minPage)) / (parseInt(totalBookPage) - parseInt(minPage))) * 100;
+    const computedValue = ((parseInt(rangeValue) - parseInt(minPage)) / (parseInt(maxPage) - parseInt(minPage))) * 100;
     setPassedValue(computedValue);
   };
 
@@ -90,19 +83,14 @@ const SlideRange = () => {
         ref={rangeInputRef}
         type="range"
         min="0"
-        max={totalBookPage}
+        max={maxPage}
         step="1"
         onChange={onChangeRangeBar}
         value={rangeValue}
         passedValue={passedValue}
       />
       <PrevButtonImg src={prevButton} onClick={onClickPrevButton} />
-      <StyledInputPageButton
-        value={rangeValue}
-        className="inputPage"
-        onChange={onChangeRangeBar}
-        maxPage={totalBookPage}
-      />
+      <StyledInputPageButton value={rangeValue} className="inputPage" onChange={onChangeRangeBar} maxPage={maxPage} />
       <NextButtonImg src={nextButton} onClick={onClickNextButton} />
       <PageInputMobileWrapper>
         <PageButtonsWrapper>
@@ -113,7 +101,7 @@ const SlideRange = () => {
           value={rangeValue}
           className="inputPage"
           onChange={onChangeRangeBar}
-          maxPage={totalBookPage}
+          maxPage={maxPage}
         />
       </PageInputMobileWrapper>
     </RangeWrapper>

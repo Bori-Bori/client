@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { sortCommentAtom } from '../../../../recoil/sortComment';
+import { slideRangeValueAtom, sortCommentAtom } from '../../../../recoil/sortComment';
 import commentInputHeight from '../../../../recoil/commentInputHeight';
 import CommentContainer from './CommentContainer';
 import CommonButton from '../../../../components/CommonButton';
@@ -22,17 +22,16 @@ const Comment = () => {
   const inputWrapperHeight = useRecoilValue(commentInputHeight);
   const params = useParams<{ id: string }>(); // 변수 선언과 분리
   const boardId: any = params.id; // 변수 선언과 분리
+  const slideRangeValue = useRecoilValue(slideRangeValueAtom);
+  const [sortIsLatest, setSortIsLatest] = useRecoilState(sortCommentAtom);
 
-  const { data } = useQuery([boardId], () => getComments(boardId));
+  const { data: oniginCommentList } = useQuery([boardId], () => getComments(boardId));
+  useEffect(() => {
+    setCommentList(oniginCommentList?.initialComments);
+    setNextCommentList(oniginCommentList?.nextComments);
+  }, [oniginCommentList]);
   const [commentList, setCommentList] = useRecoilState(commentListAtom);
   const [nextCommentList, setNextCommentList] = useRecoilState(nextCommentListAtom);
-
-  useEffect(() => {
-    if (data) {
-      setCommentList(data?.initialComments);
-      setNextCommentList(data?.nextComments);
-    }
-  }, [data]);
 
   const onClickShowMoreCommentBtn = () => {
     setCommentList((prevList) => [...prevList, ...nextCommentList.slice(0, 10)]);
@@ -44,6 +43,26 @@ const Comment = () => {
     scrollPoint.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
 
+  useEffect(() => {
+    if (!sortIsLatest && oniginCommentList) {
+      const sortedCommentList: any = [...oniginCommentList.initialComments, ...oniginCommentList.nextComments].filter(
+        (comment: any) => Number(comment.targetPage) === Number(slideRangeValue),
+      );
+      console.log([...commentList, ...nextCommentList]);
+
+      setCommentList(sortedCommentList.slice(0, 10));
+      setNextCommentList(sortedCommentList.slice(10));
+    }
+  }, [sortIsLatest, slideRangeValue]);
+  useEffect(() => {
+    if (sortIsLatest && oniginCommentList) {
+      const sortedCommentList: any = [...oniginCommentList.initialComments, ...oniginCommentList.nextComments].sort(
+        (a: any, b: any) => (new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1),
+      );
+      setCommentList(sortedCommentList.slice(0, 10));
+      setNextCommentList(sortedCommentList.slice(10));
+    }
+  }, [sortIsLatest]);
   useEffect(() => {
     if (commentList) {
       // commentList가 있을 때만 스크롤 이동

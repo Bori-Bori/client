@@ -10,7 +10,7 @@ export type commentsListAtomType = {
   writer: string;
 };
 
-export const commentListAtom = atom<commentsListAtomType[]>({
+export const commentListAtom = atom({
   key: 'commentListAtom',
   default: [],
 });

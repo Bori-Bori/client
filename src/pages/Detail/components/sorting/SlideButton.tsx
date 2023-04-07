@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { sortCommentAtom } from '../../../../recoil/sortComment';
-import { useRecoilState } from 'recoil';
+import { slideRangeValueAtom, sortCommentAtom } from '../../../../recoil/sortComment';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { commentListAtom, nextCommentListAtom } from '../../../../recoil/comment';
 
 type SlideType = {
@@ -9,22 +9,13 @@ type SlideType = {
 };
 
 const SlideButton = () => {
-  const [commentList, setCommentList] = useRecoilState(commentListAtom);
-  const [nextCommentList, setNextCommentList] = useRecoilState(nextCommentListAtom);
   const [sortIsLatest, setSortIsLatest] = useRecoilState(sortCommentAtom);
 
   const slideHandler = () => {
     setSortIsLatest((prev) => !prev);
-
-    if (sortIsLatest) {
-      setCommentList(commentList.sort((a: any, b: any) => (a.date > b.date ? -1 : 1)));
-      setNextCommentList(nextCommentList.sort((a: any, b: any) => (a.date > b.date ? -1 : 1)));
-    } else {
-      setCommentList(commentList.sort((a: any, b: any) => (a.targetPage < b.targetPage ? -1 : 1)));
-      setNextCommentList(nextCommentList.sort((a: any, b: any) => (a.targetPage < b.targetPage ? -1 : 1)));
-    }
   };
 
+  console.log(sortIsLatest, 'sortIsLatest');
   return (
     <BtnWrapper>
       <CheckBox type="checkbox" id="toggleBtn" onChange={slideHandler} />
