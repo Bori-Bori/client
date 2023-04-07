@@ -30,6 +30,7 @@ const Comment = () => {
     setCommentList(oniginCommentList?.initialComments);
     setNextCommentList(oniginCommentList?.nextComments);
   }, [oniginCommentList]);
+
   const [commentList, setCommentList] = useRecoilState(commentListAtom);
   const [nextCommentList, setNextCommentList] = useRecoilState(nextCommentListAtom);
 
@@ -44,18 +45,17 @@ const Comment = () => {
   };
 
   useEffect(() => {
-    if (!sortIsLatest && oniginCommentList) {
+    if (!sortIsLatest && oniginCommentList && oniginCommentList.initialComments && oniginCommentList?.nextComments) {
       const sortedCommentList: any = [...oniginCommentList.initialComments, ...oniginCommentList.nextComments].filter(
         (comment: any) => Number(comment.targetPage) === Number(slideRangeValue),
       );
-      console.log([...commentList, ...nextCommentList]);
-
       setCommentList(sortedCommentList.slice(0, 10));
       setNextCommentList(sortedCommentList.slice(10));
     }
   }, [sortIsLatest, slideRangeValue]);
+
   useEffect(() => {
-    if (sortIsLatest && oniginCommentList) {
+    if (sortIsLatest && oniginCommentList && oniginCommentList.initialComments && oniginCommentList.nextComments) {
       const sortedCommentList: any = [...oniginCommentList.initialComments, ...oniginCommentList.nextComments].sort(
         (a: any, b: any) => (new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1),
       );
@@ -63,6 +63,7 @@ const Comment = () => {
       setNextCommentList(sortedCommentList.slice(10));
     }
   }, [sortIsLatest]);
+
   useEffect(() => {
     if (commentList) {
       // commentList가 있을 때만 스크롤 이동
@@ -77,15 +78,15 @@ const Comment = () => {
           해당 페이지 댓글 <Strong>{commentList?.length}</Strong>건
         </CommentNumberAlert>
       )}
-      {commentList?.length ? (
-        commentList?.map((comment: any) => <CommentContainer key={comment.commentId} comment={comment} />)
+      {commentList ? (
+        commentList.map((comment: any) => <CommentContainer key={comment.commentId} comment={comment} />)
       ) : (
         <NoCommentAlertWrapper>
           <img src={commentImg} alt="comment" />
           <span>첫번째 댓글을 남겨주세요!</span>
         </NoCommentAlertWrapper>
       )}
-      {!!nextCommentList.length && (
+      {nextCommentList?.length !== 0 && (
         <ShowMoreCommentBtn className="showMoreCommentBtn" onClick={onClickShowMoreCommentBtn}>
           댓글 더보기
         </ShowMoreCommentBtn>
