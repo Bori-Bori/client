@@ -13,7 +13,7 @@ import showLoginModal from '../../recoil/showLoginModal';
 
 import kakaoIcon from '../../assets/icons/kakaoIcon.png';
 import googleIcon from '../../assets/icons//googleIcon.png';
-import { profileImageAtom } from 'recoil/profile';
+import { profileImageAtom } from '../../recoil/profile';
 
 const Login = () => {
   const navigate = useNavigate();
