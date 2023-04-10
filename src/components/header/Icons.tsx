@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Notification from './Notification';
 import Search from './Search';
@@ -12,13 +12,8 @@ import { profileImageAtom } from '../../recoil/profile';
 const Icons = () => {
   const navigate = useNavigate();
   const setShowLoginModal = useSetRecoilState(showLoginModal);
-  const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
+  const profileImage = useRecoilValue(profileImageAtom);
   const user = JSON.parse(localStorage.getItem('user')!);
-  useEffect(() => {
-    if (user) {
-      setProfileImage(user.photoURL);
-    }
-  }, [user]);
 
   const handleLoginClick = () => {
     setShowLoginModal(true);

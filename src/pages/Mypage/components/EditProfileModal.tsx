@@ -20,6 +20,8 @@ import ProfileImg_9 from '../../../assets/profiles/profile_9.png';
 import ProfileImg_10 from '../../../assets/profiles/profile_10.png';
 import ProfileImg_11 from '../../../assets/profiles/profile_11.png';
 import ProfileImg_12 from '../../../assets/profiles/profile_12.png';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { appFireStore } from '../../../firebase/config';
 
 const img_array = [
   { file: ProfileImg_1, color: 'brown' },
@@ -39,6 +41,7 @@ const img_array = [
 const EditProfileModal = () => {
   const [selectImgIndex, setSelectImgIndex] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const user = JSON.parse(localStorage.getItem('user')!);
   const setProfile = useSetRecoilState(profileImageAtom);
 
   //프로필 이미지 선택 시, 선택된 이미지 중앙으로 위치
@@ -66,22 +69,16 @@ const EditProfileModal = () => {
   };
 
   //postProfile
-  const getId = window.localStorage.getItem('user')!;
-  const id = JSON.parse(getId).email;
-  const profileData = {
-    id,
-    imagePath: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`,
-  };
-
-  // const postProfileMutate = useMutation(() => postProfile(profileData), {
-  //   onSuccess: (response) => {
-  //     setProfile(response?.content.imagePath);
-  //   },
-  //   onError: (error) => console.log(error),
-  // });
-
   const onClickSubmit = () => {
-    // postProfileMutate.mutate();
+    const collectionRef = collection(appFireStore, 'userInfo');
+    // id 값이 문자열이 아니면 문자열로 변환해줍니다.
+    const documentRef = doc(collectionRef, String(user.uid));
+    setProfile(`https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`);
+    const newData = {
+      displayName: String(user.uid),
+      photoURL: `https://boribori-profile.s3.ap-northeast-2.amazonaws.com/profile_${selectImgIndex + 1}.png`,
+    };
+    setDoc(documentRef, newData);
     setShowEditProfileModal(false);
   };
 

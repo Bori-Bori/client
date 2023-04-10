@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { appFireStore, auth } from '../../firebase/config';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 import Modal from '../../components/Modal';
 import { ModalPortal } from '../../components/Modal';
@@ -13,35 +13,47 @@ import showLoginModal from '../../recoil/showLoginModal';
 
 import kakaoIcon from '../../assets/icons/kakaoIcon.png';
 import googleIcon from '../../assets/icons//googleIcon.png';
+import { profileImageAtom } from 'recoil/profile';
 
 const Login = () => {
   const navigate = useNavigate();
-
   const setShowLoginModal = useSetRecoilState(showLoginModal);
+  const setProfileImage = useSetRecoilState(profileImageAtom);
 
   const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
-  const REDIRECT_URI = 'https://boribori-eight.vercel.app/login/kakao/oauth';
+  const REDIRECT_URI = `${window.location.origin}/login/kakao/oauth`;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-
   const handleGoogleLogin = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then((data: any) => {
+      .then(async (data: any) => {
         const { uid, displayName, photoURL } = data.user;
         localStorage.setItem('user', JSON.stringify({ uid, displayName, photoURL }));
         const collectionRef = collection(appFireStore, 'userInfo');
-        const documentRef = doc(collectionRef, uid); // 문서 이름을 uid로 지정
-        const newData = { displayName, photoURL } as any;
-        setDoc(documentRef, newData); // setDoc() 함수를 사용하여 문서를 설정
-        setShowLoginModal(false); // updated line
+        const documentRef = doc(collectionRef, uid);
+        const documentSnapshot = await getDoc(documentRef);
+
+        if (documentSnapshot.exists()) {
+          setProfileImage(documentSnapshot.data().photoURL);
+          setShowLoginModal(false);
+
+          // 이미 존재하는 경우, 업데이트하지 않고 리턴합니다.
+          return;
+        } else {
+          // 새로운 데이터를 저장합니다.
+          const newData = { displayName, photoURL };
+          await setDoc(documentRef, newData);
+          setProfileImage(photoURL);
+          setShowLoginModal(false);
+        }
         navigate('/');
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 

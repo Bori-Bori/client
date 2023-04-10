@@ -4,7 +4,10 @@ import cors from "cors";
 import axios from "axios";
 import {ALADINLIST} from "./aladinList";
 
-const ttbkey = "ttbandn36091701005";
+// 환경변수 설정
+const KAKAO_TTBKEY = functions.config().boribori.kakao_ttbkey;
+const KAKAO_API_KEY = functions.config().boribori.kakao_api_key;
+
 const app = express();
 app.use(cors({origin: true}));
 
@@ -96,7 +99,7 @@ app.get("/booksearchlist", async (req: Request, res: Response) => {
     const pageNumber = Number(page);
     if (contentType === "Bestseller") {
       const BestsellerResponse = await axios.get(
-        `https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=${ttbkey}&QueryType=${contentType}&SearchTarget=Book&SubSearchTarget=Book&CategoryId=${
+        `https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=${KAKAO_TTBKEY}&QueryType=${contentType}&SearchTarget=Book&SubSearchTarget=Book&CategoryId=${
           foundCategory?.CID || 0
         }&MaxResults=10&start=${
           (pageNumber - 1) * 10
@@ -110,7 +113,7 @@ app.get("/booksearchlist", async (req: Request, res: Response) => {
       contentType === "Author"
     ) {
       const TitleResponse = await axios.get(
-        `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ttbkey}&Query=${keyword}&QueryType=${contentType}&CategoryId=${
+        `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${KAKAO_TTBKEY}&Query=${keyword}&QueryType=${contentType}&CategoryId=${
           foundCategory?.CID || 0
         }&MaxResults=10&start=${
           (pageNumber - 1) * 10
@@ -120,7 +123,7 @@ app.get("/booksearchlist", async (req: Request, res: Response) => {
       res.status(200).send(responseData.item);
     } else if (contentType === "") {
       const bookInforesponse = await axios.get(
-        `https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=${ttbkey}&itemIdType=ISBN13&ItemId=${boardId}&Cover=Big&output=JS&Version=20131101&OptResult=previewImgList`,
+        `https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=${KAKAO_TTBKEY}&itemIdType=ISBN13&ItemId=${boardId}&Cover=Big&output=JS&Version=20131101&OptResult=previewImgList`,
       );
       const responseData = bookInforesponse.data;
       res.status(200).send(responseData.item);
@@ -142,17 +145,14 @@ admin.initializeApp({
   credential: admin.credential.applicationDefault(),
 });
 
-// Kakao REST API key
-const KAKAO_API_KEY = "1fc0a2fa62dea5ab421513f910107858";
-
 // Endpoint for getting access token with authorization code
 app.post("/oauth", async (req, res) => {
   const {code} = req.body;
-
+  const REDIRECT_URI = `${req.headers.origin}/login/kakao/oauth`;
   try {
     // Call Kakao Token API to exchange authorization code with access token
     const {data} = await axios.post(
-      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_API_KEY}&redirect_uri=https://boribori-eight.vercel.app/login/kakao/oauth&code=${code}`,
+      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
     );
 
     // Save the user information to Firestore

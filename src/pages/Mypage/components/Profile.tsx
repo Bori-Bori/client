@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import useIsLogin from '../../../hooks/useIsLogin';
@@ -15,6 +16,7 @@ type profileImageType = {
 };
 
 const Profile = () => {
+  const navigate = useNavigate();
   const setShowLoginModal = useSetRecoilState(showLoginModal);
   const setShowEditProfileModal = useSetRecoilState(showEditProfileModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
@@ -22,20 +24,17 @@ const Profile = () => {
   //로그인 검증
   useIsLogin();
 
-  //get Profile
-  const nickname = user?.displayName;
-
   //edit profile modal
   const onShowEditProfile = () => {
     user ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
   };
-
   //login or logout
   const onClickLogoutBtn = () => {
     if (user) {
       auth.signOut();
       setProfileImage('');
       localStorage.clear();
+      navigate('/');
       return;
     }
     setShowLoginModal(true);
@@ -49,7 +48,7 @@ const Profile = () => {
         </SettingIconWrapper>
       </ProfileImg>
       <div>
-        <Username>{user ? nickname : '로그인 후 이용해주세요'}</Username>
+        <Username>{user ? user?.displayName : '로그인 후 이용해주세요'}</Username>
         <LogoutButton onClick={onClickLogoutBtn}>{user ? '로그아웃' : '로그인'}</LogoutButton>
       </div>
     </ProfileWrapper>
