@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
@@ -7,7 +8,9 @@ import { KakaoLogin } from '../../../apis/auth';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import { appFireStore } from '../../../firebase/config';
 
-import { profileImageAtom } from 'recoil/profile';
+import { profileImageAtom } from '../../../recoil/profile';
+
+import CommentIcon from '../../../assets/icons/comment-gr-60.png';
 
 const KakaoOauth = () => {
   const navigate = useNavigate();
@@ -60,7 +63,25 @@ const KakaoOauth = () => {
     getKakao();
   }, []);
 
-  return <div />;
+  return (
+    <StatusContainer>
+      <img src={CommentIcon} />
+      <span>로그인 중입니다.</span>
+    </StatusContainer>
+  );
 };
 
 export default KakaoOauth;
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 145px;
+  > span {
+    font-size: ${(props) => props.theme.fontSize.body02};
+    line-height: ${(props) => props.theme.lineHeight.lh20};
+    color: ${(props) => props.theme.colors.grey1};
+    margin-top: 20px;
+  }
+`;
