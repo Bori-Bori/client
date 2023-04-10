@@ -152,7 +152,7 @@ app.post("/oauth", async (req, res) => {
   try {
     // Call Kakao Token API to exchange authorization code with access token
     const {data} = await axios.post(
-      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_API_KEY}&redirect_uri=http://localhost:3000/login/kakao/oauth&code=${code}`,
+      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_API_KEY}&redirect_uri=https://boribori-eight.vercel.app/login/kakao/oauth&code=${code}`,
     );
 
     // Save the user information to Firestore
