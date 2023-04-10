@@ -20,17 +20,18 @@ const Profile = () => {
   const setShowLoginModal = useSetRecoilState(showLoginModal);
   const setShowEditProfileModal = useSetRecoilState(showEditProfileModal);
   const [profileImage, setProfileImage] = useRecoilState(profileImageAtom);
-  const user = JSON.parse(localStorage.getItem('user')!);
+  const user = localStorage.getItem('user')!;
+  const userInfo = JSON.parse(user);
   //로그인 검증
   useIsLogin();
 
   //edit profile modal
   const onShowEditProfile = () => {
-    user ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
+    userInfo ? setShowEditProfileModal(true) : alert('로그인 후 이용해주세요');
   };
   //login or logout
   const onClickLogoutBtn = () => {
-    if (user) {
+    if (userInfo) {
       auth.signOut();
       setProfileImage('');
       localStorage.clear();
@@ -42,14 +43,14 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={user}>
+      <ProfileImg onClick={onShowEditProfile} profileImage={profileImage} isLogin={userInfo}>
         <SettingIconWrapper>
           <img src={SettingIcon} />
         </SettingIconWrapper>
       </ProfileImg>
       <div>
-        <Username>{user ? user?.displayName : '로그인 후 이용해주세요'}</Username>
-        <LogoutButton onClick={onClickLogoutBtn}>{user ? '로그아웃' : '로그인'}</LogoutButton>
+        <Username>{userInfo ? userInfo?.displayName : '로그인 후 이용해주세요'}</Username>
+        <LogoutButton onClick={onClickLogoutBtn}>{userInfo ? '로그아웃' : '로그인'}</LogoutButton>
       </div>
     </ProfileWrapper>
   );
