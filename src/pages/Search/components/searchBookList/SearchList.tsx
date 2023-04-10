@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { useRecoilValue } from 'recoil';
 import { categoryState, contentTypeState, keywordState } from '../../../../recoil/search';

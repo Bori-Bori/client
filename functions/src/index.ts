@@ -132,3 +132,42 @@ app.get("/booksearchlist", async (req: Request, res: Response) => {
 });
 
 export const api = functions.https.onRequest(app);
+/* eslint-disable camelcase */
+import admin from "firebase-admin";
+
+app.use(cors({origin: true}));
+
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
+
+// Kakao REST API key
+const KAKAO_API_KEY = "1fc0a2fa62dea5ab421513f910107858";
+
+// Endpoint for getting access token with authorization code
+app.post("/oauth", async (req, res) => {
+  const {code} = req.body;
+
+  try {
+    // Call Kakao Token API to exchange authorization code with access token
+    const {data} = await axios.post(
+      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_API_KEY}&redirect_uri=http://localhost:3000/login/kakao/oauth&code=${code}`,
+    );
+
+    // Save the user information to Firestore
+    const {access_token} = data;
+    const user = await axios.get("https://kapi.kakao.com/v2/user/me", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    res.status(200).send(user.data);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({message: "Failed"});
+  }
+});
+
+export const kakaoLogin = functions.https.onRequest(app);

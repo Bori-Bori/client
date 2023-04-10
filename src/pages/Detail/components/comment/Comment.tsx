@@ -8,7 +8,7 @@ import commentInputHeight from '../../../../recoil/commentInputHeight';
 import CommentContainer from './CommentContainer';
 import CommonButton from '../../../../components/CommonButton';
 import commentImg from '../../../../assets/icons/comment-gr-60.png';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { getComments } from '../../../../apis/comment';
 import { commentListAtom, nextCommentListAtom } from '../../../../recoil/comment';

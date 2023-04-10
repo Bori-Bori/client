@@ -80,6 +80,7 @@ const ProfileImg = styled.div<profileImageType>`
     props.isLogin
       ? `
       background: url(${props.profileImage});
+      background-size: cover;
       `
       : `
       background-color: lightgrey;

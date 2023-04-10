@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { notifications } from './../../apis/notification';
 import { Link } from 'react-router-dom';

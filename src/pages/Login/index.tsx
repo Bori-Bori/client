@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -12,12 +13,19 @@ import showLoginModal from '../../recoil/showLoginModal';
 
 import kakaoIcon from '../../assets/icons/kakaoIcon.png';
 import googleIcon from '../../assets/icons//googleIcon.png';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
 
   const setShowLoginModal = useSetRecoilState(showLoginModal);
+
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
+  const REDIRECT_URI = 'http://localhost:3000/login/kakao/oauth';
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
 
   const handleGoogleLogin = () => {
     const provider = new GoogleAuthProvider();
@@ -45,7 +53,7 @@ const Login = () => {
       <LoginModal className="LoginModal" onClick={onHideLoginModal}>
         <h2>환영합니다!</h2>
         <span>회원이 되면 모든 서비스를 이용하실 수 있습니다.</span>
-        <KakaoLoginButton className="kakaoLogin" type="button">
+        <KakaoLoginButton onClick={handleKakaoLogin}>
           <img src={kakaoIcon} />
           카카오로 시작하기
         </KakaoLoginButton>

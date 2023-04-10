@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { useMutation } from 'react-query';
 
 import showEditProfileModal from '../../../recoil/showEditProfileModal';
 import { profileImageAtom } from '../../../recoil/profile';

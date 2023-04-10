@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import InputComment from './InputComment';
 import InputPageButton from './InputPageButton';
 import { useFirestore } from '../../../../hooks/useFireStore';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getBookInfo } from 'apis/book';
 
 type Props = {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
 import commentIcon from '../../../../assets/icons/comment-wh-24.png';
