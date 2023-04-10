@@ -7,8 +7,8 @@ import { useSetRecoilState } from 'recoil';
 import commentIcon from '../../../../assets/icons/comment-wh-24.png';
 import userIcon from '../../../../assets/icons/user-wh-24.png';
 import bookmarkIcon from '../../../../assets/icons/common-bookmark-default-24.png';
-import commentGreyIcon from '../../../../assets/icons/common_comment_gr_12.png';
-import userGreyIcon from '../../../../assets/icons/common_user_gr_16.png';
+import commentGreyIcon from '../../../../assets/icons/common_comment_gr_24.png';
+import userGreyIcon from '../../../../assets/icons/common_user_gr_24.png';
 
 import bookPageAtom from '../../../../recoil/bookPage';
 import bookImageAtom from '../../../../recoil/bookImage';
@@ -62,28 +62,31 @@ const BookInfo = () => {
   return (
     <BookInfoWrapper>
       <BookInfoContainer>
-        {cover ? <img src={cover} alt={title} /> : <LoadingImg />}
+        <BookImgWrap>{cover ? <BookImg src={cover} alt={title} /> : <LoadingImg />}</BookImgWrap>
+
         <BookInfoContent>
-          <BookInfoRow1>
-            <h2>{title}</h2>
+          <FlexBetweenWrap>
+            <BookTitle>{title}</BookTitle>
             <BookInfoCountsRow>
-              <span>
+              <BookInfoNumber>
                 <img src={commentGreyIcon} />
-                12
-              </span>
-              <span>
+                {totalCommentCount}
+              </BookInfoNumber>
+              <BookInfoNumber>
                 <img src={userGreyIcon} />
-                12
-              </span>
+                {numUniqueUids}
+              </BookInfoNumber>
             </BookInfoCountsRow>
-            {category1 && <span>#{category1} </span>}
-            {category2 && <span>#{category2} </span>}
-            {category3 && <span>#{category3} </span>}
-          </BookInfoRow1>
+          </FlexBetweenWrap>
+          <FlexWrap>
+            {category1 && <BookCategory>#{category1}</BookCategory>}
+            {category2 && <BookCategory>#{category2}</BookCategory>}
+            {category3 && <BookCategory>#{category3}</BookCategory>}
+          </FlexWrap>
           <BookInfoRow2>
-            {author && <h3>{author}</h3>}
-            {publisher && <span>/{publisher} </span>}
-            {eidtPubDate && <span>{eidtPubDate} </span>}
+            {author && <Author>{author}</Author>}
+            {publisher && <Publisher>{publisher} </Publisher>}
+            {eidtPubDate && <EidtPubDate>{eidtPubDate} </EidtPubDate>}
           </BookInfoRow2>
           <BookInfoRow3>
             <span>
@@ -116,29 +119,29 @@ const BookInfoWrapper = styled.section`
 
 const BookInfoContainer = styled.div`
   display: flex;
-  /* width: 100vw; */
   ${(props) => props.theme.media.tablet`
-    // width: 100vw;
     flex-direction: column;
   `}
-  & > img {
-    position: relative;
-    top: 10px;
-    width: 266px;
-    height: 396px;
-    margin-right: 40px;
-    border-radius: 8px;
-    filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
-    ${(props) => props.theme.media.tablet`
+`;
+
+const BookImgWrap = styled.div`
+  width: 266px;
+  height: 396px;
+  margin-right: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  filter: drop-shadow(0px 12px 30px rgba(0, 0, 0, 0.3));
+  ${(props) => props.theme.media.tablet`
       width: 216px;
       height: 320px;
       margin: 0 auto;
-      top: 20px;
-    
     `}
-  }
 `;
-
+const BookImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
 const LoadingImg = styled.div`
   width: 266px;
   height: 396px;
@@ -147,106 +150,121 @@ const LoadingImg = styled.div`
 `;
 
 const BookInfoContent = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 40px;
   color: ${(props) => props.theme.colors.white};
+  margin-bottom: 40px;
   font-weight: ${(props) => props.theme.fontWeight.regular};
   ${(props) => props.theme.media.tablet`
-    top: 30px;
+      margin-top: 28px;
   `}
 `;
 
-const BookInfoRow1 = styled.div`
-  margin-bottom: 30px;
-  h2 {
-    display: block;
-    width: 65%;
-    font-size: 2.25rem;
-    font-weight: ${(props) => props.theme.fontWeight.bold};
-    line-height: 2.9rem;
-    margin-bottom: 8px;
-  }
-  > span {
-    color: ${(props) => props.theme.colors.primary};
-    font-size: ${(props) => props.theme.fontSize.header02};
-    line-height: ${(props) => props.theme.lineHeight.lh24};
-  }
+const BookTitle = styled.h2`
+  display: block;
+  font-size: 2.25rem;
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  line-height: 2.9rem;
+  margin-bottom: 8px;
+  ${(props) => props.theme.media.tablet`
+      margin-bottom: 0px;
+      color: ${props.theme.colors.black};
+      font-size: ${props.theme.fontSize.header01};
+      line-height: ${props.theme.lineHeight.lh26};
+  `}
+`;
+const BookCategory = styled.span`
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSize.header02};
+  line-height: ${(props) => props.theme.lineHeight.lh24};
+  margin-right: 10px;
+  ${(props) => props.theme.media.tablet`
+      color: ${props.theme.colors.secondary1};
+      font-size: ${props.theme.fontSize.body02};
+      line-height: ${props.theme.lineHeight.lh20}l;
+      margin-right: 5px;
+      transform: translateY(30px);
+  `}
+`;
+const BookInfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const FlexWrap = styled.div`
+  ${(props) => props.theme.media.tablet`
+    display: flex;
+    align-items:center;
+`}
+`;
+const FlexBetweenWrap = styled(FlexWrap)`
+  justify-content: space-between;
+`;
+const BookInfoCountsRow = styled.div`
+  display: none;
+  ${(props) => props.theme.media.tablet`
+    display: flex;
+    align-items: center;
+  `}
+`;
+const BookInfoNumber = styled.span`
+  margin-left: 12px;
 
   ${(props) => props.theme.media.tablet`
-  margin-bottom: 0px;
-    color: ${props.theme.colors.black};
-    & > h2 {
-      font-size: ${props.theme.fontSize.header01};
-      margin-top: 28px;
-      line-height: ${props.theme.lineHeight.lh26};
-    }
-    & > span {
-      position: relative;
-      top: 39px;
-      color: ${props.theme.colors.secondary1};
-      font-size: ${props.theme.fontSize.badge01};
-      line-height: ${props.theme.lineHeight.lh20}l;
+    display: flex;
+    align-items: center;
+    color: ${props.theme.colors.grey1};
+    font-size: ${props.theme.fontSize.body01};
+    line-height: ${props.theme.lineHeight.lh20}l;
+    > img {
       margin-right: 5px;
     }
   `}
 `;
 
-const BookInfoCountsRow = styled.div`
-  display: none;
-  top: 33px;
+const EidtPubDate = styled.span`
   ${(props) => props.theme.media.tablet`
-    display: block;
-    position: absolute;
-    right: 0;
-    & > span {
-      margin-left: 12px;
-      color: ${props.theme.colors.grey1};
-      font-size: ${props.theme.fontSize.badge01};
-      line-height: ${props.theme.lineHeight.lh20}l;
-      > img {
-        margin-right: 3px;
-      }
-    }
-
+  display: none;
   `}
 `;
-
-const BookInfoRow2 = styled.div`
-  margin-bottom: 42px;
-  h3 {
-    display: block;
-    font-size: 1.63rem;
-    line-height: 2.25rem;
-    margin-bottom: 8px;
-  }
+const Publisher = styled.span`
   ${(props) => props.theme.media.tablet`
-  height: 0px;
-  margin-bottom: 0px;
-  h3{
+  display: none;
+  `}
+`;
+const Author = styled.h3`
+  display: block;
+  font-size: 1.63rem;
+  line-height: 2.25rem;
+  margin-bottom: 8px;
+  ${(props) => props.theme.media.tablet`
     color: ${props.theme.colors.grey1};
     font-size: ${props.theme.fontSize.body02};
-    position: relative;
-    top: -25px;
-  }
-  span {
-      display: none;
-    }
+    transform: translateY(-30px);
+  `}
+`;
+const BookInfoRow2 = styled.div`
+  margin-bottom: 42px;
+
+  ${(props) => props.theme.media.tablet`
+    height: 0px;
+    margin-bottom: 0px;
   `}
 `;
 const BookInfoRow3 = styled.div`
+  display: flex;
+  align-items: center;
   > span {
     font-size: ${(props) => props.theme.fontSize.header02};
     line-height: ${(props) => props.theme.lineHeight.lh24};
     margin-right: 12px;
+    display: flex;
+    align-items: center;
   }
   img {
     height: 24px;
-    margin-right: 3px;
-    vertical-align: -4px;
-    cursor: pointer;
+    margin-right: 5px;
   }
   ${(props) => props.theme.media.tablet`
     display: none;
