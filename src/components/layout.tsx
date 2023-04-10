@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 
 import Login from '../pages/Login/index';
