@@ -9,9 +9,6 @@ import { appFireStore } from '../../../firebase/config';
 
 import { profileImageAtom } from 'recoil/profile';
 
-import CommentIcon from '../../../assets/icons/comment-gr-60.png';
-import styled from 'styled-components';
-
 const KakaoOauth = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -63,25 +60,7 @@ const KakaoOauth = () => {
     getKakao();
   }, []);
 
-  return (
-    <StatusContainer>
-      <img src={CommentIcon} />
-      <span>로그인 중입니다.</span>
-    </StatusContainer>
-  );
+  return <div />;
 };
 
 export default KakaoOauth;
-const StatusContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 145px;
-  > span {
-    font-size: ${(props) => props.theme.fontSize.body02};
-    line-height: ${(props) => props.theme.lineHeight.lh20};
-    color: ${(props) => props.theme.colors.grey1};
-    margin-top: 20px;
-  }
-`;
