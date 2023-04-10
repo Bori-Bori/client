@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Loading = () => {
   return (
-    <CategoryWrap>
+    <>
       {[0, 0, 0, 0, 0].map((value, index) => {
         return (
           <ListItem key={index}>
@@ -16,31 +16,11 @@ const Loading = () => {
           </ListItem>
         );
       })}
-    </CategoryWrap>
+    </>
   );
 };
 
 export default Loading;
-const CategoryWrap = styled.ul`
-  width: 61rem;
-  margin-left: 5.4%;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.25rem;
-  margin-top: 1.25rem;
-  @media screen and (max-width: 768px) {
-    width: 90%;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-left: 5.5%;
-  }
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
-    width: 90%;
-    gap: 1rem;
-    grid-template-columns: repeat(4, 1fr);
-    margin-left: 3.125%;
-  }
-`;
 const ListItem = styled.li`
   display: block;
 `;
