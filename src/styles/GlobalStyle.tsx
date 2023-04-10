@@ -151,6 +151,7 @@ html,
     background-color: transparent;
     border: 0;
     cursor: pointer;
+    color: inherit;
   }
   .sr-only {
     position: absolute;
