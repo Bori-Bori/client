@@ -98,7 +98,7 @@ const LoginModal = styled(Modal)`
 
 const Button = styled.button`
   display: block;
-  width: 320px;
+  width: 100%;
   padding: 19px 24px;
   margin: 0px 0 12px;
   border-radius: 8px;

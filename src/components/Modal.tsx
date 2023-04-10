@@ -49,6 +49,6 @@ const ModalOverlay = styled.div`
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
   ${(props) => props.theme.media.tablet`
     max-width: 320px;
-    padding: 60px 0 20px;
+    padding: 60px 40px 20px;
   `}
 `;
